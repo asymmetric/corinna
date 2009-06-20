@@ -36,14 +36,15 @@ test:
     server_alive_interval: 0
 
 production:
-  api_key: 
-  secret_key: 
-  canvas_page_name: 
-  callback_url: 
+  api_key: 18ce473f0a38bc39c51ed6e551bde130
+  secret_key: 113e84ea583a5e9de8d4233a2ff1d83e
+  canvas_page_name: Corinna\'s Fav Game
+  callback_url: http://xanadu.doesntexist.com/corinna
   set_asset_host_to_callback_url: true   
-  tunnel:
-    public_host_username: 
-    public_host: 
-    public_port: 4007
-    local_port: 3000
-    server_alive_interval: 0
+  api: new
+#  tunnel:
+#    public_host_username:
+#    public_host:
+#    public_port: 4007
+#    local_port: 3000
+#    server_alive_interval: 0
