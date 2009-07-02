@@ -6,7 +6,9 @@ class TreasureHunt
 
   class << self
     def create(hash)
-      self.new(hash)
+      # load
+      # fetch id from xml
+      self.new(hash) # done :)
     end
 
     def find(*arguments)
@@ -17,12 +19,12 @@ class TreasureHunt
       when :all   then find_every(options)
       when :first then find_every(options).first
       when :last  then find_every(options).last
-#      when :one   then find_one(options)
       else             find_single(scope, options)
       end
     end
 
     def delete(id)
+      # remove
     end
 
     def exists?(id)
@@ -34,8 +36,12 @@ class TreasureHunt
     end
 
     def find_single(scope, options)
+      unless scope.is_a? String
+        scope = scope.to_s
+      end
+
       fetch_collection.each do |object|
-        return instantiate_record(object) if object['id'].to_i == scope
+        return instantiate_record(object) if object['id'] == scope
       end
       nil # ugly
     end
@@ -61,21 +67,15 @@ class TreasureHunt
   end
   self.collection_name = 'gettreasurehunts'
 
-  attr_reader :hash
+  attr_reader :id, :title, :description
   def initialize(hash)
-    @hash = hash
-  end
-
-  def id
-    attributes[self.class.primary_key]
-  end
-
-  def id=(id)
-    attributes[self.class.primary_key] = id
+    @id = hash['id']
+    @title = hash['title']
+    @description = hash['thunt:description']
   end
 
   def new?
-    id.nil?
+    id.nil? # doesn't work anymore
   end
 
   def save
