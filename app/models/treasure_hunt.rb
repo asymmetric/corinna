@@ -1,7 +1,12 @@
 class TreasureHunt
+  include HTTParty
+  base_uri 'localhost:3000'
+  format :xml
+  headers 'Accept' => 'text/xml'
+
   class << self
-    def create(xml)
-      self.new(xml)
+    def create(hash)
+      self.new(hash)
     end
 
     def find(*arguments)
@@ -25,6 +30,7 @@ class TreasureHunt
 
     private
     def find_every(options)
+      instantiate_collection(get(collection_path))
     end
 
     def find_one(options)
@@ -32,13 +38,26 @@ class TreasureHunt
 
     def find_single(scope, options)
     end
+
+    attr_accessor :collection_name
+    def collection_path
+      "/#{collection_name}" # TODO prefix, prefix_path, prefix_options
+    end
+    def instantiate_collection(collection)
+      unless collection.kind_of? Array
+        [instantiate_record(collection)]
+      else
+        collection.collect! { |record| instantiate_record(record) }
+      end
+    end
+    def instantiate_record(record)
+      new(record)
+    end
   end
+  self.collection_name = 'gettreasurehunts'
 
-  include HTTParty
-  base_uri 'xanadu.doesntexist.com/stanis'
-  format :xml
-
-  def initialize(xml)
+  def initialize(hash)
+    @hash = hash
   end
 
   def id
