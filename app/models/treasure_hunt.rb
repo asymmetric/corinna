@@ -17,7 +17,7 @@ class TreasureHunt
       when :all   then find_every(options)
       when :first then find_every(options).first
       when :last  then find_every(options).last
-      when :one   then find_one(options)
+#      when :one   then find_one(options)
       else             find_single(scope, options)
       end
     end
@@ -30,13 +30,18 @@ class TreasureHunt
 
     private
     def find_every(options)
-      instantiate_collection(get(collection_path))
-    end
-
-    def find_one(options)
+      instantiate_collection(fetch_collection)
     end
 
     def find_single(scope, options)
+      fetch_collection.each do |object|
+        return instantiate_record(object) if object['id'].to_i == scope
+      end
+      nil # ugly
+    end
+    
+    def fetch_collection
+      get(collection_path)['thunt:getTreasureHunts']['thunt:treasureHunt'] # TODO ugly ugly ugly!
     end
 
     attr_accessor :collection_name
@@ -56,6 +61,7 @@ class TreasureHunt
   end
   self.collection_name = 'gettreasurehunts'
 
+  attr_reader :hash
   def initialize(hash)
     @hash = hash
   end
