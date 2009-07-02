@@ -1,24 +1,70 @@
-class ActiveTreasureHunt < ActiveResource::Base
+class TreasureHunt
   class << self
-
-    # remove trailing .xml to urls
-    def collection_path(prefix_options = {}, query_options = nil)
-      "#{prefix(prefix_options)}#{collection_name}"
+    def create(xml)
+      self.new(xml)
     end
 
-    # prevent NoMethodError: undefined method `collect!' for #<Hash:0x16595b8>
-    def instantiate_collection(collection, prefix_options = {})
-      unless collection.kind_of? Array
-        [instantiate_record(collection, prefix_options)]
-      else
-        collection.collect! { |record| instantiate_record(record, prefix_options) }
+    def find(*arguments)
+      scope   = arguments.slice!(0)
+      options = arguments.slice!(0) || {}
+
+      case scope
+      when :all   then find_every(options)
+      when :first then find_every(options).first
+      when :last  then find_every(options).last
+      when :one   then find_one(options)
+      else             find_single(scope, options)
       end
     end
 
-  end
-end
+    def delete(id)
+    end
 
-class TreasureHunt < ActiveTreasureHunt
-  self.site = "http://localhost:3000"
-  self.collection_name = "gettreasurehunts"
+    def exists?(id)
+    end
+
+    private
+    def find_every(options)
+    end
+
+    def find_one(options)
+    end
+
+    def find_single(scope, options)
+    end
+  end
+
+  include HTTParty
+  base_uri 'xanadu.doesntexist.com/stanis'
+  format :xml
+
+  def initialize(xml)
+  end
+
+  def id
+    attributes[self.class.primary_key]
+  end
+
+  def id=(id)
+    attributes[self.class.primary_key] = id
+  end
+
+  def new?
+    id.nil?
+  end
+
+  def save
+    new? ? create : update
+  end
+  
+  def destroy
+  end
+
+  protected
+
+  def create
+  end
+
+  def update
+  end
 end
