@@ -59,6 +59,6 @@ class ActiveTreasureHunt < ActiveResource::Base
 end
 
 class TreasureHunt < ActiveTreasureHunt
-  self.site = 'http://localhost:3000'
+  self.site = 'http://xanadu.doesntexist.com/stanis'
   self.collection_name = 'gettreasurehunts'
 end
