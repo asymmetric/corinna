@@ -39,7 +39,7 @@ class ActiveTreasureHunt < ActiveResource::Base
       connection.get(path, headers)[element_name].each do |object|
         return instantiate_record(object) if object['id'] == scope
       end
-      nil
+      nil # FIXME: throw exception (which?)
     end
 
     def collection_path(prefix_options = {}, query_options = nil)
