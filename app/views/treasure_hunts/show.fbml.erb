@@ -1,0 +1,12 @@
+<p>
+  <b>Title:</b>
+  <%=h @hunt.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @hunt.description.to_xml %>
+</p>
+
+<!-- link_to 'Edit', edit_treasure_hunt_path(@product) %> | -->
+<%= link_to 'Back', treasure_hunts_path %>
