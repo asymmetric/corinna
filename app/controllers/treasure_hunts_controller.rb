@@ -1,5 +1,6 @@
 class TreasureHuntsController < ApplicationController
-
+  ensure_authenticated_to_facebook
+  before_filter :get_current_facebook_user
   # load - id, pwd, config
   # subscribe - id, pwd, hunt
   # remove - id, pwd, hunt
@@ -71,5 +72,11 @@ class TreasureHuntsController < ApplicationController
       format.html
       format.fbml
     end
+  end
+
+  private
+  def get_current_facebook_user
+    @current_facebook_user = facebook_session.user
+    @current_user = User.find(@current_facebook_user.to_i)
   end
 end
