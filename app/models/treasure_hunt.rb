@@ -1,18 +1,16 @@
 class ActiveTreasureHunt < ActiveResource::Base
   class << self
-#    Dunno if we need that method..
-#    I have only removed the ":one" option which doesn't makes sense for us
-#    def find(*arguments)
-#      scope   = arguments.slice!(0)
-#      options = arguments.slice!(0) || {}
-#
-#      case scope
-#      when :all   then find_every(options)
-#      when :first then find_every(options).first
-#      when :last  then find_every(options).last
-#      else             find_single(scope, options)
-#      end
-#    end
+    attr_accessor_with_default(:create_name) { element_name.pluralize }
+
+    def create_path(prefix_options = {}, query_options = nil)
+      prefix_options, query_options = split_options(prefix_options) if query_options.nil?
+      "#{prefix(prefix_options)}#{create_name}#{query_string(query_options)}"
+    end
+
+    def collection_path(prefix_options = {}, query_options = nil)
+      prefix_options, query_options = split_options(prefix_options) if query_options.nil?
+      "#{prefix(prefix_options)}#{collection_name}#{query_string(query_options)}"
+    end
 
     private
     # Find every resource
@@ -42,11 +40,6 @@ class ActiveTreasureHunt < ActiveResource::Base
       nil # FIXME: throw exception (which?)
     end
 
-    def collection_path(prefix_options = {}, query_options = nil)
-      prefix_options, query_options = split_options(prefix_options) if query_options.nil?
-      "#{prefix(prefix_options)}#{collection_name}#{query_string(query_options)}"
-    end
-
     def instantiate_collection(collection, prefix_options = {})
       unless collection.kind_of? Array
         [instantiate_record(collection, prefix_options)]
@@ -56,9 +49,21 @@ class ActiveTreasureHunt < ActiveResource::Base
     end
   end
 
+  protected
+  def create_path(options = nil)
+    self.class.create_path(options || prefix_options)
+  end
+  # Create (i.e., \save to the remote service) the \new resource.
+  def create
+    connection.post(create_path, "xml=#{attributes[:xml]}", self.class.headers).tap do |response|
+      self.id = id_from_response(response)
+      load_attributes_from_response(response)
+    end
+  end
 end
 
 class TreasureHunt < ActiveTreasureHunt
   self.site = 'http://xanadu.doesntexist.com/stanis'
   self.collection_name = 'gettreasurehunts'
+  self.create_name = 'loadtreasurehunt'
 end

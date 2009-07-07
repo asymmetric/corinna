@@ -1,6 +1,7 @@
 class TreasureHuntsController < ApplicationController
-  ensure_authenticated_to_facebook
+  # ensure_application_is_installed_by_facebook_user # uncomment this line to make it work ONLY with facebook (no regular requests)
   before_filter :get_current_facebook_user
+
   # load - id, pwd, config
   # subscribe - id, pwd, hunt
   # remove - id, pwd, hunt
@@ -19,6 +20,7 @@ class TreasureHuntsController < ApplicationController
   # GET /treasure_hunts/new
   def new
     @hunt = TreasureHunt.new
+    @hunt.xml = ""
 
     respond_to do |format|
       format.html
@@ -76,7 +78,9 @@ class TreasureHuntsController < ApplicationController
 
   private
   def get_current_facebook_user
-    @current_facebook_user = facebook_session.user
-    @current_user = User.find(@current_facebook_user.to_i)
+    if request_comes_from_facebook?
+      @current_facebook_user = facebook_session.user
+      @current_user = User.find(@current_facebook_user.to_i)
+    end
   end
 end
