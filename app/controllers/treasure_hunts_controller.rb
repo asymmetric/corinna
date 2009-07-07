@@ -1,6 +1,11 @@
 class TreasureHuntsController < ApplicationController
-  # ensure_application_is_installed_by_facebook_user # uncomment this line to make it work ONLY with facebook (no regular requests)
-  before_filter :get_current_facebook_user
+  begin
+    request_comes_from_facebook?
+    ensure_application_is_installed_by_facebook_user
+    before_filter :get_current_facebook_user
+  rescue NoMethodError => e
+    # This is THE ONLY WAY to get the app working both IN facebook and OUT of facebook DON'T TOUCH OR I'LL KILL YOU!
+  end
 
   # load - id, pwd, config
   # subscribe - id, pwd, hunt
@@ -78,9 +83,7 @@ class TreasureHuntsController < ApplicationController
 
   private
   def get_current_facebook_user
-    if request_comes_from_facebook?
-      @current_facebook_user = facebook_session.user
-      @current_user = User.find(@current_facebook_user.to_i)
-    end
+    @current_facebook_user = facebook_session.user
+    @current_user = User.find(@current_facebook_user.to_i)
   end
 end
