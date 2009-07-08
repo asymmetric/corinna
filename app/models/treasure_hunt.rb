@@ -1,6 +1,7 @@
 class ActiveTreasureHunt < ActiveResource::Base
   class << self
     attr_accessor_with_default(:create_name) { element_name.pluralize }
+    attr_writer :headers
 
     def create_path(prefix_options = {}, query_options = nil)
       prefix_options, query_options = split_options(prefix_options) if query_options.nil?
@@ -55,7 +56,7 @@ class ActiveTreasureHunt < ActiveResource::Base
   end
   # Create (i.e., \save to the remote service) the \new resource.
   def create
-    connection.post(create_path, "xml=#{attributes[:xml]}", self.class.headers).tap do |response|
+    connection.post(create_path, "xml=#{attributes['xml']}", self.class.headers).tap do |response|
       self.id = id_from_response(response)
       load_attributes_from_response(response)
     end
@@ -63,7 +64,8 @@ class ActiveTreasureHunt < ActiveResource::Base
 end
 
 class TreasureHunt < ActiveTreasureHunt
-  self.site = 'http://xanadu.doesntexist.com/stanis'
+  self.site = 'http://localhost:3001'
   self.collection_name = 'gettreasurehunts'
   self.create_name = 'loadtreasurehunt'
+  self.headers = { "Accept" => "text/xml" , "Content-Type" => "application/x-www-form-urlencoded" }
 end

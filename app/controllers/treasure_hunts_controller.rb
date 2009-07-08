@@ -36,17 +36,17 @@ class TreasureHuntsController < ApplicationController
   # POST /treasure_hunts
   def create
     @hunt = TreasureHunt.new(params[:treasure_hunt])
-    if @hunt.save
-      flash[:notice] = 'Treasure Hunt was successfully created.'
-      redirect_to(@hunt)
-    else
-      render :action => "new"
+    respond_to do |format|
+      if @hunt.save
+        flash[:notice] = 'Treasure Hunt was successfully created.'
+        format.html { redirect_to(@hunt) }
+        format.fbml { redirect_to(@hunt) }
+      else
+        format.html { render :action => "new" }
+        format.fbml { render :action => "new" }
+      end
     end
 
-    respond_to do |format|
-      format.html
-      format.fbml
-    end
   end
 
   # GET /treasure_hunts/1
