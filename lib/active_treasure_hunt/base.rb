@@ -36,8 +36,11 @@ module ActiveTreasureHunt
         scope = scope.to_s unless scope.is_a? String
         prefix_options, query_options = split_options(options[:params])
         path = collection_path(prefix_options, query_options)
-        connection.get(path, headers)[element_name].each do |object|
-          return instantiate_record(object) if object['id'] == scope
+        result = connection.get(path, headers)[element_name]
+        unless result.kind_of? Array
+          return instantiate_record(result) if result['id'] == scope
+        else
+          result.each { |object| return instantiate_record(object) if object['id'] == scope }
         end
         nil # FIXME: throw exception (which?)
       end
