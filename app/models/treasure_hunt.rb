@@ -3,5 +3,5 @@ class TreasureHunt < ActiveTreasureHunt::Base
   #self.site = 'http://localhost:3001'
   self.collection_name = 'gettreasurehunts'
   self.create_name = 'loadtreasurehunt'
-  self.headers = { "Content-Type" => "application/x-www-form-urlencoded" }
+  self.headers = { "Accept" => "text/xml", "Content-Type" => "application/x-www-form-urlencoded" }
 end
