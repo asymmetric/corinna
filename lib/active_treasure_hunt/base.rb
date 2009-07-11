@@ -4,6 +4,8 @@ module ActiveTreasureHunt
     class << self
       attr_accessor_with_default(:create_name) { element_name.pluralize }
       attr_accessor :create_response_name
+      attr_accessor :remove_name
+      attr_accessor :remove_response_name
       attr_accessor_with_default(:ok_status) { 'accepted' }
       attr_writer :headers
 
@@ -79,7 +81,7 @@ module ActiveTreasureHunt
         rescue NameError => e
           raise ActiveResource::ConnectionError.new(status, "Unknown error")
         end
-        raise error_class.new(status)
+        raise error_class.new
      end
     end
   end
