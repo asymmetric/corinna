@@ -35,9 +35,19 @@ class TreasureHuntsController < ApplicationController
 
   # POST /treasure_hunts
   def create
+    unless @current_user
+      @current_user = User.new
+      @current_user.id = @current_facebook_user.to_i
+      @current_user.password = ActiveSupport::SecureRandom.base64 20 
+      @current_user.thunts = []
+    end
+    hunt_pwd = ActiveSupport::SecureRandom.base64 20
+    # cambiare nell'xml idOrganizer = @current_user.id, pwdOrganizer =
+    # hunt_pwd
     @hunt = TreasureHunt.new(params[:treasure_hunt])
     respond_to do |format|
       if @hunt.save
+        @current_user.thunts << { :id => @hunt.id, :password => hunt_pwd } 
         flash[:notice] = 'Treasure Hunt was successfully created.'
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
@@ -72,6 +82,7 @@ class TreasureHuntsController < ApplicationController
   # DELETE /treasure_hunts/1
   def destroy
     @hunt = TreasureHunt.find(params[:id])
+    debugger
     @hunt.destroy
     redirect_to(treasure_hunts_url)
 

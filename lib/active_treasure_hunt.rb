@@ -10,11 +10,11 @@
 
 require 'active_treasure_hunt/base'
 require 'active_treasure_hunt/record'
-require 'active_treasure_hunt/errors'
+#require 'active_treasure_hunt/validations'
 
-#module ActiveTreasureHunt
+#module ActiveResource
 #  Base.class_eval do
-#    include Errors
+#    include Validations
 #    include CustomMethods
 #  end
 #end
