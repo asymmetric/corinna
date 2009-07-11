@@ -1,17 +1,15 @@
+require 'active_treasure_hunt/errors'
 module ActiveTreasureHunt
   class Base < ActiveResource::Base
     class << self
       attr_accessor_with_default(:create_name) { element_name.pluralize }
+      attr_accessor :create_response_name
+      attr_accessor_with_default(:ok_status) { 'accepted' }
       attr_writer :headers
 
-      def create_path(prefix_options = {}, query_options = nil)
+      def build_path(action_name, prefix_options = {}, query_options = nil)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
-        "#{prefix(prefix_options)}#{create_name}#{query_string(query_options)}"
-      end
-
-      def collection_path(prefix_options = {}, query_options = nil)
-        prefix_options, query_options = split_options(prefix_options) if query_options.nil?
-        "#{prefix(prefix_options)}#{collection_name}#{query_string(query_options)}"
+        "#{prefix(prefix_options)}#{action_name}#{query_string(query_options)}"
       end
 
       private
@@ -26,7 +24,7 @@ module ActiveTreasureHunt
           instantiate_collection(connection.get(path, headers)[element_name] || [])
         else
           prefix_options, query_options = split_options(options[:params])
-          path = collection_path(prefix_options, query_options)
+          path = build_path(collection_name, prefix_options, query_options)
           instantiate_collection((connection.get(path, headers)[element_name] || []), prefix_options )
         end
       end
@@ -35,7 +33,7 @@ module ActiveTreasureHunt
       def find_single(scope, options)
         scope = scope.to_s unless scope.is_a? String
         prefix_options, query_options = split_options(options[:params])
-        path = collection_path(prefix_options, query_options)
+        path = build_path(collection_name, prefix_options, query_options)
         result = connection.get(path, headers)[element_name]
         unless result.kind_of? Array
           return instantiate_record(result) if result['id'] == scope
@@ -55,15 +53,34 @@ module ActiveTreasureHunt
     end
 
     protected
-    def create_path(options = nil)
-      self.class.create_path(options || prefix_options)
+    def build_path(action_name, options = nil)
+      self.class.build_path(action_name, options || prefix_options)
     end
+
     # Create (i.e., \save to the remote service) the \new resource.
     def create
-      connection.post(create_path, "xml=#{attributes['xml']}", self.class.headers).tap do |response|
-        self.id = id_from_response(response)
-        load_attributes_from_response(response)
+      connection.post(build_path(self.class.create_name), "xml=#{attributes['xml']}", self.class.headers).tap do |response|
+        body = extract_body(response, self.class.create_response_name)
+        validate_response(body)
+        self.id = id_from_response(body) #TODO
+        load_attributes_from_response(body) #TODO
       end
+    end
+
+    def extract_body(response, response_name)
+      Hash.from_xml(response.body)[response_name]
+    end
+
+    def validate_response(body)
+      status = body['status']
+      if status && status != self.class.ok_status
+        begin
+          error_class = ActiveTreasureHunt::const_get(status.gsub(/^(\w)/) { $1.mb_chars.capitalize })
+        rescue NameError => e
+          raise ActiveResource::ConnectionError.new(status, "Unknown error")
+        end
+        raise error_class.new(status)
+     end
     end
   end
 end
