@@ -35,15 +35,8 @@ class TreasureHuntsController < ApplicationController
 
   # POST /treasure_hunts
   def create
-    unless @current_user
-      @current_user = User.new
-      @current_user.id = @current_facebook_user.to_i
-      @current_user.password = ActiveSupport::SecureRandom.base64 20 
-      @current_user.thunts = []
-    end
     hunt_pwd = ActiveSupport::SecureRandom.base64 20
-    # cambiare nell'xml idOrganizer = @current_user.id, pwdOrganizer =
-    # hunt_pwd
+    # cambiare nell'xml idOrganizer = @current_user.id, pwdOrganizer = hunt_pwd
     @hunt = TreasureHunt.new(params[:treasure_hunt])
     respond_to do |format|
       if @hunt.save
@@ -95,6 +88,12 @@ class TreasureHuntsController < ApplicationController
   private
   def get_current_facebook_user
     @current_facebook_user = facebook_session.user
-    @current_user = User.find(@current_facebook_user.to_i)
+    @current_user = User.find(@current_facebook_user.to_s)
+    unless @current_user
+      @current_user = User.new
+      @current_user.id = @current_facebook_user.to_s
+      @current_user.password = ActiveSupport::SecureRandom.base64 20
+      @current_user.thunts = []
+    end
   end
 end

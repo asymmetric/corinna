@@ -64,9 +64,13 @@ module ActiveTreasureHunt
       connection.post(build_path(self.class.create_name), "xml=#{attributes['xml']}", self.class.headers).tap do |response|
         body = extract_body(response, self.class.create_response_name)
         validate_response(body)
-        self.id = id_from_response(body) #TODO
-        load_attributes_from_response(body) #TODO
+        self.id = id_from_response(body)
+        load_attributes_from_response(response) #TODO
       end
+    end
+
+    def id_from_response(body)
+      body['hunt'] if body['hunt']
     end
 
     def extract_body(response, response_name)
