@@ -30,10 +30,13 @@ class TreasureHuntsController < ApplicationController
 
   # POST /treasure_hunts
   def create
-    @hunt = TreasureHunt.new(params[:treasure_hunt])
-
     hunt_pwd = ActiveSupport::SecureRandom.base64 20
-    # cambiare nell'xml idOrganizer = @current_user.id, pwdOrganizer = hunt_pwd
+    xml = REXML::Document.new(params[:treasure_hunt]['xml'])
+    xml.root.attributes['idOrganizer'] = @current_facebook_user.to_s
+    xml.root.attributes['pwdOrganizer'] = hunt_pwd
+
+    @hunt = TreasureHunt.new(xml.to_s)
+
     respond_to do |format|
       if @hunt.save
         @current_user.thunts << { :id => @hunt.id, :password => hunt_pwd }
