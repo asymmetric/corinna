@@ -40,13 +40,14 @@ class TreasureHuntsController < ApplicationController
     @hunt = TreasureHunt.new(:xml => xml.to_s)
 
     respond_to do |format|
-      if @hunt.save
+      begin
+        @hunt.save
         @current_user.thunts << { :id => @hunt.id, :password => hunt_pwd }
         @current_user.save
         flash[:notice] = 'Treasure Hunt was successfully created.'
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
-      else
+      rescue
         format.html { render :action => "new" }
         format.fbml { render :action => "new" }
       end

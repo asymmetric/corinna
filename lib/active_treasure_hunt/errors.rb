@@ -16,12 +16,12 @@ module ActiveTreasureHunt
   end
   class NoPermission < Exception
     def to_s
-      "You don't have enough permissions"
+      "Insufficient privileges"
     end
   end
   class PassAlreadyAssigned < Exception
     def to_s
-      "Password already assigned (it doesn't make any sense, but it is)"
+      "Password already assigned"
     end
   end
   class NotSubscribed < Exception
@@ -31,7 +31,7 @@ module ActiveTreasureHunt
   end
   class NotExist < Exception
     def to_s
-      "Treasure hunt doesn't exists"
+      "Treasure hunt does not exist"
     end
   end
   class AlreadyStarted < Exception
@@ -46,12 +46,12 @@ module ActiveTreasureHunt
   end
   class NoTransparency < Exception
     def to_s
-      "Treasure hunt is not transparent"
+      "Treasure hunt not transparent"
     end
   end
   class NoTurn < Exception
     def to_s
-      "Turn doesn't exists"
+      "Turn does not exist"
     end
   end
 end
