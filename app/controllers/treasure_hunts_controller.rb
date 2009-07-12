@@ -32,10 +32,12 @@ class TreasureHuntsController < ApplicationController
   def create
     hunt_pwd = ActiveSupport::SecureRandom.base64 20
     xml = REXML::Document.new(params[:treasure_hunt]['xml'])
-    xml.root.attributes['idOrganizer'] = @current_facebook_user.to_s
-    xml.root.attributes['pwdOrganizer'] = hunt_pwd
+    if xml.root and xml.root.attributes and xml.root.attributes['idOrganizer'] and xml.root.attributes['pwdOrganizer']
+      xml.root.attributes['idOrganizer'] = @current_facebook_user.to_s
+      xml.root.attributes['pwdOrganizer'] = hunt_pwd
+    end
 
-    @hunt = TreasureHunt.new(xml.to_s)
+    @hunt = TreasureHunt.new(:xml => xml.to_s)
 
     respond_to do |format|
       if @hunt.save
