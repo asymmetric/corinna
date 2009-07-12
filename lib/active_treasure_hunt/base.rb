@@ -2,12 +2,16 @@ require 'active_treasure_hunt/errors'
 module ActiveTreasureHunt
   class Base < ActiveResource::Base
     class << self
-      attr_accessor_with_default(:create_name) { element_name.pluralize }
-      attr_accessor :create_response_name
-      attr_accessor :remove_name
-      attr_accessor :remove_response_name
-      attr_accessor_with_default(:ok_status) { 'accepted' }
       attr_writer :headers
+      attr_accessor :default_request_builder
+      attr_accessor_with_default(:ok_status) { 'accepted' }
+
+      attr_accessor_with_default(:create_name) { element_name.pluralize }
+      attr_accessor :create_response_tag
+
+      attr_accessor :destroy_name
+      attr_accessor :destroy_response_tag
+      attr_accessor :destroy_request_tag
 
       def build_path(action_name, prefix_options = {}, query_options = nil)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
@@ -42,7 +46,7 @@ module ActiveTreasureHunt
         else
           result.each { |object| return instantiate_record(object) if object['id'] == scope }
         end
-        nil # FIXME: throw exception (which?)
+        raise ActiveTreasureHunt::NotExist
       end
 
       def instantiate_collection(collection, prefix_options = {})
@@ -54,6 +58,13 @@ module ActiveTreasureHunt
       end
     end
 
+    def destroy(user_id, user_password)
+      xml = self.class.default_request_builder.call(self.class.destroy_request_tag, user_id, user_password, self.id)
+      connection.post(build_path(self.class.destroy_name), "xml=#{xml}", self.class.headers).tap do |response|
+        validate_response(extract_body(response, self.class.destroy_response_tag))
+      end
+    end
+
     protected
     def build_path(action_name, options = nil)
       self.class.build_path(action_name, options || prefix_options)
@@ -62,10 +73,10 @@ module ActiveTreasureHunt
     # Create (i.e., \save to the remote service) the \new resource.
     def create
       connection.post(build_path(self.class.create_name), "xml=#{attributes['xml']}", self.class.headers).tap do |response|
-        body = extract_body(response, self.class.create_response_name)
+        body = extract_body(response, self.class.create_response_tag)
         validate_response(body)
         self.id = id_from_response(body)
-        load_attributes_from_response(response) #TODO
+        load_attributes_from_response(response)
       end
     end
 

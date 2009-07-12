@@ -77,7 +77,8 @@ class TreasureHuntsController < ApplicationController
   # DELETE /treasure_hunts/1
   def destroy
     @hunt = TreasureHunt.find(params[:id])
-    @hunt.destroy
+    @hunt.destroy(@current_user.id, @current_user.hunt_password(@hunt.id))
+    flash[:notice] = "Treasure Hunt successfully destroyed"
 
     respond_to do |format|
       format.html { redirect_to(treasure_hunts_url) }
