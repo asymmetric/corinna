@@ -1,11 +1,6 @@
 class TreasureHuntsController < ApplicationController
-  begin
-    request_comes_from_facebook?
-    ensure_application_is_installed_by_facebook_user
-    before_filter :get_current_facebook_user
-  rescue NoMethodError => e
-    # This is THE ONLY WAY to get the app working both IN facebook and OUT of facebook DON'T TOUCH OR I'LL KILL YOU!
-  end
+  ensure_application_is_installed_by_facebook_user
+  before_filter :get_current_facebook_user
 
   # load - id, pwd, config
   # subscribe - id, pwd, hunt
@@ -35,12 +30,14 @@ class TreasureHuntsController < ApplicationController
 
   # POST /treasure_hunts
   def create
+    @hunt = TreasureHunt.new(params[:treasure_hunt])
+
     hunt_pwd = ActiveSupport::SecureRandom.base64 20
     # cambiare nell'xml idOrganizer = @current_user.id, pwdOrganizer = hunt_pwd
-    @hunt = TreasureHunt.new(params[:treasure_hunt])
     respond_to do |format|
       if @hunt.save
-        @current_user.thunts << { :id => @hunt.id, :password => hunt_pwd } 
+        @current_user.thunts << { :id => @hunt.id, :password => hunt_pwd }
+        @current_user.save
         flash[:notice] = 'Treasure Hunt was successfully created.'
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
@@ -62,7 +59,7 @@ class TreasureHuntsController < ApplicationController
     end
   end
 
-  # GET /treasure_hunts/subscribe/1
+  # TODO: VERB? /treasure_hunts/1/subscribe
   def subscribe
     @hunt = TreasureHunt.find(params[:id])
 
@@ -75,13 +72,11 @@ class TreasureHuntsController < ApplicationController
   # DELETE /treasure_hunts/1
   def destroy
     @hunt = TreasureHunt.find(params[:id])
-    debugger
     @hunt.destroy
-    redirect_to(treasure_hunts_url)
 
     respond_to do |format|
-      format.html
-      format.fbml
+      format.html { redirect_to(treasure_hunts_url) }
+      format.fbml { redirect_to(treasure_hunts_url) }
     end
   end
 
@@ -94,6 +89,7 @@ class TreasureHuntsController < ApplicationController
       @current_user.id = @current_facebook_user.to_s
       @current_user.password = ActiveSupport::SecureRandom.base64 20
       @current_user.thunts = []
+      @current_user.save
     end
   end
 end

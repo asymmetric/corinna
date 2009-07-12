@@ -17,7 +17,7 @@
         <%= link_to 'Show', hunt %><br/>
         <%= link_to 'Destroy', hunt,
                     :confirm => 'Are you sure?',
-                    :method => :delete %>
+                    :method => :delete if @current_user.is_admin? hunt.id %>
       </td>
     </tr>
   <% end %>
