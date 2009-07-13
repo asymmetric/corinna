@@ -1,9 +1,18 @@
 require 'active_treasure_hunt/errors'
+module ActiveResource
+  class Connection
+    def get(path, headers = {})
+      request(:get, path, build_request_headers(headers, :get))
+    end
+  end
+end
 module ActiveTreasureHunt
   class Base < ActiveResource::Base
     class << self
       attr_writer :headers
+      attr_accessor_with_default(:default_namespace) { 'xmlns' }
       attr_accessor :default_request_builder
+      attr_accessor :element_tag
       attr_accessor_with_default(:ok_status) { 'accepted' }
 
       attr_accessor_with_default(:create_name) { element_name.pluralize }
@@ -27,11 +36,11 @@ module ActiveTreasureHunt
           instantiate_collection(get(from, options[:params]))
         when String
           path = "#{from}#{query_string(options[:params])}"
-          instantiate_collection(connection.get(path, headers)[element_name] || [])
+          instantiate_collection(connection.get(path, headers).body || [])
         else
           prefix_options, query_options = split_options(options[:params])
           path = build_path(collection_name, prefix_options, query_options)
-          instantiate_collection((connection.get(path, headers)[element_name] || []), prefix_options )
+          instantiate_collection((connection.get(path, headers).body || []), prefix_options )
         end
       end
 
@@ -40,21 +49,38 @@ module ActiveTreasureHunt
         scope = scope.to_s unless scope.is_a? String
         prefix_options, query_options = split_options(options[:params])
         path = build_path(collection_name, prefix_options, query_options)
-        result = connection.get(path, headers)[element_name]
-        unless result.kind_of? Array
-          return instantiate_record(result) if result['id'] == scope
+        result = connection.get(path, headers)
+        result = result.body unless result.is_a? String
+        doc = Nokogiri::XML(result)
+        object = doc.root.xpath("#{default_namespace.keys.first}:#{element_tag}[@id = #{scope}]")
+        unless object.empty?
+          instantiate_record(Nokogiri::XML(object.to_xml).to_xml) # ugly
         else
-          result.each { |object| return instantiate_record(object) if object['id'] == scope }
+          raise ActiveTreasureHunt::NotExist
         end
-        raise ActiveTreasureHunt::NotExist
       end
 
       def instantiate_collection(collection, prefix_options = {})
-        unless collection.kind_of? Array
-          [instantiate_record(collection, prefix_options)]
-        else
+        if collection.kind_of? Array
           collection.collect! { |record| instantiate_record(record, prefix_options) }
+        elsif collection.kind_of? String
+          ugly = [] # ugly
+          collection = Nokogiri::XML(collection)
+          collection.root.xpath("#{default_namespace.keys.first}:#{element_tag}").each do |element|
+            ugly << instantiate_record(Nokogiri::XML(element.to_xml).to_xml) # ugly^element_number
+          end
+          ugly
+        else
+          [instantiate_record(collection, prefix_options)]
         end
+      end
+
+      def instantiate_record(record, prefix_options = {})
+        new_record = new(format.decode(record)).tap do |resource|
+          resource.prefix_options = prefix_options
+        end
+        new_record.xml = record
+        new_record
       end
     end
 
@@ -81,7 +107,7 @@ module ActiveTreasureHunt
     end
 
     def id_from_response(body)
-      body['hunt'] if body['hunt']
+      body['hunt']
     end
 
     def extract_body(response, response_name)

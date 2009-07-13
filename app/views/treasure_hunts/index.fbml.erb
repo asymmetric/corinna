@@ -8,7 +8,7 @@
       <td class="list-description">
         <dl>
           <dt><b><%=h hunt.title %></b></dt>
-          <dd><%=h truncate(hunt.description.to_xml.gsub(/<.*?>/,''),
+          <dd><%=h truncate(prettyprint_blockinline(hunt.xml, 'description'),
                  :length => 80) %></dd>
         </dl>
       </td>
