@@ -19,8 +19,7 @@ class TreasureHuntsController < ApplicationController
 
   # GET /treasure_hunts/new
   def new
-    @hunt = TreasureHunt.new
-    @hunt.xml = ""
+    @hunt = TreasureHunt.new(:xml => "")
 
     respond_to do |format|
       format.html

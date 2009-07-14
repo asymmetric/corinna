@@ -98,7 +98,7 @@ module ActiveTreasureHunt
 
     # Create (i.e., \save to the remote service) the \new resource.
     def create
-      connection.post(build_path(self.class.create_name), "xml=#{attributes['xml']}", self.class.headers).tap do |response|
+      connection.post(build_path(self.class.create_name), "xml=#{self.xml}", self.class.headers).tap do |response|
         body = extract_body(response, self.class.create_response_tag)
         validate_response(body)
         self.id = id_from_response(body)
@@ -111,7 +111,7 @@ module ActiveTreasureHunt
     end
 
     def extract_body(response, response_name)
-      Hash.from_xml(response.body)[response_name]
+      self.class.format.decode(response.body)
     end
 
     def validate_response(body)

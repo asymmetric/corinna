@@ -1,8 +1,10 @@
 module TreasureHuntsHelper
   def prettyprint_blockinline(xml, xpath)
     doc = Nokogiri::XML(xml)
-    block = Nokogiri::XML(doc.root.xpath(xpath).to_xml)
+    para = doc.root.xpath("#{xpath}/para")
+    pretty = ""
     xslt = Nokogiri::XSLT(File.read("#{RAILS_ROOT}/lib/active_treasure_hunt/prettyprint_blockinline.xslt"))
-    xslt.apply_to(block).to_a[1..-1].to_s
+    para.each { |block| pretty << xslt.apply_to(Nokogiri::XML(block.to_xml)).to_a[1..-1].to_s }
+    pretty
   end
 end
