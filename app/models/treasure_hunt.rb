@@ -14,11 +14,12 @@ class TreasureHunt < ActiveTreasureHunt::Base
 
   self.element_tag = 'treasureHunt'
   self.subscription_builder = lambda do |type, id, password, hunt|
-    type = type.to_sym
+    type = type.intern unless type.is_a? Symbol
+    name = self.subscribe_request_tag.intern unless self.subscribe_name.is_a? Symbol
     xml = Builder::XmlMarkup.new
     xml.instruct!
-    xml.thunt self.subscribe_name, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt" do
-        xml.thunt type, :thunt => hunt, :id => id, :pwd => pwd
+    xml.thunt name, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt" do
+      xml.thunt type, :thunt => hunt, :id => id, :pwd => password
     end
   end
 
@@ -31,7 +32,7 @@ class TreasureHunt < ActiveTreasureHunt::Base
   self.destroy_request_tag = 'removeTreasureHunt'
   self.destroy_response_tag = 'remove_treasure_hunt_result'
 
-  self.subscribe_name = 'sendSubscription'
-  self.subscribe_request_tag = self.subscribe_name
-  self.subscribe_response_tag = "#{self.subscribe_name}Result".underscore
+  self.subscribe_name = 'sendsubscription'
+  self.subscribe_request_tag = 'sendSubscription'
+  self.subscribe_response_tag = "#{self.subscribe_request_tag}Result".underscore
 end

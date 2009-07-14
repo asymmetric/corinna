@@ -8,13 +8,16 @@
   <%= prettyprint_blockinline(@hunt.xml, 'description') %>
 </p>
 
-<% form_tag(:action => :subscribe) do %>
+<% form_tag(:action => :subscribe, :id => @hunt.id) do %>
   <p>
     <%= radio_button_tag :button, :user, :checked => true %>
     <%= radio_button_tag :button, :group %>
     <%= @groups = @facebook_session.user.groups
     select_tag(:gid, options_for_select( @groups.collect { |g| [ g.name, g.id ] }, params[:gid] ) )
     %>
+    <p>
+    <%= submit_tag "Subscribe" %>
+    </p>
   </p>
 <% end %>
 <%= link_to 'Back', treasure_hunts_path %>

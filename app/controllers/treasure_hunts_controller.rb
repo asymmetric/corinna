@@ -64,16 +64,16 @@ class TreasureHuntsController < ApplicationController
   def subscribe
     @hunt = TreasureHunt.find(params[:id])
     case params[:button]
-    when :user
-      @hunt.subscribe :user, @current_user, @current_user.pwd, @hunt
-    when :group
+    when "user"
+      @hunt.subscribe :user, @current_user.id, @current_user.password
+    when "group"
       group_id = params[:group_id]
-      @hunt.subscribe :group, group_id, @current_user.pwd, @hunt
+      @hunt.subscribe :group, group_id, @current_user.pwd
     end
 
     respond_to do |format|
-      format.html
-      format.fbml
+      format.html { redirect_to(treasure_hunts_url) }
+      format.fbml { redirect_to(treasure_hunts_url) }
     end
   end
 
