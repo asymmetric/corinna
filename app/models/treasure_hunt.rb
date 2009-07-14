@@ -20,12 +20,20 @@ class TreasureHunt < ActiveTreasureHunt::Base
 
   self.element_tag = 'treasureHunt'
   self.subscription_builder = lambda do |type, id, password, hunt|
+<<<<<<< HEAD:app/models/treasure_hunt.rb
     type = type.intern unless type.is_a? Symbol
     name = self.subscribe_request_tag.intern unless self.subscribe_name.is_a? Symbol
     xml = Builder::XmlMarkup.new
     xml.instruct!
     xml.thunt name, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt" do
       xml.thunt type, :thunt => hunt, :id => id, :pwd => password
+=======
+    type = type.to_sym
+    xml = Builder::XmlMarkup.new
+    xml.instruct!
+    xml.thunt self.subscribe_name, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt" do
+        xml.thunt type, :thunt => hunt, :id => id, :pwd => pwd
+>>>>>>> partially working, manca la view:app/models/treasure_hunt.rb
     end
   end
 
@@ -36,6 +44,7 @@ class TreasureHunt < ActiveTreasureHunt::Base
 
   self.destroy_name = 'removetreasurehunt'
   self.destroy_request_tag = 'removeTreasureHunt'
+<<<<<<< HEAD:app/models/treasure_hunt.rb
   self.destroy_response_tag = 'remove_treasure_hunt_result'
 
   self.subscribe_request_tag = 'sendSubscription'
@@ -49,4 +58,11 @@ class TreasureHunt < ActiveTreasureHunt::Base
   self.start_request_tag = 'startTreasureHunt'
   self.start_name = self.start_request_tag.downcase
   self.start_response_tag = "startResult".underscore
+=======
+  self.destroy_response_tag = 'removeTreasureHuntResult'
+
+  self.subscribe_name = 'sendSubscription'
+  self.subscribe_request_tag = self.subscribe_name
+  self.subscribe_response_tag = "#{self.subscribe_name}Result".underscore
+>>>>>>> partially working, manca la view:app/models/treasure_hunt.rb
 end
