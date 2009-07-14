@@ -8,12 +8,12 @@
   <%= prettyprint_blockinline(@hunt.xml, 'description') %>
 </p>
 
-<% form_for(@hunt) do |f| %>
+<% form_tag(:action => :subscribe) do %>
   <p>
     <%= radio_button_tag :button, :user, :checked => true %>
     <%= radio_button_tag :button, :group %>
-    <%= @groups = @current_facebook_user.groups
-      select "groups", "name", %w[ user group ]
+    <%= @groups = @facebook_session.user.groups
+    select_tag(:gid, options_for_select( @groups.collect { |g| [ g.name, g.id ] }, params[:gid] ) )
     %>
   </p>
 <% end %>
