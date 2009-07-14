@@ -112,7 +112,7 @@ module ActiveTreasureHunt
     end
 
     def subscribe(type, id, pwd)
-      xml = self.class.subscription_builder.call(self.class.subscribe_request_tag, type, id, pwd, self.id)
+      xml = self.class.subscription_builder.call(type, id, pwd, self.id)
       connection.post(build_path(self.class.subscribe_name), "xml=#{xml}", self.class.headers).tap do |response|
         validate_response(extract_body(response, self.class.subscribe_response_tag))
       end
