@@ -20,6 +20,7 @@ module ActiveTreasureHunt
       attr_accessor_with_default(:default_namespace) { 'xmlns' }
       attr_accessor :default_request_builder
       attr_accessor :element_tag
+      attr_accessor :subscription_builder
       attr_accessor_with_default(:ok_status) { 'accepted' }
 
       attr_accessor_with_default(:create_name) { element_name.pluralize }
@@ -28,6 +29,10 @@ module ActiveTreasureHunt
       attr_accessor :destroy_name
       attr_accessor :destroy_response_tag
       attr_accessor :destroy_request_tag
+
+      attr_accessor :subscribe_name
+      attr_accessor :subscribe_request_tag
+      attr_accessor :subscribe_response_tag
 
       def build_path(action_name, prefix_options = {}, query_options = nil)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
@@ -95,6 +100,13 @@ module ActiveTreasureHunt
       xml = self.class.default_request_builder.call(self.class.destroy_request_tag, user_id, user_password, self.id)
       connection.post(build_path(self.class.destroy_name), "xml=#{xml}", self.class.headers).tap do |response|
         validate_response(extract_body(response, self.class.destroy_response_tag))
+      end
+    end
+
+    def subscribe(type, id, pwd)
+      xml = self.class.subscription_builder.call(self.class.subscribe_request_tag, type, id, pwd, self.id)
+      connection.post(build_path(self.class.subscribe_name), "xml=#{xml}", self.class.headers).tap do |response|
+        validate_response(extract_body(response, self.class.subscribe_response_tag))
       end
     end
 

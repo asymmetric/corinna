@@ -8,4 +8,13 @@
   <%= prettyprint_blockinline(@hunt.xml, 'description') %>
 </p>
 
+<% form_for(@hunt) do |f| %>
+  <p>
+    <%= radio_button_tag :button, :user, :checked => true %>
+    <%= radio_button_tag :button, :group %>
+    <%= @groups = @current_facebook_user.groups
+      select "groups", "name", %w[ user group ]
+    %>
+  </p>
+<% end %>
 <%= link_to 'Back', treasure_hunts_path %>

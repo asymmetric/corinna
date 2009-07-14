@@ -63,6 +63,13 @@ class TreasureHuntsController < ApplicationController
   # TODO: VERB? /treasure_hunts/1/subscribe
   def subscribe
     @hunt = TreasureHunt.find(params[:id])
+    case params[:button]
+    when :user
+      @hunt.subscribe :user, @current_user, @current_user.pwd, @hunt
+    when :group
+      group_id = params[:group_id]
+      @hunt.subscribe :group, group_id, @current_user.pwd, @hunt
+    end
 
     respond_to do |format|
       format.html
@@ -100,4 +107,5 @@ class TreasureHuntsController < ApplicationController
       @current_user.save
     end
   end
+
 end
