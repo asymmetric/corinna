@@ -63,16 +63,16 @@ class TreasureHuntsController < ApplicationController
   # POST /treasure_hunts/1/subscribe
   def subscribe
     @hunt = TreasureHunt.find(params[:id])
-    debugger
     begin
       case params[:button]
       when "user"
         @hunt.subscribe :user, @current_user.id, @current_user.password
         @current_user.subscriptions << { :id => @hunt.id }
-        flash[:notice] = "Successfully subscribed to hunt #{@hunt.id} as user #{@current_user.id}"
+        @current_user.save
+        flash[:notice] = "Successfully subscribed to Treasure Hunt #{@hunt.id}"
       when "group"
         group_id = params[:group_id]
-        @hunt.subscribe :group, group_id, @current_user.pwd
+        @hunt.subscribe :group, group_id, @current_user.password
         @current_user.subscriptions << { :id => @hunt.id } # TODO la aggiungiamo in questo caso?
         flash[:notice] = "Successfully subscribed to hunt #{@hunt.id} as group #{group_id}"
       end
