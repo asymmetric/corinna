@@ -63,7 +63,6 @@ class TreasureHuntsController < ApplicationController
   # POST /treasure_hunts/1/subscribe
   def subscribe
     @hunt = TreasureHunt.find(params[:id])
-    debugger
     begin
       case params[:button]
       when "user"
@@ -125,9 +124,9 @@ class TreasureHuntsController < ApplicationController
       @hunt.destroy(@current_user.id, @current_user.hunt_password(@hunt.id))
       @current_user.thunts.delete_if { |x| x.id == @hunt.id }
       @current_user.save
-      flash[:notice] = "Treasure Hunt successfully destroyed."
-    rescue Exception => e
-      flash[:error] = "Error: #{e.to_s}"
+      flash[:notice] = "Treasure Hunt successfully destroyed"
+    rescue ActiveTreasureHunt::XMLError => e
+      flash[:notice] = "Error: #{e.to_s}"
     end
 
     respond_to do |format|
