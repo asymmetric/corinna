@@ -54,4 +54,9 @@ module ActiveTreasureHunt
       "Turn does not exist"
     end
   end
+  class AlreadySubscribed < Exception
+    def to_s
+      "Already subscribed"
+    end
+  end
 end

@@ -63,6 +63,7 @@ class TreasureHuntsController < ApplicationController
   # POST /treasure_hunts/1/subscribe
   def subscribe
     @hunt = TreasureHunt.find(params[:id])
+    debugger
     begin
       case params[:button]
       when "user"
@@ -76,7 +77,7 @@ class TreasureHuntsController < ApplicationController
         flash[:notice] = "Successfully subscribed to hunt #{@hunt.id} as group #{group_id}"
       end
     rescue => e
-        flash[:notice] = "Subscription failed: #{e.to_s}"
+      flash[:notice] = "Subscription failed: #{e.to_s}"
     end
 
     respond_to do |format|
