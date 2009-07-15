@@ -88,6 +88,15 @@ class TreasureHuntsController < ApplicationController
     end
   end
 
+  def gethint
+    @hunt = TreasureHunt.find params[:id]
+
+    respond_to do |format|
+      format.html { redirect_to(treasure_hunts_url) }
+      format.fbml { redirect_to(treasure_hunts_url) }
+    end
+  end
+
   # DELETE /treasure_hunts/1
   def destroy
     @hunt = TreasureHunt.find(params[:id])
