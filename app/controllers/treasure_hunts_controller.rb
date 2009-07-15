@@ -63,6 +63,7 @@ class TreasureHuntsController < ApplicationController
   # POST /treasure_hunts/1/subscribe
   def subscribe
     @hunt = TreasureHunt.find(params[:id])
+    debugger
     begin
       case params[:button]
       when "user"
