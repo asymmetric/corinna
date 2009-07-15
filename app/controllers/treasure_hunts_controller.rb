@@ -67,10 +67,12 @@ class TreasureHuntsController < ApplicationController
       case params[:button]
       when "user"
         @hunt.subscribe :user, @current_user.id, @current_user.password
+        @current_user.subscriptions << { :id => @hunt.id }
         flash[:notice] = "Successfully subscribed to hunt #{@hunt.id} as user #{@current_user.id}"
       when "group"
         group_id = params[:group_id]
         @hunt.subscribe :group, group_id, @current_user.pwd
+        @current_user.subscriptions << { :id => @hunt.id } # TODO la aggiungiamo in questo caso?
         flash[:notice] = "Successfully subscribed to hunt #{@hunt.id} as group #{group_id}"
       end
     rescue => e
@@ -110,8 +112,10 @@ class TreasureHuntsController < ApplicationController
       @current_user.id = @current_facebook_user.to_s
       @current_user.password = ActiveSupport::SecureRandom.base64 20
       @current_user.thunts = []
+      @current_user.subscriptions = []
       @current_user.save
     end
   end
 
 end
+
