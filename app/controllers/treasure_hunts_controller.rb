@@ -60,15 +60,21 @@ class TreasureHuntsController < ApplicationController
     end
   end
 
-  # TODO: VERB? /treasure_hunts/1/subscribe
+  # POST /treasure_hunts/1/subscribe
   def subscribe
     @hunt = TreasureHunt.find(params[:id])
-    case params[:button]
-    when "user"
-      @hunt.subscribe :user, @current_user.id, @current_user.password
-    when "group"
-      group_id = params[:group_id]
-      @hunt.subscribe :group, group_id, @current_user.pwd
+    begin
+      case params[:button]
+      when "user"
+        @hunt.subscribe :user, @current_user.id, @current_user.password
+        flash[:notice] = "Successfully subscribed to hunt #{@hunt.id} as user #{@current_user.id}"
+      when "group"
+        group_id = params[:group_id]
+        @hunt.subscribe :group, group_id, @current_user.pwd
+        flash[:notice] = "Successfully subscribed to hunt #{@hunt.id} as group #{group_id}"
+      end
+    rescue => e
+        flash[:notice] = "Subscription failed: #{e.to_s}"
     end
 
     respond_to do |format|
