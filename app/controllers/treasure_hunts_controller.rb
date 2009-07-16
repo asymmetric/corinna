@@ -77,6 +77,8 @@ class TreasureHuntsController < ApplicationController
   def destroy
     @hunt = TreasureHunt.find(params[:id])
     @hunt.destroy(@current_user.id, @current_user.hunt_password(@hunt.id))
+    @current_user.thunts.delete_if { |x| x.has_key? @hunt.id }
+    @current_user.save
     flash[:notice] = "Treasure Hunt successfully destroyed"
 
     respond_to do |format|
