@@ -72,8 +72,10 @@ class TreasureHuntsController < ApplicationController
         flash[:notice] = "Successfully subscribed to Treasure Hunt #{@hunt.id}"
       when "group"
         group_id = params[:group_id]
-        @hunt.subscribe :group, group_id, @current_user.password
+        @hunt.subscribe :group, @current_user.id, @current_user.password
+        #@hunt.subscribe :group, group_id, @current_user.password
         @current_user.subscriptions << { :id => @hunt.id } # TODO la aggiungiamo in questo caso?
+        @current_user.save
         flash[:notice] = "Successfully subscribed to hunt #{@hunt.id} as group #{group_id}"
       end
     rescue => e
