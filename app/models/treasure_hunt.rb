@@ -35,4 +35,8 @@ class TreasureHunt < ActiveTreasureHunt::Base
   self.subscribe_name = 'sendsubscription'
   self.subscribe_request_tag = 'sendSubscription'
   self.subscribe_response_tag = "#{self.subscribe_request_tag}Result".underscore
+
+  self.gethint_name = 'gethint'
+  self.gethint_request_tag = 'getHint'
+  self.gethint_response_tag = "#{self.gethint_request_tag}Result".underscore
 end

@@ -92,8 +92,16 @@ class TreasureHuntsController < ApplicationController
     @hunt = TreasureHunt.find params[:id]
 
     respond_to do |format|
-      format.html { redirect_to(treasure_hunts_url) }
-      format.fbml { redirect_to(treasure_hunts_url) }
+      begin
+        @hunt.gethint @current_user.id, @current_user.password
+        format.html { redirect_to(treasure_hunts_url) }
+        format.fbml { redirect_to(treasure_hunts_url) }
+      rescue => e
+        flash[:notice] = "Error: #{e.to_s}"
+        format.html { redirect_to(@hunt) }
+        format.fbml { redirect_to(@hunt) }
+      end
+
     end
   end
 
