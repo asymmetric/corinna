@@ -6,13 +6,13 @@ class TreasureHunt < ActiveTreasureHunt::Base
   self.headers = { "Accept" => "text/xml", "Content-Type" => "application/x-www-form-urlencoded" }
   self.default_namespace = { 'thunt' => 'http://vitali.web.cs.unbo.it/thunt' }
   self.default_request_builder = lambda do |tag, id, password, hunt|
+    tag = tag.to_sym unless tag.is_a? Symbol
     case tag
-    when gethint_request_tag
+    when gethint_request_tag.intern
       hunt_param = :thunt
     else
       hunt_param = :hunt
     end
-    tag = tag.to_sym
     xml = Builder::XmlMarkup.new
     xml.instruct!
     xml.thunt tag, hunt_param => hunt, :id => id, :pwd => password, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt"

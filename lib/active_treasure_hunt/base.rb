@@ -126,6 +126,7 @@ module ActiveTreasureHunt
     end
 
     def gethint(id, pwd)
+      debugger
       xml = self.class.default_request_builder.call(self.class.gethint_request_tag, id, pwd, self.id)
       body = {}
       connection.post(build_path(self.class.gethint_name), "xml=#{xml}", self.class.headers).tap do |response|

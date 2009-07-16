@@ -32,6 +32,8 @@
       </p>
     </p>
   <% end %>
+<% else %>
+  <%= button_to 'Get hint', { :action => :gethint, :id => @hunt.id } %>
 <% end %>
 <%= button_to 'Get hint', { :action => :hint, :id => @hunt.id } %>
 <% if @current_user.is_admin? @hunt.id %>
