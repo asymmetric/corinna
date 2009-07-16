@@ -93,7 +93,7 @@ class TreasureHuntsController < ApplicationController
 
     respond_to do |format|
       begin
-        @hunt.gethint @current_user.id, @current_user.password
+        @hint = @hunt.gethint @current_user.id, @current_user.password
         format.html { redirect_to(treasure_hunts_url) }
         format.fbml { redirect_to(treasure_hunts_url) }
       rescue => e
