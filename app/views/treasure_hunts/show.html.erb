@@ -5,7 +5,7 @@
 
 <p>
   <b>Description:</b>
-  <%= @hunt.description.to_xml %>
+  <%= prettyprint_blockinline(@hunt.xml, 'description') %>
 </p>
 
 <!-- link_to 'Edit', edit_treasure_hunt_path(@product) %> | -->
