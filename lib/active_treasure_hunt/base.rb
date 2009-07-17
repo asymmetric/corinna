@@ -17,7 +17,7 @@ module ActiveTreasureHunt
   class Base < ActiveResource::Base
     class << self
       attr_writer :headers
-      attr_accessor_with_default(:default_namespace) { 'xmlns' }
+      attr_accessor :default_namespace
       attr_accessor :default_request_builder
       attr_accessor :element_tag
       attr_accessor :subscription_builder

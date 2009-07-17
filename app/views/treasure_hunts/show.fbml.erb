@@ -19,21 +19,9 @@
     select_tag(:gid, options_for_select( @groups.collect { |g| [ g.name, g.id ] }, params[:gid] ) )
     %>
     <p>
-      <%= radio_button_tag :button, :user, :checked => true %>
-      <%= label_tag 'button_user', "Subscribe as #{@current_facebook_user.name}" %>
-      <br /> <% # TODO orrendo! CSS! %>
-      <%= radio_button_tag :button, :group %>
-      <%= label_tag 'button_group', "Subscribe as the following group:" %>
-      <%= @groups = @facebook_session.user.groups
-      select_tag(:gid, options_for_select( @groups.collect { |g| [ g.name, g.id ] }, params[:gid] ) )
-      %>
-      <p>
-      <%= submit_tag "Subscribe" %>
-      </p>
+    <%= submit_tag "Subscribe" %>
     </p>
-  <% end %>
-<% else %>
-  <%= button_to 'Get hint', { :action => :gethint, :id => @hunt.id } %>
+  </p>
 <% end %>
 <%= button_to 'Get hint', { :action => :hint, :id => @hunt.id } %>
 <% if @current_user.is_admin? @hunt.id %>
