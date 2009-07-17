@@ -93,7 +93,7 @@ class TreasureHuntsController < ApplicationController
     respond_to do |format|
       begin
         hunt_id = params[:id]
-        hunt_pwd = @current_user.thunts.select { |h| h.id == hunt_id }.first.password
+        hunt_pwd = self.get_hunt_password hunt_id
         @hint = @hunt.gethint @current_user.id, hunt_pwd
         format.html
         format.fbml
@@ -110,7 +110,7 @@ class TreasureHuntsController < ApplicationController
 
     begin
       hunt_id = params[:id]
-      hunt_pwd = @current_user.thunts.select { |h| h.id == hunt_id }.first.password
+      hunt_pwd = self.get_hunt_password hunt_id
       @hint = @hunt.start @current_user.id, hunt_pwd
     rescue ActiveTreasureHunt::XMLError => e
       flash[:notice] = "Error: #{e.to_s}"
@@ -139,6 +139,11 @@ class TreasureHuntsController < ApplicationController
       format.html { redirect_to(treasure_hunts_url) }
       format.fbml { redirect_to(treasure_hunts_url) }
     end
+  end
+
+  protected
+  def get_hunt_password(hunt_id)
+    @current_user.thunts.select { |h| h.id == hunt_id }.first.password
   end
 
   private
