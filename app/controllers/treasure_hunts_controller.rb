@@ -69,7 +69,7 @@ class TreasureHuntsController < ApplicationController
         @hunt.subscribe :user, @current_user.id, @current_user.password
         flash[:notice] = "Successfully subscribed to Treasure Hunt #{@hunt.id}"
       when "group"
-        group_id = params[:group_id]
+        group_id = params[:gid]
         @hunt.subscribe :group, @current_user.id, @current_user.password
         flash[:notice] = "Successfully subscribed to hunt #{@hunt.id} as group #{group_id}"
       end
