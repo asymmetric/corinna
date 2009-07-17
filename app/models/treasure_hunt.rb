@@ -45,4 +45,8 @@ class TreasureHunt < ActiveTreasureHunt::Base
   self.gethint_name = 'gethint'
   self.gethint_request_tag = 'getHint'
   self.gethint_response_tag = "#{self.gethint_request_tag}Result".underscore
+
+  self.start_name = 'start'
+  self.start_request_tag = 'startTreasureHunt'
+  self.start_response_tag = "#{self.gethint_request_tag}Result".underscore
 end

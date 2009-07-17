@@ -103,8 +103,23 @@ class TreasureHuntsController < ApplicationController
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
       end
-
     end
+  end
+
+  def start
+    @hunt = TreasureHunt.find params[:id]
+
+    begin
+      @hint = @hunt.start @current_user.id, @current_user.password
+    rescue Exception => e
+      flash[:notice] = "Error: #{e.to_s}"
+    end
+
+    respond_to do |format|
+      format.html { redirect_to @hunt }
+      format.fbml { redirect_to @hunt }
+    end
+
   end
 
   # DELETE /treasure_hunts/1

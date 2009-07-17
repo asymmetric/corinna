@@ -38,6 +38,10 @@ module ActiveTreasureHunt
       attr_accessor :gethint_request_tag
       attr_accessor :gethint_response_tag
 
+      attr_accessor :start_name
+      attr_accessor :start_request_tag
+      attr_accessor :start_response_tag
+
       def build_path(action_name, prefix_options = {}, query_options = nil)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
         "#{prefix(prefix_options)}#{action_name}#{query_string(query_options)}"
@@ -114,12 +118,23 @@ module ActiveTreasureHunt
       end
     end
 
+    def start
+      xml = self.class.default_request_builder.call(self.class.start_request_tag, id, pwd, self.id)
+      resp = connection.post(build_path(self.class.start_name), "xml=#{xml}", self.class.headers).tap do |response|
+        validate_response(extract_body(response, self.class.start_response_tag))
+      end
+    end
+
     def gethint(id, pwd)
       xml = self.class.default_request_builder.call(self.class.gethint_request_tag, id, pwd, self.id)
       resp = connection.post(build_path(self.class.gethint_name), "xml=#{xml}", self.class.headers).tap do |response|
         validate_response(extract_body(response, self.class.gethint_response_tag))
       end
       resp # TODO build object with nokogiri?
+    end
+
+    def is_started?
+      # TODO
     end
 
     protected
