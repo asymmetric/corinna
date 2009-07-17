@@ -41,7 +41,7 @@ class TreasureHuntsController < ApplicationController
         flash[:notice] = 'Treasure Hunt was successfully created.'
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
-      rescue Exception => e
+      rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = "Error: #{e.to_s}"
         format.html { render :action => "new" }
         format.fbml { render :action => "new" }
@@ -73,12 +73,11 @@ class TreasureHuntsController < ApplicationController
       when "group"
         group_id = params[:group_id]
         @hunt.subscribe :group, @current_user.id, @current_user.password
-        #@hunt.subscribe :group, group_id, @current_user.password
         @current_user.subscriptions << { :id => @hunt.id } # TODO la aggiungiamo in questo caso?
         @current_user.save
         flash[:notice] = "Successfully subscribed to hunt #{@hunt.id} as group #{group_id}"
       end
-    rescue => e
+    rescue ActiveTreasureHunt::XMLError => e
       flash[:notice] = "Subscription failed: #{e.to_s}"
     end
 
@@ -88,7 +87,7 @@ class TreasureHuntsController < ApplicationController
     end
   end
 
-  def gethint
+  def hint
     @hunt = TreasureHunt.find params[:id]
 
     respond_to do |format|
@@ -98,7 +97,7 @@ class TreasureHuntsController < ApplicationController
         @hint = @hunt.gethint @current_user.id, hunt_pwd
         format.html
         format.fbml
-      rescue => e
+      rescue ActiveTreasureHunt::XMLError => e
         flash[:notice] = "Error: #{e.to_s}"
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
@@ -110,8 +109,10 @@ class TreasureHuntsController < ApplicationController
     @hunt = TreasureHunt.find params[:id]
 
     begin
-      @hint = @hunt.start @current_user.id, @current_user.password
-    rescue Exception => e
+      hunt_id = params[:id]
+      hunt_pwd = @current_user.thunts.select { |h| h.id == hunt_id }.first.password
+      @hint = @hunt.start @current_user.id, hunt_pwd
+    rescue ActiveTreasureHunt::XMLError => e
       flash[:notice] = "Error: #{e.to_s}"
     end
 

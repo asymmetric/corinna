@@ -5,10 +5,7 @@
 
 <p>
   <b>Description:</b>
-<<<<<<< HEAD:app/views/treasure_hunts/show.fbml.erb
   <%= prettyprint_blockinline(@hunt.xml, 'description') %>
-=======
->>>>>>> ok, manca solo di controllare se la caccia e' partita:app/views/treasure_hunts/show.fbml.erb
 </p>
 
 <% unless @current_user.is_subscribed?(@hunt.id) %>
@@ -28,6 +25,9 @@
     </p>
   <% end %>
 <% else %>
-  <%= button_to 'Get hint', { :action => :gethint, :id => @hunt.id } %>
+  <%= button_to 'Get hint', { :action => :hint, :id => @hunt.id } %>
+<% end %>
+<% if @current_user.is_admin? @hunt.id %>
+  <%= button_to 'Start', { :action => :start, :id => @hunt.id } %>
 <% end %>
 <%= link_to 'Back', treasure_hunts_path %>

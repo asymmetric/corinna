@@ -118,9 +118,9 @@ module ActiveTreasureHunt
       end
     end
 
-    def start
+    def start(id, pwd)
       xml = self.class.default_request_builder.call(self.class.start_request_tag, id, pwd, self.id)
-      resp = connection.post(build_path(self.class.start_name), "xml=#{xml}", self.class.headers).tap do |response|
+      connection.post(build_path(self.class.start_name), "xml=#{xml}", self.class.headers).tap do |response|
         validate_response(extract_body(response, self.class.start_response_tag))
       end
     end
@@ -131,10 +131,6 @@ module ActiveTreasureHunt
         validate_response(extract_body(response, self.class.gethint_response_tag))
       end
       resp # TODO build object with nokogiri?
-    end
-
-    def is_started?
-      # TODO
     end
 
     protected

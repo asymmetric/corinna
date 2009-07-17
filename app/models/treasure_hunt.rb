@@ -38,15 +38,15 @@ class TreasureHunt < ActiveTreasureHunt::Base
   self.destroy_request_tag = 'removeTreasureHunt'
   self.destroy_response_tag = 'remove_treasure_hunt_result'
 
-  self.subscribe_name = 'sendsubscription'
   self.subscribe_request_tag = 'sendSubscription'
+  self.subscribe_name = self.subscribe_request_tag.downcase
   self.subscribe_response_tag = "#{self.subscribe_request_tag}Result".underscore
 
-  self.gethint_name = 'gethint'
   self.gethint_request_tag = 'getHint'
+  self.gethint_name = self.gethint_request_tag.downcase
   self.gethint_response_tag = "#{self.gethint_request_tag}Result".underscore
 
-  self.start_name = 'start'
   self.start_request_tag = 'startTreasureHunt'
-  self.start_response_tag = "#{self.gethint_request_tag}Result".underscore
+  self.start_name = self.start_request_tag.downcase
+  self.start_response_tag = "startResult".underscore
 end
