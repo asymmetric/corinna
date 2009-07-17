@@ -2,11 +2,6 @@ class TreasureHuntsController < ApplicationController
   ensure_application_is_installed_by_facebook_user
   before_filter :get_current_facebook_user
 
-  # load - id, pwd, config
-  # subscribe - id, pwd, hunt
-  # remove - id, pwd, hunt
-  # start - id, pwd, hunt
-
   # GET /treasure_hunts
   def index
     @hunts = TreasureHunt.find(:all)

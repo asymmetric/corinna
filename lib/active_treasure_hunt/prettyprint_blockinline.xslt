@@ -19,15 +19,9 @@
     <xsl:apply-templates />
   </xsl:template>
   <xsl:template match="location">
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAARy021EwSZg1_jI6Kebhw0RS3i3TFyCRT1-tmzZjIztplkgRR6RTsUkibUlZQTZ29evqiWt9es25riQ" type="text/javascript"></script>
-    <div id="map_canvas" style="width: 500px; height: 300px" onload="initialize()" onunload="GUnload()"></div>
-    <script type="text/javascript">
-      function initialize() {
-      var map = new GMap2(document.getElementById("map_canvas"));
-      map.setCenter(new GLatLng(37.4419, -122.1419), 13);
-      map.setUIToDefault();
-      }
-    </script>
+    <p>
+      <fb:iframe width="760" height="570" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://corinna.bucket.mine.nu/maps?lat={@lat}&amp;lng={@long}&amp;z=16"></fb:iframe>
+    </p>
     <xsl:apply-templates />
   </xsl:template>
   <xsl:template match="picture">

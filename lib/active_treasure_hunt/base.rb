@@ -2,7 +2,14 @@ require 'active_treasure_hunt/errors'
 module ActiveResource
   class Connection
     def get(path, headers = {})
-      request(:get, path, build_request_headers(headers, :get))
+      request(:get, path, build_request_headers(headers, :get)) # workaround for poor xml content model management
+    end
+  end
+  class Base
+    def initialize(attributes = {})
+      @attributes     = {}
+      @prefix_options = {}
+      load(attributes) if attributes # fix ArgumentError in ActiveResource::Base#load created by poor xml content model management
     end
   end
 end

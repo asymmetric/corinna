@@ -5,6 +5,7 @@
 log/*.log
 tmp/**/*
 config/database.yml
+config/facebooker.yml
 db/*.sqlite3
 db/xml
 doc/api
