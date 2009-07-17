@@ -93,7 +93,9 @@ class TreasureHuntsController < ApplicationController
 
     respond_to do |format|
       begin
-        @hint = @hunt.gethint @current_user.id, @current_user.password
+        hunt_id = params[:id]
+        hunt_pwd = @current_user.thunts.select { |h| h.id == hunt_id }.first.password
+        @hint = @hunt.gethint @current_user.id, hunt_pwd
         format.html
         format.fbml
       rescue => e
