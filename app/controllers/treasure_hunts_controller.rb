@@ -41,7 +41,8 @@ class TreasureHuntsController < ApplicationController
         flash[:notice] = 'Treasure Hunt was successfully created.'
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
-      rescue
+      rescue Exception => e
+        flash[:notice] = "Error: #{e.to_s}"
         format.html { render :action => "new" }
         format.fbml { render :action => "new" }
       end
@@ -72,10 +73,14 @@ class TreasureHuntsController < ApplicationController
   # DELETE /treasure_hunts/1
   def destroy
     @hunt = TreasureHunt.find(params[:id])
-    @hunt.destroy(@current_user.id, @current_user.hunt_password(@hunt.id))
-    @current_user.thunts.delete_if { |x| x.has_key? @hunt.id }
-    @current_user.save
-    flash[:notice] = "Treasure Hunt successfully destroyed"
+    begin
+      @hunt.destroy(@current_user.id, @current_user.hunt_password(@hunt.id))
+      @current_user.thunts.delete_if { |x| x.has_key? @hunt.id }
+      @current_user.save
+      flash[:notice] = "Treasure Hunt successfully destroyed"
+    rescue Exception => e
+      flash[:notice] = "Error: #{e.to_s}"
+    end
 
     respond_to do |format|
       format.html { redirect_to(treasure_hunts_url) }

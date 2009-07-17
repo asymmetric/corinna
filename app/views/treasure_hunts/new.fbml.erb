@@ -1,10 +1,13 @@
 <h1>New Treasure Hunt</h1>
 
-<% form_for @hunt, :html => {:multipart => true} do |f| %>
+<% facebook_form_for @hunt do |f| %>
   <%= f.error_messages %>
+
   <p>
-    <%= f.file_field :xml %>
-    <%= f.submit 'Create!' %>
+    <%= f.text_area :xml %>
+  </p>
+  <p>
+    <%= f.buttons 'Create' %>
   </p>
 <% end %>
 
