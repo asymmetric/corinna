@@ -116,7 +116,10 @@ class TreasureHuntsController < ApplicationController
       format.html { redirect_to @hunt }
       format.fbml { redirect_to @hunt }
     end
+  end
 
+  def answer
+    @hunt = TreasureHunt.find params[:id]
   end
 
   # DELETE /treasure_hunts/1
