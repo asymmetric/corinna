@@ -1,28 +1,34 @@
-<div id="hunt-list">
-  <h1>Listing Treasure Hunts</h1>
-
-  <table>
-  <% for hunt in @hunts %>
-    <tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
-
-      <td class="list-description">
-        <dl>
-          <dt><b><%=link_to h(hunt.title), hunt %></b></dt>
-          <dd><%= truncate(prettyprint_blockinline(hunt.xml, 'description'),
-                 :length => 160).gsub(/<[^>]*$/,'') %></dd>
-        </dl>
-      </td>
-
-      <td class="list-actions">
-        <%= link_to 'Destroy', hunt,
-                    :confirm => 'Are you sure?',
-                    :method => :delete if @current_user.is_admin? hunt.id %>
-      </td>
-    </tr>
-  <% end %>
-  </table>
+<div id="page_body" class="pagebody ubersearch">
+  <div id="content_shadow">
+    <div class="bar clearfix summary_bar few_results">
+      <div class="summary"><strong>Found <%= pluralize @hunts.size, "treasure hunt" %></strong></div>
+    </div>
+    <div id="search_results" class="search_results clearfix">
+      <div class="column results">
+	<% unless @hunts.size == 0 %>
+	  <% for hunt in @hunts %>
+	    <div class="result clearfix">
+	      <div class="info">
+		<dl class="clearfix">
+		  <dt>Title:</dt> <dd class="result_name fn"><%=link_to h(hunt.title), hunt %></dd>
+		  <dt>Description:</dt> <dd><%= truncate(prettyprint_blockinline(hunt.xml, 'description').strip,
+							 :length => 100).gsub(/<[^>]*$/,'...') %></dd>
+		</dl>
+	      </div>
+	      <ul class="actionspro">
+		<li class="actionspro_li"><%= link_to 'Play!', hunt, :class => 'actionspro_a' %></li>
+		<!--<li class="actionspro_li"><a href="#" clicktoshowdialog="invite_friend" class="actionspro_a">Invite a friend to play this</a></li>-->
+		<% if @current_user and @current_user.is_admin? hunt.id %>
+		<li class="actionspro_li"><%= link_to 'Destroy', hunt,
+					      :confirm => 'Are you sure?',
+					      :method => :delete, :class => 'actionspro_a' %></li>
+		<% end %>
+	      </ul>
+	    </div>
+	  <% end %>
+      </div>
+    </div>
+  <% else %>
+    <p>There aren't any, <%= link_to 'create one now and start playing!', new_treasure_hunt_path %></p>
+<% end %>
 </div>
-
-<br />
-
-<%= link_to 'New hunt', new_treasure_hunt_path %>

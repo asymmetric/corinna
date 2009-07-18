@@ -9,7 +9,7 @@
         <dl>
           <dt><b><%=h hunt.title %></b></dt>
           <dd><%=truncate(prettyprint_blockinline(hunt.xml, 'description'),
-                 :length => 100).gsub(/<[^>]*$/,'') %></dd>
+                 :length => 100).gsub(/<[^>]*$/,'...') %></dd>
         </dl>
       </td>
 

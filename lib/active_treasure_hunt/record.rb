@@ -24,6 +24,7 @@ module ActiveTreasureHunt
     self.site = ""
 
     def save
+      self.xml = ""
       File.open(self.class.file_path(id),"w") { |file| file << self.to_xml } ? true : false
     end
   end
