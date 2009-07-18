@@ -15,7 +15,7 @@ class TreasureHunt < ActiveTreasureHunt::Base
     end
     xml = Builder::XmlMarkup.new
     xml.instruct!
-    xml.thunt tag, hunt_param => hunt, :id => id, :pwd => password, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt"
+    xml.thunt tag, hunt_param => hunt, :id => id, :pwd => password, :"xmlns:#{self.default_namespace.keys.first}" => self.default_namespace.values.first
   end
 
   self.element_tag = 'treasureHunt'

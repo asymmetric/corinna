@@ -153,7 +153,6 @@ class TreasureHuntsController < ApplicationController
       @current_user.id = @current_facebook_user.to_s
       @current_user.password = ActiveSupport::SecureRandom.base64 20
       @current_user.thunts = []
-      @current_user.subscriptions = []
       @current_user.save
     end
   end
