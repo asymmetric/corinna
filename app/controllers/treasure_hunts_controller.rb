@@ -73,10 +73,10 @@ class TreasureHuntsController < ApplicationController
         group_name = @current_facebook_user.groups.find { |g| g.gid == group_id }.name
         @hunt.subscribe :group, @current_user.id, @current_user.password
         #@hunt.subscribe :group, group_id, @current_user.password
-        flash[:notice] = "Successfully subscribed to hunt #{@hunt.id} as group #{group_name}"
+        flash[:notice] = "Successfully subscribed as group #{group_name}"
       end
     rescue ActiveTreasureHunt::XMLError => e
-      flash[:notice] = "Subscription failed: #{e.to_s}"
+      flash[:error] = "Subscription failed: #{e.to_s}"
     end
 
     respond_to do |format|
@@ -107,8 +107,9 @@ class TreasureHuntsController < ApplicationController
     begin
       hunt_pwd = self.get_admin_password @hunt.id
       @hint = @hunt.start @current_user.id, hunt_pwd
+      flash[:notice] = "Treasure Hunt successfully started"
     rescue ActiveTreasureHunt::XMLError => e
-      flash[:notice] = "Error: #{e.to_s}"
+      flash[:error] = "Error: #{e.to_s}"
     end
 
     respond_to do |format|
@@ -127,7 +128,7 @@ class TreasureHuntsController < ApplicationController
       @current_user.save
       flash[:notice] = "Treasure Hunt successfully destroyed"
     rescue ActiveTreasureHunt::XMLError => e
-      flash[:notice] = "Error: #{e.to_s}"
+      flash[:error] = "Error: #{e.to_s}"
     end
 
     respond_to do |format|
