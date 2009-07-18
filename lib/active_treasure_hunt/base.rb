@@ -21,7 +21,9 @@ module ActiveTreasureHunt
       attr_accessor :default_request_builder
       attr_accessor :element_tag
       attr_accessor :subscription_builder
-      attr_accessor_with_default(:ok_status) { 'accepted' }
+      attr_accessor :answer_builder
+      attr_accessor_with_default(:ok_status) { "accepted" }
+      attr_accessor_with_default(:no_exception_status) { %w(accepted wrong right win loose) }
 
       attr_accessor_with_default(:create_name) { element_name.pluralize }
       attr_accessor :create_response_tag
@@ -139,14 +141,14 @@ module ActiveTreasureHunt
       self.xml
     end
 
-    def answer id, pwd
-      xml = self.class.default_request_builder.call(self.class.submitanswer_request_tag, id, pwd, self.id)
+    def answer answer_xml, type, id, pwd
+      xml = self.class.answer_builder.call(answer_xml, type, id, pwd, self.id)
       connection.post(build_path(self.class.answer_name), "xml=#{xml}", self.class.headers).tap do |response|
         body = extract_body response, self.class.answer_response_tag
         validate_response body
-        self.xml = response.body
+        self.status = body['status']
       end
-      self.xml
+      self.status
     end
 
     protected
@@ -174,14 +176,14 @@ module ActiveTreasureHunt
 
     def validate_response(body)
       status = body['status']
-      if status != self.class.ok_status
+      unless self.class.no_exception_status.member? status
         begin
           error_class = ActiveTreasureHunt::const_get(status.gsub(/^(\w)/) { $1.mb_chars.capitalize })
         rescue NameError => e
           raise ActiveResource::ConnectionError.new(status, "Unknown error")
         end
         raise error_class.new
-     end
+      end
     end
   end
 end

@@ -25,11 +25,12 @@ class TreasureHuntsController < ApplicationController
   # POST /treasure_hunts
   def create
     hunt_pwd = ActiveSupport::SecureRandom.base64 20
-    xml = REXML::Document.new(params[:treasure_hunt]['xml'])
-    if xml.root and xml.root.attributes and xml.root.attributes['idOrganizer'] and xml.root.attributes['pwdOrganizer']
-      xml.root.attributes['idOrganizer'] = @current_facebook_user.to_s
-      xml.root.attributes['pwdOrganizer'] = hunt_pwd
+    xml = Nokogiri::XML params[:treasure_hunt]['xml'] #REXML::Document.new(params[:treasure_hunt]['xml'])
+    if xml.root and xml.root['idOrganizer'] and xml.root['pwdOrganizer']
+      xml.root['idOrganizer'] = @current_facebook_user.to_s
+      xml.root['pwdOrganizer'] = hunt_pwd
     end
+
 
     @hunt = TreasureHunt.new(:xml => xml.to_s)
 
@@ -77,6 +78,7 @@ class TreasureHuntsController < ApplicationController
       end
     rescue ActiveTreasureHunt::XMLError => e
       flash[:error] = "Subscription failed: #{e.to_s}"
+      cane = ""
     end
 
     respond_to do |format|
@@ -119,15 +121,32 @@ class TreasureHuntsController < ApplicationController
   end
 
   def answer
-    @hunt = TreasureHunt.find params[:id]
+    if request.get?
+      @hunt = TreasureHunt.find params[:id]
 
-    respond_to do |format|
+      respond_to do |format|
+        format.html
+        format.fbml
+      end
+    elsif request.post?
+      @hunt = TreasureHunt.find params[:id]
+      @answer = params[:answer]
+      @answer_type = params[:answer_type]
+
+      #xml = Nokogiri::XML @answer
+      #if xml.root and xml.root['id'] and xml.root['pwd']
+      #  xml.root['id'] = @current_user.id
+      #  xml.root['pwd'] = @current_user.password
+      #end
+
       begin
-        @resp = @hunt.answer @current_user.id, @current_user.password
-        format.html { redirect_to @hunt }
-        format.fbml { redirect_to @hunt }
+        @resp = @hunt.answer @answer, @answer_type, @current_user.id, @current_user.password
+        flash[:notice] = @resp
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = "Error: #{e.to_s}"
+      end
+
+      respond_to do |format|
         format.html { redirect_to @hunt }
         format.fbml { redirect_to @hunt }
       end
@@ -171,4 +190,3 @@ class TreasureHuntsController < ApplicationController
   end
 
 end
-

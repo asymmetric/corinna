@@ -29,6 +29,18 @@ class TreasureHunt < ActiveTreasureHunt::Base
     end
   end
 
+  self.answer_builder = lambda do |answer, type, id, password, hunt|
+    type = type.intern unless type.is_a? Symbol
+    tag = self.answer_request_tag.intern
+    xml = Builder::XmlMarkup.new
+    xml.instruct!
+    xml.thunt tag, :thunt => hunt, :id => id, :pwd => password,
+      :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt" do
+      #xml.thunt type ( xml.text! answer )
+      xml.tag!("thunt:#{type}") { xml.text! answer }
+    end
+  end
+
   self.collection_name = 'gettreasurehunts'
 
   self.create_name = 'loadtreasurehunt'
