@@ -90,9 +90,7 @@ class TreasureHuntsController < ApplicationController
 
     respond_to do |format|
       begin
-        hunt_id = params[:id]
-        hunt_pwd = @current_user.thunts.find { |h| h.id == hunt_id }.password
-        @hint = @hunt.gethint @current_user.id, hunt_pwd
+        @hint = @hunt.gethint @current_user.id, @current_user.password
         format.html
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
@@ -107,8 +105,7 @@ class TreasureHuntsController < ApplicationController
     @hunt = TreasureHunt.find params[:id]
 
     begin
-      hunt_id = params[:id]
-      hunt_pwd = self.get_admin_password hunt_id
+      hunt_pwd = self.get_admin_password @hunt.id
       @hint = @hunt.start @current_user.id, hunt_pwd
     rescue ActiveTreasureHunt::XMLError => e
       flash[:notice] = "Error: #{e.to_s}"
@@ -141,7 +138,7 @@ class TreasureHuntsController < ApplicationController
 
   protected
   def get_admin_password(hunt_id)
-    @current_user.thunts.select { |h| h.id == hunt_id }.first.password
+    @current_user.thunts.find { |h| h.id == hunt_id }.password
   end
 
   private
