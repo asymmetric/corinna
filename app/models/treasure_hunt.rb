@@ -49,4 +49,8 @@ class TreasureHunt < ActiveTreasureHunt::Base
   self.start_request_tag = 'startTreasureHunt'
   self.start_name = self.start_request_tag.downcase
   self.start_response_tag = "startResult".underscore
+
+  self.answer_request_tag = 'submitAnswer'
+  self.answer_name = self.answer_request_tag.downcase
+  self.answer_response_tag = "#{self.answer_request_tag}Result".underscore
 end

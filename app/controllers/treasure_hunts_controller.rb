@@ -120,6 +120,18 @@ class TreasureHuntsController < ApplicationController
 
   def answer
     @hunt = TreasureHunt.find params[:id]
+
+    respond_to do |format|
+      begin
+        @resp = @hunt.answer @current_user.id, @current_user.password
+        format.html { redirect_to @hunt }
+        format.fbml { redirect_to @hunt }
+      rescue ActiveTreasureHunt::XMLError => e
+        flash[:error] = "Error: #{e.to_s}"
+        format.html { redirect_to @hunt }
+        format.fbml { redirect_to @hunt }
+      end
+    end
   end
 
   # DELETE /treasure_hunts/1

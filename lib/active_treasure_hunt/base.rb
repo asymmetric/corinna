@@ -42,6 +42,10 @@ module ActiveTreasureHunt
       attr_accessor :start_request_tag
       attr_accessor :start_response_tag
 
+      attr_accessor :answer_name
+      attr_accessor :answer_request_tag
+      attr_accessor :answer_response_tag
+
       def build_path(action_name, prefix_options = {}, query_options = nil)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
         "#{prefix(prefix_options)}#{action_name}#{query_string(query_options)}"
@@ -129,6 +133,16 @@ module ActiveTreasureHunt
       xml = self.class.default_request_builder.call(self.class.gethint_request_tag, id, pwd, self.id)
       connection.post(build_path(self.class.gethint_name), "xml=#{xml}", self.class.headers).tap do |response|
         body = extract_body(response, self.class.gethint_response_tag)
+        validate_response body
+        self.xml = response.body
+      end
+      self.xml
+    end
+
+    def answer id, pwd
+      xml = self.class.default_request_builder.call(self.class.submitanswer_request_tag, id, pwd, self.id)
+      connection.post(build_path(self.class.answer_name), "xml=#{xml}", self.class.headers).tap do |response|
+        body = extract_body response, self.class.answer_response_tag
         validate_response body
         self.xml = response.body
       end
