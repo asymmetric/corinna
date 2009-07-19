@@ -31,6 +31,10 @@ module ActiveTreasureHunt
       attr_accessor :destroy_name
       attr_accessor :destroy_response_tag
       attr_accessor :destroy_request_tag
+      
+      attr_accessor :falsehint_name
+      attr_accessor :falsehint_request_tag
+      attr_accessor :falsehint_response_tag
 
       attr_accessor :subscribe_name
       attr_accessor :subscribe_request_tag
@@ -114,6 +118,12 @@ module ActiveTreasureHunt
       xml = self.class.default_request_builder.call(self.class.destroy_request_tag, user_id, user_password, self.id)
       connection.post(build_path(self.class.destroy_name), "xml=#{xml}", self.class.headers).tap do |response|
         validate_response(extract_body(response, self.class.destroy_response_tag))
+      end
+    end
+    def falsehint(turn,id,pwd)
+      xml = self.class.falsehint_builder.call(turn, id, pwd, self.id)
+      connection.post(build_path(self.class.falsehint_name), "xml=#{xml}", self.class.headers).tap do |response|
+        validate_response(extract_body(response, self.class.falsehint_response_tag))
       end
     end
 

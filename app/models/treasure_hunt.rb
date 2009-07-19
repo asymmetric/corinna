@@ -19,6 +19,16 @@ class TreasureHunt < ActiveTreasureHunt::Base
   end
 
   self.element_tag = 'treasureHunt'
+  
+  self.falsehint_builder = lambda do |falseHint,turn, id, password, hunt|
+    tag = self.falsehint_request_tag.intern
+    xml = Builder::XmlMarkup.new
+    xml.instruct!
+    xml.thunt tag, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt" ,:turn => turn, :id => id, :pwd => password :thunt => hunt do
+      xml << falseHint    
+    end
+  end
+
   self.subscription_builder = lambda do |type, id, password, hunt|
     type = type.intern unless type.is_a? Symbol
     name = self.subscribe_request_tag.intern unless self.subscribe_name.is_a? Symbol
@@ -49,6 +59,10 @@ class TreasureHunt < ActiveTreasureHunt::Base
   self.destroy_name = 'removetreasurehunt'
   self.destroy_request_tag = 'removeTreasureHunt'
   self.destroy_response_tag = 'remove_treasure_hunt_result'
+  
+  self.falsehint_request_tag = 'sendFalseHint'
+  self.falsehint_name = self.falsehint_request_tag.downcase
+  self.falsehint_response_tag = "#{self.falsehint_request_tag}Result".underscore
 
   self.subscribe_request_tag = 'sendSubscription'
   self.subscribe_name = self.subscribe_request_tag.downcase
