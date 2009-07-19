@@ -19,8 +19,9 @@ module ActiveTreasureHunt
       attr_writer :headers
       attr_accessor :default_namespace
       attr_accessor :default_request_builder
-      attr_accessor :element_tag
       attr_accessor :subscription_builder
+      attr_accessor :fakehint_builder
+      attr_accessor :element_tag
       attr_accessor :answer_builder
       attr_accessor_with_default(:ok_status) { "accepted" }
       attr_accessor_with_default(:no_exception_status) { %w(accepted wrong right win loose) }
@@ -31,10 +32,10 @@ module ActiveTreasureHunt
       attr_accessor :destroy_name
       attr_accessor :destroy_response_tag
       attr_accessor :destroy_request_tag
-      
-      attr_accessor :falsehint_name
-      attr_accessor :falsehint_request_tag
-      attr_accessor :falsehint_response_tag
+
+      attr_accessor :fakehint_name
+      attr_accessor :fakehint_request_tag
+      attr_accessor :fakehint_response_tag
 
       attr_accessor :subscribe_name
       attr_accessor :subscribe_request_tag
@@ -120,10 +121,11 @@ module ActiveTreasureHunt
         validate_response(extract_body(response, self.class.destroy_response_tag))
       end
     end
-    def falsehint(turn,id,pwd)
-      xml = self.class.falsehint_builder.call(turn, id, pwd, self.id)
-      connection.post(build_path(self.class.falsehint_name), "xml=#{xml}", self.class.headers).tap do |response|
-        validate_response(extract_body(response, self.class.falsehint_response_tag))
+
+    def fakehint(hint, turn, id, pwd)
+      xml = self.class.fakehint_builder.call(hint, turn, id, pwd, self.id)
+      connection.post(build_path(self.class.fakehint_name), "xml=#{xml}", self.class.headers).tap do |response|
+        validate_response(extract_body(response, self.class.fakehint_response_tag))
       end
     end
 
