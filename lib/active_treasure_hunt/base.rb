@@ -127,12 +127,11 @@ module ActiveTreasureHunt
 
     def gethint(id, pwd)
       xml = self.class.default_request_builder.call(self.class.gethint_request_tag, id, pwd, self.id)
-      body = {}
       connection.post(build_path(self.class.gethint_name), "xml=#{xml}", self.class.headers).tap do |response|
-        body = extract_body(response, self.class.gethint_response_tag)
-        validate_response body
+        body = extract_body(response, self.class.create_response_tag)
+        validate_response(body)
+        self.xml = response.body
       end
-      body
     end
 
     protected

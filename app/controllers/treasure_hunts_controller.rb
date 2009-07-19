@@ -25,13 +25,14 @@ class TreasureHuntsController < ApplicationController
   # POST /treasure_hunts
   def create
     hunt_pwd = ActiveSupport::SecureRandom.base64 20
-    xml = REXML::Document.new(params[:treasure_hunt]['xml'])
-    if xml.root and xml.root.attributes and xml.root.attributes['idOrganizer'] and xml.root.attributes['pwdOrganizer']
-      xml.root.attributes['idOrganizer'] = @current_facebook_user.to_s
-      xml.root.attributes['pwdOrganizer'] = hunt_pwd
+    xml = Nokogiri::XML(params[:treasure_hunt]['xml'])
+    if xml.root and xml.root['idOrganizer'] and xml.root['pwdOrganizer']
+      xml.root['idOrganizer'] = @current_facebook_user.to_s
+      xml.root['pwdOrganizer'] = hunt_pwd
+      xml.encoding = 'UTF-8'
     end
 
-    @hunt = TreasureHunt.new(:xml => xml.to_s)
+    @hunt = TreasureHunt.new(:xml => xml.to_xml.gsub(/;/,''))
 
     respond_to do |format|
       begin
@@ -43,6 +44,7 @@ class TreasureHuntsController < ApplicationController
         format.fbml { redirect_to(@hunt) }
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = "Error: #{e.to_s}"
+        @hunt.xml = ""
         format.html { render :action => "new" }
         format.fbml { render :action => "new" }
       end

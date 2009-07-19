@@ -1,30 +1,60 @@
-<p>
-  <b>Title:</b>
-  <%=h @hunt.title %>
-</p>
+<div class="ubersearch">
+  <div class="clearfix">
+    <div class="result clearfix">
+      <div class="info">
+	<dl class="clearfix">
+	  <dt>Title:</dt><br />
+	  <dd class="result_name fn" id="show-title"><%=h @hunt.title %></dd>
+	</dl>
+      </div>
+      <ul class="actionspro">
+	<li class="actionspro_li"><a href="#" clicktoshowdialog="play" class="actionspro_a">Play!</a></li>
+	<li class="actionspro_li"><a href="#" clicktoshowdialog="invite_friend" class="actionspro_a">Invite a friend</a></li>
+	<% if @current_user and @current_user.is_admin? @hunt.id %>
+	  <li class="actionspro_li"><%= link_to 'Destroy', @hunt,
+					:confirm => 'Are you sure do you want to delete this treasure hunt?',
+					:method => :delete, :class => 'actionspro_a', :id => 'delete' %></li>
+	<% end %>
+      </ul>
+    </div>
+    <div class="result clearfix">
+      <div class="info">
+	<dl class="clearfix">
+	  <dt>Description:</dt><br />
+	  <dd id="show-desc"><%= prettyprint_blockinline(@hunt.xml, 'description') %></dd>
+	</dl>
+      </div>
+    </div>
+  </div>
+</div>
 
-<p>
-  <b>Description:</b>
-  <%= prettyprint_blockinline(@hunt.xml, 'description') %>
-</p>
 
-<% form_tag(:action => :subscribe, :id => @hunt.id) do %>
-  <p>
-    <%= radio_button_tag :button, :user, :checked => true %>
-    <%= label_tag 'button_user', "Subscribe as #{@current_facebook_user.name}" %>
-    <br /> <% # TODO orrendo! CSS! %>
-    <%= radio_button_tag :button, :group %>
-    <%= label_tag 'button_group', "Subscribe as the following group:" %>
-    <%= @groups = @facebook_session.user.groups
-    select_tag(:gid, options_for_select( @groups.collect { |g| [ g.name, g.id ] }, params[:gid] ) )
-    %>
-    <p>
-    <%= submit_tag "Subscribe" %>
-    </p>
-  </p>
+<% fb_dialog 'play', true do %>
+  <%= fb_dialog_title 'Play as:' %>
+  <% fb_dialog_content do %>
+    <% form_tag ( { :action => :subscribe, :id => @hunt.id }, :id => 'subscribe_form' ) do %>
+	<%= radio_button_tag :button, :user, :checked => true %>
+	<%= label_tag 'button_user', @current_facebook_user.name %>
+	<br />
+	<%= radio_button_tag :button, :group %>
+	<%= label_tag 'button_group', "One of your groups:" %>
+	<%= @groups = @facebook_session.user.groups
+	    select_tag(:gid, options_for_select( @groups.collect { |g| [ g.name, g.id ] }, params[:gid])) %>
+    <% end %>
+  <% end %>
+  <%= fb_dialog_button :submit, 'Play!', :form_id => 'subscribe_form' %>
 <% end %>
-<%= button_to 'Get hint', { :action => :hint, :id => @hunt.id } %>
-<% if @current_user.is_admin? @hunt.id %>
-  <%= button_to 'Start', { :action => :start, :id => @hunt.id } %>
+
+
+<% fb_dialog 'invite_friend', true do %>
+  <%= fb_dialog_title 'Invite some friends!' %>
+  <% fb_dialog_content do %>
+    <% content_for("invite_user") do %>
+      Hey! I found this treasure hunt and I want to play it with you! <%= fb_req_choice("Check it out!", url_for(@hunt)) %>
+    <% end %>
+    <% fb_request_form("#{@hunt.title}","invite_user", url_for(@hunt)) do %>
+      <%= fb_multi_friend_selector("Invite your friends to check out #{@hunt.title}", :showborder => false, 
+                                   :exclude_ids => @facebook_session.user.friends_with_this_app.map(&:id).join(","))   %>
+    <% end %>
+  <% end %>
 <% end %>
-<%= link_to 'Back', treasure_hunts_path %>
