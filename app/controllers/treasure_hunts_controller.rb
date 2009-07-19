@@ -24,7 +24,7 @@ class TreasureHuntsController < ApplicationController
 
   # POST /treasure_hunts
   def create
-    hunt_pwd = ActiveSupport::SecureRandom.base64 20
+    hunt_pwd = ActiveSupport::SecureRandom.hex
     xml = Nokogiri::XML(params[:treasure_hunt]['xml'])
     if xml.root and xml.root['idOrganizer'] and xml.root['pwdOrganizer']
       xml.root['idOrganizer'] = @current_facebook_user.to_s
@@ -151,7 +151,7 @@ class TreasureHuntsController < ApplicationController
     unless @current_user
       @current_user = User.new
       @current_user.id = @current_facebook_user.to_s
-      @current_user.password = ActiveSupport::SecureRandom.base64 20
+      @current_user.password = ActiveSupport::SecureRandom.hex
       @current_user.thunts = []
       @current_user.save
     end
