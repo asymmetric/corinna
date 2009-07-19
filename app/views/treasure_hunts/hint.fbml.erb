@@ -1,9 +1,8 @@
 <p>
   <b>Hint:</b>
-  <%=h @hunt.title %>
+  <%= prettyprint_blockinline @hint, '.' %>
 </p>
 
 <p id="hint">
-  <%=h @hint %>
 </p>
 <%= link_to 'Back', treasure_hunts_path %>
