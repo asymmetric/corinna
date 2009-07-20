@@ -1,5 +1,6 @@
 <p>
   <b>Status:</b>
+  <% @status = @xml.root.xpath 'thunt:status'
      @status.each do |status| %>
 	<div class="result clearfix" >
 	    <dl>
