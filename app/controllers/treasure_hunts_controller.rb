@@ -123,6 +123,22 @@ class TreasureHuntsController < ApplicationController
     end
   end
 
+  def status
+    @hunt = TreasureHunt.find params[:id]
+
+    respond_to do |format|
+      begin
+        @resp = @hunt.status @current_user.id, @current_user.password
+        format.html
+        format.fbml
+      rescue ActiveTreasureHunt::XMLError => e
+        flash[:notice] = "Error: #{e.to_s}"
+        format.html { redirect_to(@hunt) }
+        format.fbml { redirect_to(@hunt) }
+      end
+    end
+  end
+
   def start
     @hunt = TreasureHunt.find params[:id]
 

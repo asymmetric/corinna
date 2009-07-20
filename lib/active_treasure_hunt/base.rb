@@ -52,6 +52,11 @@ module ActiveTreasureHunt
       attr_accessor :answer_request_tag
       attr_accessor :answer_response_tag
 
+
+      attr_accessor :status_name
+      attr_accessor :status_request_tag
+      attr_accessor :status_response_tag
+ 
       def build_path(action_name, prefix_options = {}, query_options = nil)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
         "#{prefix(prefix_options)}#{action_name}#{query_string(query_options)}"
