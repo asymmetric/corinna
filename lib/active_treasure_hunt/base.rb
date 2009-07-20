@@ -137,7 +137,7 @@ module ActiveTreasureHunt
     def subscribe(type, id, pwd)
       xml = self.class.subscription_builder.call(type, id, pwd, self.id)
       connection.post(build_path(self.class.subscribe_name), "xml=#{xml}", self.class.headers).tap do |response|
-        validate_response(extract_body(response, self.class.subscribe_response_tag))
+        validate_response response.body
       end
     end
 
@@ -202,7 +202,14 @@ module ActiveTreasureHunt
     end
 
     def validate_response(body)
-      status = body['status']
+      status = case body
+               when Hash
+                 body['status']
+               when String
+                xml = Nokogiri::XML body
+                xml.root.xpath('@status').to_s
+               end
+
       unless self.class.no_exception_status.member? status
         begin
           error_class = ActiveTreasureHunt::const_get(status.gsub(/^(\w)/) { $1.mb_chars.capitalize })

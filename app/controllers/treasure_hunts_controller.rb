@@ -24,15 +24,15 @@ class TreasureHuntsController < ApplicationController
 
   # POST /treasure_hunts
   def create
-    hunt_pwd = ActiveSupport::SecureRandom.base64 20
-    xml = Nokogiri::XML params[:treasure_hunt]['xml'] #REXML::Document.new(params[:treasure_hunt]['xml'])
+    hunt_pwd = ActiveSupport::SecureRandom.hex
+    xml = Nokogiri::XML(params[:treasure_hunt]['xml'])
     if xml.root and xml.root['idOrganizer'] and xml.root['pwdOrganizer']
       xml.root['idOrganizer'] = @current_facebook_user.to_s
       xml.root['pwdOrganizer'] = hunt_pwd
+      xml.encoding = 'UTF-8'
     end
 
-
-    @hunt = TreasureHunt.new(:xml => xml.to_s)
+    @hunt = TreasureHunt.new(:xml => xml.to_xml.gsub(/;/,''))
 
     respond_to do |format|
       begin
@@ -44,6 +44,7 @@ class TreasureHuntsController < ApplicationController
         format.fbml { redirect_to(@hunt) }
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = "Error: #{e.to_s}"
+        @hunt.xml = ""
         format.html { render :action => "new" }
         format.fbml { render :action => "new" }
       end
@@ -163,6 +164,7 @@ class TreasureHuntsController < ApplicationController
   end
 
   def answer
+    # shows form to input the answer
     if request.get?
       @hunt = TreasureHunt.find params[:id]
 
@@ -170,16 +172,11 @@ class TreasureHuntsController < ApplicationController
         format.html
         format.fbml
       end
+    # shows response from the server
     elsif request.post?
       @hunt = TreasureHunt.find params[:id]
       @answer = params[:answer]
       @answer_type = params[:answer_type]
-
-      #xml = Nokogiri::XML @answer
-      #if xml.root and xml.root['id'] and xml.root['pwd']
-      #  xml.root['id'] = @current_user.id
-      #  xml.root['pwd'] = @current_user.password
-      #end
 
       begin
         @resp = @hunt.answer @answer, @answer_type, @current_user.id, @current_user.password
@@ -225,7 +222,7 @@ class TreasureHuntsController < ApplicationController
     unless @current_user
       @current_user = User.new
       @current_user.id = @current_facebook_user.to_s
-      @current_user.password = ActiveSupport::SecureRandom.base64 20
+      @current_user.password = ActiveSupport::SecureRandom.hex
       @current_user.thunts = []
       @current_user.save
     end

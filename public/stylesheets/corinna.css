@@ -1,0 +1,31 @@
+.ubersearch .result {
+  border: none;
+/*  border-top: 1px solid #ccc;*/
+}
+#delete {
+  color: #9F0000;
+}
+#delete:hover {
+  color: white;
+  background-color: #9F0000;
+}
+/*#list-odd {
+  background-color: #F0F0FF;
+}*/
+#list-even {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+.ubersearch .result .info {
+  width: auto;
+}
+.ubersearch .result .info dd {
+  width: auto;
+}
+#show-desc{
+  padding-left: 10px;
+}
+#show-title{
+  padding-left: 10px;
+  padding-top: 5px;
+}

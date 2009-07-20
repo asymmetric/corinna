@@ -1,6 +1,6 @@
 class TreasureHunt < ActiveTreasureHunt::Base
-  self.site = 'http://xanadu.doesntexist.com/stanis'
-  #self.site = 'http://localhost:3001'
+  #self.site = 'http://xanadu.doesntexist.com/stanis'
+  self.site = 'http://localhost:3001'
   #self.site = 'http://ltw0905.web.cs.unibo.it/cgi-bin/server'
 
   self.headers = { "Accept" => "text/xml", "Content-Type" => "application/x-www-form-urlencoded" }
@@ -46,10 +46,23 @@ class TreasureHunt < ActiveTreasureHunt::Base
     xml.instruct!
     xml.thunt tag, :thunt => hunt, :id => id, :pwd => password,
       :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt" do
+        case type
+        when :string, :URI
+          xml.tag!("thunt:#{type}") { xml.text! answer }
+        when :geoloc
+          raise Exception unless answer.is_a? Hash # TODO quale eccezione?
+          xml.thunt type, :planet => (answer[:planet] || "Earth" ), :lat => answer[:lat], :long => answer[:long]
+        when :picture
+          raise Exception unless answer.is_a? Hash
+          xml.thunt type, :type => (answer[:type] || "flickr"), :usr => answer[:usr], :id => answer[:id]
+        when :video
+          raise Exception unless answer.is_a? Hash
+          xml.thunt type, :type => answer[:type], :id => answer[:id]
+        end
+      end
       #xml.thunt type ( xml.text! answer )
-      xml.tag!("thunt:#{type}") { xml.text! answer }
-    end
   end
+
 
   self.collection_name = 'gettreasurehunts'
 
