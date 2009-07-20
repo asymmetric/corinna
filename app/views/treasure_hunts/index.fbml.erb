@@ -30,6 +30,9 @@
 <% fb_dialog 'invite_friend', true do %>
   <%= fb_dialog_title 'Invite some friends!' %>
   <% fb_dialog_content do %>
-    Porco cane!
+    <%= fb_friend_selector %>
   <% end %>
+  <%= fb_dialog_button 'submit', 'Send'
+  # TODO invite! :href => 'cane.com'
+  %>
 <% end %>
