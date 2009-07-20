@@ -1,0 +1,7 @@
+<h2>Submit an answer</h2>
+
+<% form_tag :action => :answer, :id => @hunt.id do %>
+  <%= text_area_tag :answer, nil, :size => "55x20" %>
+  <%= select_tag(:answer_type, options_for_select( %w(URI geoloc picture video string), params[:answer_type]) ) %>
+  <%= submit_tag 'Submit' %>
+<% end %>

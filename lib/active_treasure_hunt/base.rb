@@ -17,10 +17,14 @@ module ActiveTreasureHunt
   class Base < ActiveResource::Base
     class << self
       attr_writer :headers
-      attr_accessor_with_default(:default_namespace) { 'xmlns' }
+      attr_accessor :default_namespace
       attr_accessor :default_request_builder
+      attr_accessor :subscription_builder
+      attr_accessor :fakehint_builder
       attr_accessor :element_tag
-      attr_accessor_with_default(:ok_status) { 'accepted' }
+      attr_accessor :answer_builder
+      attr_accessor_with_default(:ok_status) { "accepted" }
+      attr_accessor_with_default(:no_exception_status) { %w(accepted wrong right win loose) }
 
       attr_accessor_with_default(:create_name) { element_name.pluralize }
       attr_accessor :create_response_tag
@@ -28,6 +32,26 @@ module ActiveTreasureHunt
       attr_accessor :destroy_name
       attr_accessor :destroy_response_tag
       attr_accessor :destroy_request_tag
+
+      attr_accessor :fakehint_name
+      attr_accessor :fakehint_request_tag
+      attr_accessor :fakehint_response_tag
+
+      attr_accessor :subscribe_name
+      attr_accessor :subscribe_request_tag
+      attr_accessor :subscribe_response_tag
+
+      attr_accessor :gethint_name
+      attr_accessor :gethint_request_tag
+      attr_accessor :gethint_response_tag
+
+      attr_accessor :start_name
+      attr_accessor :start_request_tag
+      attr_accessor :start_response_tag
+
+      attr_accessor :answer_name
+      attr_accessor :answer_request_tag
+      attr_accessor :answer_response_tag
 
       def build_path(action_name, prefix_options = {}, query_options = nil)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
@@ -98,6 +122,47 @@ module ActiveTreasureHunt
       end
     end
 
+    def fakehint(hint, turn, id, pwd)
+      xml = self.class.fakehint_builder.call(hint, turn, id, pwd, self.id)
+      connection.post(build_path(self.class.fakehint_name), "xml=#{xml}", self.class.headers).tap do |response|
+        validate_response(extract_body(response, self.class.fakehint_response_tag))
+      end
+    end
+
+    def subscribe(type, id, pwd)
+      xml = self.class.subscription_builder.call(type, id, pwd, self.id)
+      connection.post(build_path(self.class.subscribe_name), "xml=#{xml}", self.class.headers).tap do |response|
+        validate_response(extract_body(response, self.class.subscribe_response_tag))
+      end
+    end
+
+    def start(id, pwd)
+      xml = self.class.default_request_builder.call(self.class.start_request_tag, id, pwd, self.id)
+      connection.post(build_path(self.class.start_name), "xml=#{xml}", self.class.headers).tap do |response|
+        validate_response(extract_body(response, self.class.start_response_tag))
+      end
+    end
+
+    def gethint(id, pwd)
+      xml = self.class.default_request_builder.call(self.class.gethint_request_tag, id, pwd, self.id)
+      connection.post(build_path(self.class.gethint_name), "xml=#{xml}", self.class.headers).tap do |response|
+        body = extract_body(response, self.class.gethint_response_tag)
+        validate_response body
+        self.xml = response.body
+      end
+      self.xml
+    end
+
+    def answer answer_xml, type, id, pwd
+      xml = self.class.answer_builder.call(answer_xml, type, id, pwd, self.id)
+      connection.post(build_path(self.class.answer_name), "xml=#{xml}", self.class.headers).tap do |response|
+        body = extract_body response, self.class.answer_response_tag
+        validate_response body
+        self.status = body['status']
+      end
+      self.status
+    end
+
     protected
     def build_path(action_name, options = nil)
       self.class.build_path(action_name, options || prefix_options)
@@ -123,14 +188,14 @@ module ActiveTreasureHunt
 
     def validate_response(body)
       status = body['status']
-      if status && status != self.class.ok_status
+      unless self.class.no_exception_status.member? status
         begin
           error_class = ActiveTreasureHunt::const_get(status.gsub(/^(\w)/) { $1.mb_chars.capitalize })
         rescue NameError => e
           raise ActiveResource::ConnectionError.new(status, "Unknown error")
         end
         raise error_class.new
-     end
+      end
     end
   end
 end

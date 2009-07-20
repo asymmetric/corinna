@@ -3,11 +3,11 @@ class User < ActiveTreasureHunt::Record
 
   def is_admin?(hunt_id)
     hunt_id = hunt_id.to_s unless hunt_id.is_a? String
-    not self.thunts.select { |hunt| hunt.id == hunt_id }.empty?
+    self.thunts.find { |hunt| hunt.id == hunt_id } ? true : false
   end
 
   def hunt_password(hunt_id)
     hunt_id = hunt_id.to_s unless hunt_id.is_a? String
-    self.thunts.select { |hunt| hunt.id == hunt_id }.first.password
+    self.thunts.find { |hunt| hunt.id == hunt_id }.password
   end
 end

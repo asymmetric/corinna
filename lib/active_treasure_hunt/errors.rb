@@ -1,57 +1,65 @@
 module ActiveTreasureHunt
-  class NotWellFormed < Exception
+
+  XMLError = Class.new Exception
+
+  class NotWellFormed < XMLError
     def to_s
       "XML not well-formed"
     end
   end
-  class NotValid < Exception
+  class NotValid < XMLError
     def to_s
       "XML not valid"
     end
   end
-  class WrongPass < Exception
+  class WrongPass < XMLError
     def to_s
       "Wrong password"
     end
   end
-  class NoPermission < Exception
+  class NoPermission < XMLError
     def to_s
-      "You don't have enough permissions"
+      "Insufficient privileges"
     end
   end
-  class PassAlreadyAssigned < Exception
+  class PassAlreadyAssigned < XMLError
     def to_s
-      "Password already assigned (it doesn't make any sense, but it is)"
+      "Password already assigned"
     end
   end
-  class NotSubscribed < Exception
+  class NotSubscribed < XMLError
     def to_s
       "You are not subscribed to this treasure hunt"
     end
   end
-  class NotExist < Exception
+  class NotExist < XMLError
     def to_s
-      "Treasure hunt doesn't exists"
+      "Treasure hunt does not exist"
     end
   end
-  class AlreadyStarted < Exception
+  class AlreadyStarted < XMLError
     def to_s
       "Treasure hunt already started"
     end
   end
-  class OutOfBound < Exception
+  class OutOfBound < XMLError
     def to_s
       "Max allowed fake hints limit reached"
     end
   end
-  class NoTransparency < Exception
+  class NoTransparency < XMLError
     def to_s
-      "Treasure hunt is not transparent"
+      "Treasure hunt not transparent"
     end
   end
-  class NoTurn < Exception
+  class NoTurn < XMLError
     def to_s
-      "Turn doesn't exists"
+      "Turn does not exist"
+    end
+  end
+  class AlreadySubscribed < XMLError
+    def to_s
+      "Already subscribed"
     end
   end
 end
