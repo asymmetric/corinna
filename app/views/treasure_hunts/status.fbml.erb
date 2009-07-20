@@ -1,19 +1,21 @@
 <p>
   <b>Status:</b>
-  <% @status = @xml.xpath.root('thunt:status')
-    for status in @status %>
+  <% @status = @xml.root.xpath 'thunt:status'
+     @status.each do |status| %>
 	<div class="result clearfix" >
 	    <dl>
-            <dt> <dd class="result_name fn">Thunttid: <%=status.id %></dd>
-                 <dd class="result_name fn">TurnName: <%=status.turnName %></dd>
-                 <dd class="result_name fn">TurnId: <%=status.turnId %></dd>
-                 <dd class="result_name fn">TurnNumber: <%=status.turnNumber %></dd>
-                 <dd class="result_name fn">HintNumber: <%=status.hintNumber %></dd>
+            <dt>
+              <dd class="result_name fn">User: <%= Facebooker::User.new(status['id']).name %></dd>
+              <dd class="result_name fn">Turn Name: <%= status['turnName'] %></dd>
+              <dd class="result_name fn">Turn Id: <%= status['turnId'] %></dd>
+              <dd class="result_name fn">Turn Number: <%= status['turnNumber'] %></dd>
+              <dd class="result_name fn">Hint Number: <%= status['hintNumber'] %></dd>
             </dt>
 	    </dl>
 	  </div>
+    <% end %>
 
 </p>
 
 
-<%= link_to 'Back', treasure_hunts_path %>
+<%= link_to 'Back', @hunt %>

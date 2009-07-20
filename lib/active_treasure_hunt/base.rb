@@ -161,8 +161,7 @@ module ActiveTreasureHunt
     def status(id,pwd)
       xml = self.class.default_request_builder.call(self.class.status_request_tag, id, pwd, self.id)
       connection.post(build_path(self.class.status_name), "xml=#{xml}", self.class.headers).tap do |response|
-        body = extract_body(response, self.class.status_response_tag)
-        validate_response body
+        validate_response response.body
         self.xml = response.body
       end
       self.xml

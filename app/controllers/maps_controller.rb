@@ -1,22 +1,11 @@
 class MapsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   def index
-    @content = "
-      function initialize() {
-        var myLatlng = new google.maps.LatLng(#{params[:lat]}, #{params[:lng]});
-        var myOptions = {
-          zoom: #{params[:z]},
-          center: myLatlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        var map = new google.maps.Map(document.getElementById(\"map_canvas\"), myOptions);
-        var marker = new google.maps.Marker({
-          position: myLatlng,
-          map: map,
-          title: \"Hello World!\"
-        });
-      }"
-
+    @map = GMap.new("map_div")
+    @map.control_init(:large_map => true,:map_type => true)
+    @map.center_zoom_init([params[:lat].to_f,params[:lng].to_f],params[:z].to_i)
+    @map.overlay_init(GMarker.new([params[:lat].to_f,params[:lng].to_f],:title => "What are you staring at?", :info_window => "Info! Info!"))
+    @map.overlay_init(GMarker.new([params[:lat].to_f + 0.1,params[:lng].to_f + 0.1],:title => "What are yo staring at?", :info_window => "Info1! Info1!"))
     respond_to do |format|
       format.html
     end
