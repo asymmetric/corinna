@@ -60,25 +60,32 @@ class TreasureHuntsController < ApplicationController
       format.fbml
     end
   end
-  
-  def falsehint
-    begin
+
+  def fakehint
+    if request.get?
       @hunt = TreasureHunt.find params[:id]
-      @turn = params[:turn]
-      @falseHint = params[:falsehint]
 
-      @resp = @hunt.falsehint @falseHint,@turn, @current_user.id, @current_user.password
-      flash[:notice] = @resp
+      respond_to do |format|
+        format.html
+        format.fbml
+      end
+    elsif request.post?
+      begin
+        @hunt = TreasureHunt.find params[:id]
+        @turn = params[:turn]
+        @fake_hint = params[:fakehint]
 
-    rescue ActiveTreasureHunt::XMLError => e
-      flash[:error] = "SendFalseHintError: #{e.to_s}"
+        @resp = @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
+        flash[:notice] = @resp
+      rescue ActiveTreasureHunt::XMLError => e
+        flash[:error] = "Error: #{e.to_s}"
+      end
+
+      respond_to do |format|
+        format.html { redirect_to @hunt }
+        format.fbml { redirect_to @hunt }
+      end
     end
-
-    respond_to do |format|
-      format.html { redirect_to @hunt }
-      format.fbml { redirect_to @hunt }
-    end
-    
   end
 
   # POST /treasure_hunts/1/subscribe
@@ -88,7 +95,7 @@ class TreasureHuntsController < ApplicationController
       case params[:button]
       when "user"
         @hunt.subscribe :user, @current_user.id, @current_user.password
-        flash[:notice] = "Successfully subscribed to Treasure Hunt #{@hunt.id}"
+        flash[:notice] = "Successfully subscribed"
       when "group"
         group_id = params[:gid].to_i
         group_name = @current_facebook_user.groups.find { |g| g.gid == group_id }.name

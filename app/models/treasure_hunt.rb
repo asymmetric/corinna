@@ -19,13 +19,13 @@ class TreasureHunt < ActiveTreasureHunt::Base
   end
 
   self.element_tag = 'treasureHunt'
-  
-  self.falsehint_builder = lambda do |falseHint,turn, id, password, hunt|
-    tag = self.falsehint_request_tag.intern
+
+  self.fakehint_builder = lambda do |fake_hint, turn, id, password, hunt|
+    tag = self.fakehint_request_tag.intern
     xml = Builder::XmlMarkup.new
     xml.instruct!
-    xml.thunt tag, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt" ,:turn => turn, :id => id, :pwd => password :thunt => hunt do
-      xml << falseHint    
+    xml.thunt tag, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt", :turn => turn, :id => id, :pwd => password, :thunt => hunt do
+      xml << fake_hint
     end
   end
 
@@ -59,10 +59,10 @@ class TreasureHunt < ActiveTreasureHunt::Base
   self.destroy_name = 'removetreasurehunt'
   self.destroy_request_tag = 'removeTreasureHunt'
   self.destroy_response_tag = 'remove_treasure_hunt_result'
-  
-  self.falsehint_request_tag = 'sendFalseHint'
-  self.falsehint_name = self.falsehint_request_tag.downcase
-  self.falsehint_response_tag = "#{self.falsehint_request_tag}Result".underscore
+
+  self.fakehint_request_tag = 'sendFalseHint'
+  self.fakehint_name = self.fakehint_request_tag.downcase
+  self.fakehint_response_tag = "#{self.fakehint_request_tag}Result".underscore
 
   self.subscribe_request_tag = 'sendSubscription'
   self.subscribe_name = self.subscribe_request_tag.downcase
