@@ -136,6 +136,7 @@ class TreasureHuntsController < ApplicationController
     respond_to do |format|
       begin
         @resp = @hunt.status @current_user.id, @current_user.password
+        @xml = Nokogiri::XML @resp
         format.html
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
