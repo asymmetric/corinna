@@ -23,6 +23,7 @@ module ActiveTreasureHunt
       attr_accessor :fakehint_builder
       attr_accessor :element_tag
       attr_accessor :answer_builder
+      attr_accessor :status_builder
       attr_accessor_with_default(:ok_status) { "accepted" }
       attr_accessor_with_default(:no_exception_status) { %w(accepted wrong right win loose) }
 

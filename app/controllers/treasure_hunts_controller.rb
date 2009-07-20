@@ -75,16 +75,16 @@ class TreasureHuntsController < ApplicationController
         @turn = params[:turn]
         @fake_hint = params[:fakehint]
 
-        @resp = @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
-        flash[:notice] = @resp
-      rescue ActiveTreasureHunt::XMLError => e
-        flash[:error] = "Error: #{e.to_s}"
-      end
-
-      respond_to do |format|
+        @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
+        flash[:notice] = "Fake hint successfully sent"
         format.html { redirect_to @hunt }
         format.fbml { redirect_to @hunt }
+      rescue ActiveTreasureHunt::XMLError => e
+        flash[:error] = "Error: #{e.to_s}"
+        format.html
+        format.fbml
       end
+
     end
   end
 
@@ -105,7 +105,6 @@ class TreasureHuntsController < ApplicationController
       end
     rescue ActiveTreasureHunt::XMLError => e
       flash[:error] = "Subscription failed: #{e.to_s}"
-      cane = ""
     end
 
     respond_to do |format|
@@ -123,7 +122,7 @@ class TreasureHuntsController < ApplicationController
         format.html
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
-        flash[:notice] = "Error: #{e.to_s}"
+        flash[:error] = "Error: #{e.to_s}"
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
       end
@@ -139,7 +138,7 @@ class TreasureHuntsController < ApplicationController
         format.html
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
-        flash[:notice] = "Error: #{e.to_s}"
+        flash[:error] = "Error: #{e.to_s}"
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
       end

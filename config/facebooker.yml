@@ -12,12 +12,12 @@ development:
   api_key: 61c17ea4916618c78dc3322fc243ded4
   secret_key: 1e1cb2a8b61936b487c3ff2fb90b775a
   canvas_page_name: corinna_test
-  callback_url: http://junk.mine.nu:8888
+  callback_url: http://biascica.pipps.net:8888
   pretty_errors: true
   set_asset_host_to_callback_url: true
   tunnel:
     public_host_username: lrnz
-    public_host: junk.mine.nu
+    public_host: biascica.pipps.net
     public_port: 8888
     local_port: 3000
     server_alive_interval: 60
