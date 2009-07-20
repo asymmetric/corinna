@@ -32,7 +32,7 @@
 <% fb_dialog 'play', true do %>
   <%= fb_dialog_title 'Play as:' %>
   <% fb_dialog_content do %>
-    <% form_tag ( { :action => :subscribe, :id => @hunt.id }, :id => 'subscribe_form' ) do %>
+    <% form_tag( { :action => :subscribe, :id => @hunt.id }, :id => 'subscribe_form' ) do %>
 	<%= radio_button_tag :button, :user, :checked => true %>
 	<%= label_tag 'button_user', @current_facebook_user.name %>
 	<br />

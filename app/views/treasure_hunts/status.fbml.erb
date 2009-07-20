@@ -1,17 +1,17 @@
 <p>
   <b>Status:</b>
-  <% @status = @xml.xpath.root('thunt:status')
-    for status in @status %>
+     @status.each do |status| %>
 	<div class="result clearfix" >
 	    <dl>
-            <dt> <dd class="result_name fn">Thunttid: <%=status.id %></dd>
-                 <dd class="result_name fn">TurnName: <%=status.turnName %></dd>
-                 <dd class="result_name fn">TurnId: <%=status.turnId %></dd>
-                 <dd class="result_name fn">TurnNumber: <%=status.turnNumber %></dd>
-                 <dd class="result_name fn">HintNumber: <%=status.hintNumber %></dd>
+            <dt> <dd class="result_name fn">Thunttid: <%= status['id'] %></dd>
+                 <dd class="result_name fn">TurnName: <%= status['turnName'] %></dd>
+                 <dd class="result_name fn">TurnId: <%= status['turnId'] %></dd>
+                 <dd class="result_name fn">TurnNumber: <%= status['turnNumber'] %></dd>
+                 <dd class="result_name fn">HintNumber: <%= status['hintNumber'] %></dd>
             </dt>
 	    </dl>
 	  </div>
+    <% end %>
 
 </p>
 
