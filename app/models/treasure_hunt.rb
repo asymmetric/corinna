@@ -50,10 +50,9 @@ class TreasureHunt < ActiveTreasureHunt::Base
       xml.tag!("thunt:#{type}") { xml.text! answer }
     end
   end
-  
-  
+
   self.collection_name = 'gettreasurehunts'
-        
+
   self.create_name = 'loadtreasurehunt'
   self.create_response_tag = 'loadTreasureHuntResult'
 
@@ -81,11 +80,7 @@ class TreasureHunt < ActiveTreasureHunt::Base
   self.answer_name = self.answer_request_tag.downcase
   self.answer_response_tag = "#{self.answer_request_tag}Result".underscore
 
-  self.status_request_tag = 'getstatus'
+  self.status_request_tag = 'getStatus'
   self.status_name = self.status_request_tag.downcase
   self.status_response_tag = "#{self.status_request_tag}Result".underscore
-
-
-
-
 end
