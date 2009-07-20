@@ -7,14 +7,13 @@
 
       <td class="list-description">
         <dl>
-          <dt><b><%=h hunt.title %></b></dt>
-          <dd><%=h truncate(prettyprint_blockinline(hunt.xml, 'description'),
-                 :length => 80) %></dd>
+          <dt><b><%=link_to h(hunt.title), hunt %></b></dt>
+          <dd><%= truncate(prettyprint_blockinline(hunt.xml, 'description'),
+                 :length => 160).gsub(/<[^>]*$/,'') %></dd>
         </dl>
       </td>
 
       <td class="list-actions">
-        <%= link_to 'Show', hunt %><br/>
         <%= link_to 'Destroy', hunt,
                     :confirm => 'Are you sure?',
                     :method => :delete if @current_user.is_admin? hunt.id %>

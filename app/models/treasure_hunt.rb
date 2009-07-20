@@ -1,9 +1,10 @@
 class TreasureHunt < ActiveTreasureHunt::Base
-  self.site = 'http://xanadu.doesntexist.com/stanis'
+  #self.site = 'http://xanadu.doesntexist.com/stanis'
   #self.site = 'http://localhost:3001'
+  self.site = 'http://ltw0905.web.cs.unibo.it/cgi-bin/server'
 
   self.headers = { "Accept" => "text/xml", "Content-Type" => "application/x-www-form-urlencoded" }
-  self.default_namespace = { 'thunt' => 'http://vitali.web.cs.unbo.it' }
+  self.default_namespace = { 'thunt' => 'http://vitali.web.cs.unbo.it/thunt' }
   self.default_request_builder = lambda do |tag, id, password, hunt|
     tag = tag.to_sym
     xml = Builder::XmlMarkup.new

@@ -2,11 +2,6 @@ class TreasureHuntsController < ApplicationController
   ensure_application_is_installed_by_facebook_user
   before_filter :get_current_facebook_user
 
-  # load - id, pwd, config
-  # subscribe - id, pwd, hunt
-  # remove - id, pwd, hunt
-  # start - id, pwd, hunt
-
   # GET /treasure_hunts
   def index
     @hunts = TreasureHunt.find(:all)
@@ -19,8 +14,7 @@ class TreasureHuntsController < ApplicationController
 
   # GET /treasure_hunts/new
   def new
-    @hunt = TreasureHunt.new
-    @hunt.xml = ""
+    @hunt = TreasureHunt.new(:xml => "")
 
     respond_to do |format|
       format.html
@@ -78,6 +72,8 @@ class TreasureHuntsController < ApplicationController
   def destroy
     @hunt = TreasureHunt.find(params[:id])
     @hunt.destroy(@current_user.id, @current_user.hunt_password(@hunt.id))
+    @current_user.thunts.delete_if { |x| x.has_key? @hunt.id }
+    @current_user.save
     flash[:notice] = "Treasure Hunt successfully destroyed"
 
     respond_to do |format|
