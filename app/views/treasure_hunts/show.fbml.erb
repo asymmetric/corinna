@@ -53,8 +53,7 @@
       Hey! I found this treasure hunt and I want to play it with you! <%= fb_req_choice("Check it out!", url_for(@hunt)) %>
     <% end %>
     <% fb_request_form("#{@hunt.title}","invite_user", url_for(@hunt)) do %>
-      <%= fb_multi_friend_selector("Invite your friends to check out #{@hunt.title}", :showborder => false, 
-                                   :exclude_ids => @facebook_session.user.friends_with_this_app.map(&:id).join(","))   %>
+      <%= fb_friend_selector %>
     <% end %>
   <% end %>
 <% end %>

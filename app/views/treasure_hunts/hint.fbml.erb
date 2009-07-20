@@ -3,4 +3,5 @@
   <%= prettyprint_blockinline @hint, '.' %>
 </p>
 
+<%= link_to 'Answer', { :action => :answer, :id => @hunt.id } %>
 <%= link_to 'Back', @hunt %>
