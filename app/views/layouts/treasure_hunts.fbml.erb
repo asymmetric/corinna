@@ -7,10 +7,8 @@
   <%= fb_action 'Home', treasure_hunts_path %>
   <% if ( cname == :index || cname == :new) %>
 	<%= fb_create_button 'Create a new Treasure Hunt', new_treasure_hunt_path %>
-	<% else %>
-	<%= fb_action ' Invite friends', { :action => :invite } %>
 	<% end %>
-  <%= fb_help 'Feedback', fb_about_url %>
+ <%= fb_help 'Feedback', fb_about_url %>
 <% end %>
 <div id="columns">
   <div id="side">
