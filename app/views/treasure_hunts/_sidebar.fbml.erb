@@ -1,6 +1,5 @@
 <ul class="actionspro">
 	<li class="actionspro_li"><a href="#" clicktoshowdialog="play" class="actionspro_a">Play!</a></li>
-	<li class="actionspro_li"><%= link_to ' Invite friends', { :action => :invite } %></a></li>
 	<li class="actionspro_li"><%= link_to 'Answer', { :action => :answer, :id => @hunt.id }, :class => "actionspro_a" %></li>
 	<li class="actionspro_li"><%= link_to 'Get hint', { :action => :hint, :id => @hunt.id }, :class => "actionspro_a" %></li>
 	<li class="actionspro_li"><%= link_to 'Send a fake hint', { :action => :fakehint, :id => @hunt.id }, :class => "actionspro_a" %></li>
