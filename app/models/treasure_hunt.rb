@@ -1,7 +1,7 @@
 class TreasureHunt < ActiveTreasureHunt::Base
   #self.site = 'http://xanadu.doesntexist.com/stanis'
-  self.site = 'http://xanadu.doesntexist.com/rene'
-  #self.site = 'http://localhost:3001'
+  #self.site = 'http://xanadu.doesntexist.com/rene'
+  self.site = 'http://localhost:3001'
   #self.site = 'http://ltw0905.web.cs.unibo.it/cgi-bin/server'
 
   self.headers = { "Accept" => "text/xml", "Content-Type" => "application/x-www-form-urlencoded" }

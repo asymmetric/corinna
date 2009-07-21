@@ -1,9 +1,9 @@
 <div class="ubersearch">
-  <div class="summary"><strong>Found <%= pluralize @hunts.size, "treasure hunt" %></strong></div>
+  <strong><%= pluralize @hunts.size, "treasure hunt" %> found</strong>
   <div class="clearfix">
     <% unless @hunts.size == 0 %>
       <% for hunt in @hunts %>
-	<div class="result clearfix" id="<%= cycle('list-odd', 'list-even') %>">
+	<div class="result clearfix">
 	  <div class="info">
 	    <dl>
 	      <dt>Title:</dt> <dd class="result_name fn"><%=link_to h(hunt.title), hunt %></dd>
@@ -12,26 +12,18 @@
 	  </div>
 	  <ul class="actionspro">
 	    <li class="actionspro_li"><%= link_to 'Show', hunt, :class => 'actionspro_a' %></li>
+
+	    <li class="actionspro_li"><%= link_to 'Invite friends', {:id => hunt, :action => :invite }, :class => 'actionspro_a'%></li>
 	    <% if @current_user and @current_user.is_admin? hunt.id %>
-	      <li class="actionspro_li"><%= link_to 'Destroy', hunt,
+	      <li class="actionspro_li"><%= link_to 'Delete', hunt,
 					    :confirm => 'Are you sure do you want to delete this treasure hunt?',
-					    :method => :delete, :class => 'actionspro_a', :id => 'delete' %></li>
+					    :method => :delete, :class => 'actionspro_a', :id => 'admin' %></li>
 	    <% end %>
 	  </ul>
 	</div>
       <% end %>
     <% else %>
-      <p class="result clearfix">There aren't any, <%= link_to 'create one now and start playing!', new_treasure_hunt_path %></p>
+      <p class="result clearfix" id="info">There aren't any, <%= link_to 'create one now and start playing!', new_treasure_hunt_path %></p>
     <% end %>
   </div>
 </div>
-
-<% fb_dialog 'invite_friend', true do %>
-  <%= fb_dialog_title 'Invite some friends!' %>
-  <% fb_dialog_content do %>
-    <%= fb_friend_selector %>
-  <% end %>
-  <%= fb_dialog_button 'submit', 'Send'
-  # TODO invite! :href => 'cane.com'
-  %>
-<% end %>

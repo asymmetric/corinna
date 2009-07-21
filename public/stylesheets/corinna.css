@@ -1,6 +1,6 @@
 .ubersearch .result {
   border: none;
-/*  border-top: 1px solid #ccc;*/
+  border-bottom: 1px solid #ccc;
 }
 #admin {
 	background-color: #eceff6;
@@ -15,10 +15,10 @@
 /*#list-odd {
   background-color: #F0F0FF;
 }*/
-#list-even {
+/*#list-even {
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-}
+}*/
 .ubersearch .result .info {
   width: auto;
 }

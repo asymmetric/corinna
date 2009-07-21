@@ -105,12 +105,12 @@ class TreasureHuntsController < ApplicationController
         flash[:notice] = "Successfully subscribed as group #{group_name}"
       end
     rescue ActiveTreasureHunt::XMLError => e
-      flash[:error] = "Subscription failed: #{e.to_s}"
+      #flash[:error] = "Subscription failed: #{e.to_s}"
     end
 
     respond_to do |format|
-      format.html { redirect_to @hunt }
-      format.fbml { redirect_to @hunt }
+      format.html { redirect_to :action => :hint }
+      format.fbml { redirect_to :action => :hint }
     end
   end
 
@@ -170,7 +170,13 @@ class TreasureHuntsController < ApplicationController
     if request.get?
       @hunt = TreasureHunt.find params[:id]
 
-		# shows response from the server
+
+      respond_to do |format|
+        format.html
+        format.fbml
+      end
+      # shows response from the server
+
     elsif request.post?
       @hunt = TreasureHunt.find params[:id]
       @answer = params[:answer]
@@ -190,9 +196,10 @@ class TreasureHuntsController < ApplicationController
         flash[:error] = "Error: #{e.to_s}"
       end
 
-			respond_to do |format|
-				format.html
-				format.fbml
+
+      respond_to do |format|
+        format.html { redirect_to :action => :hint }
+        format.fbml { redirect_to :action => :hint }
       end
     end
   end
@@ -215,14 +222,14 @@ class TreasureHuntsController < ApplicationController
     end
   end
 
-	def invite
-		@hunt = TreasureHunt.find params[:id]
+  def invite
+    @hunt = TreasureHunt.find params[:id]
 
-		respond_to do |format|
-			format.html
-			format.fbml
-		end
-	end
+    respond_to do |format|
+      format.html
+      format.fbml
+    end
+  end
 
   protected
   def get_admin_password(hunt_id)
@@ -241,5 +248,4 @@ class TreasureHuntsController < ApplicationController
       @current_user.save
     end
   end
-
 end

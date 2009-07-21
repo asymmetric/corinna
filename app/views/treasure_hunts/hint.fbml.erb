@@ -1,7 +1,18 @@
-<p>
-  <b>Hint:</b>
-  <%= prettyprint_blockinline @hint, '.' %>
-</p>
+<div class="ubersearch">
+  <div class="clearfix">
+    <div class="result clearfix">
+      <ul class="actionspro">
+	<li class="actionspro_li"><%= link_to 'Answer', { :action => :answer, :id => @hunt.id }, :class => "actionspro_a" %></li>
+	<li class="actionspro_li"><%= link_to 'Send a fake hint', { :action => :fakehint, :id => @hunt.id }, :class => "actionspro_a" %></li>
+	<li class="actionspro_li"><%= link_to 'Get status', { :action => :status, :id => @hunt.id }, :class => "actionspro_a" %>
+      </ul>
+      <div class="info">
+	<dl class="clearfix">
+	  <dt>Hint:</dt><br />
+	  <dd id="show-desc"><%= prettyprint_blockinline @hint, '.' %></dd>
+	</dl>
+      </div>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Answer', { :action => :answer, :id => @hunt.id } %>
-<%= link_to 'Back', @hunt %>
