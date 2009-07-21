@@ -12,7 +12,6 @@
 	  </div>
 	  <ul class="actionspro">
 	    <li class="actionspro_li"><%= link_to 'Show', hunt, :class => 'actionspro_a' %></li>
-
 	    <li class="actionspro_li"><%= link_to 'Invite friends', {:id => hunt, :action => :invite }, :class => 'actionspro_a'%></li>
 	    <% if @current_user and @current_user.is_admin? hunt.id %>
 	      <li class="actionspro_li"><%= link_to 'Delete', hunt,
