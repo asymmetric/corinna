@@ -2,13 +2,16 @@
   border: none;
 /*  border-top: 1px solid #ccc;*/
 }
-#delete {
-	background-color: #3b5998;
-  color: white;
+#admin {
+	background-color: #eceff6;
+  color: #3b5998;
 }
-#delete:hover {
+#admin:hover {
+  background: #3b5998;
+  color: white; }
+/*#admin:hover {
 	text-decoration: underline;
-}
+}*/
 /*#list-odd {
   background-color: #F0F0FF;
 }*/

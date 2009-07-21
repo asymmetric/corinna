@@ -1,0 +1,5 @@
+<% content_for("invite_user") do %>
+<% end %>
+<% fb_request_form("#{@hunt.title}","invite_user", url_for(@hunt)) do %>
+  <%= fb_multi_friend_selector "Select some friends" %>
+<% end %>

@@ -1,6 +1,7 @@
 <%= stylesheet_link_tag "http://static.ak.fbcdn.net/rsrc.php/z2H8E/lpkg/dayzc47w/it_IT/141/173310/css/cu2v5qeuvg8w4owo.pkg.css", :media => "screen" %>
 <%= stylesheet_link_tag "http://static.ak.fbcdn.net/rsrc.php/z574Z/lpkg/5kk2yhyj/it_IT/141/173723/css/4nv8etrkutk4ksco.pkg.css", :media => "screen" %>
 <%= stylesheet_link_tag "corinna", :media => "screen" %>
+<%= javascript_include_tag :defaults %>
 <% fb_dashboard do %>
   <%= fb_action 'Home', treasure_hunts_path %>
   <% if controller.action_name.intern == :index %>

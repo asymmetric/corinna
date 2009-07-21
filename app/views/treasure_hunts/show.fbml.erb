@@ -21,6 +21,7 @@
 </div>
 
 
+
 <% fb_dialog 'play', true do %>
   <%= fb_dialog_title 'Play as:' %>
   <% fb_dialog_content do %>
@@ -38,17 +39,20 @@
 <% end %>
 
 
-<% fb_dialog 'invite_friend', true do %>
-  <%= fb_dialog_title 'Invite some friends!' %>
+<!-- <% fb_dialog 'invite_friend', true do %>
+  <%= fb_dialog_title 'Invite a friend!' %>
   <% fb_dialog_content do %>
     <% content_for("invite_user") do %>
       Hey! I found this treasure hunt and I want to play it with you! <%= fb_req_choice("Check it out!", url_for(@hunt)) %>
     <% end %>
     <% fb_request_form("#{@hunt.title}","invite_user", url_for(@hunt)) do %>
-      <%= fb_friend_selector %>
+      <%= fb_multi_friend_input %>
     <% end %>
   <% end %>
-<% end %>
-
+<% end %> -->
+<%= link_to 'Answer', { :action => :answer, :id => @hunt.id } %>
+<%= link_to 'Get hint', { :action => :hint, :id => @hunt.id } %>
+<%= link_to_if(@current_user.is_admin?(@hunt.id), "Start", { :action => :start, :id => @hunt.id } ) %>
+<%= link_to 'Send a fake hint', { :action => :fakehint, :id => @hunt.id } %>
+<%= link_to 'Get status', { :action => :status, :id => @hunt.id } %>
 <%= link_to 'Back', treasure_hunts_path, :id => :back %>
-

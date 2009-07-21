@@ -109,8 +109,8 @@ class TreasureHuntsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to(@hunt) }
-      format.fbml { redirect_to(@hunt) }
+      format.html { redirect_to @hunt }
+      format.fbml { redirect_to @hunt }
     end
   end
 
@@ -187,8 +187,8 @@ class TreasureHuntsController < ApplicationController
       end
 
       respond_to do |format|
-        format.html { redirect_to @hunt }
-        format.fbml { redirect_to @hunt }
+        format.html { redirect_to :action => @hint }
+        format.fbml { redirect_to :action => @hint }
       end
     end
   end
@@ -210,6 +210,15 @@ class TreasureHuntsController < ApplicationController
       format.fbml { redirect_to(treasure_hunts_url) }
     end
   end
+
+	def invite
+		@hunt = TreasureHunt.find params[:id]
+
+		respond_to do |format|
+			format.html
+			format.fbml
+		end
+	end
 
   protected
   def get_admin_password(hunt_id)
