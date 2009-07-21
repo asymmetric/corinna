@@ -21,3 +21,6 @@
     <%= yield :layout %>
   </div>
 </div>
+<% unless controller.action_name.intern == :index %>
+ <%= link_to 'Back', @hunt, :id => :back %>
+<% end %>
