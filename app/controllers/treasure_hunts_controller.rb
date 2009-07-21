@@ -63,29 +63,29 @@ class TreasureHuntsController < ApplicationController
   end
 
   def fakehint
-    if request.get?
-      @hunt = TreasureHunt.find params[:id]
 
-      respond_to do |format|
-        format.html
-        format.fbml
-      end
-    elsif request.post?
-      begin
+    respond_to do |format|
+      if request.get?
         @hunt = TreasureHunt.find params[:id]
-        @turn = params[:turn]
-        @fake_hint = params[:fakehint]
 
-        @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
-        flash[:notice] = "Fake hint successfully sent"
-        format.html { redirect_to @hunt }
-        format.fbml { redirect_to @hunt }
-      rescue ActiveTreasureHunt::XMLError => e
-        flash[:error] = "Error: #{e.to_s}"
         format.html
         format.fbml
-      end
+       elsif request.post?
+         begin
+           @hunt = TreasureHunt.find params[:id]
+           @turn = params[:turn]
+           @fake_hint = params[:fakehint]
 
+           @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
+           flash[:notice] = "Fake hint successfully sent"
+           format.html { redirect_to @hunt }
+           format.fbml { redirect_to @hunt }
+         rescue ActiveTreasureHunt::XMLError => e
+           flash[:error] = "Error: #{e.to_s}"
+           format.html
+           format.fbml
+         end
+       end
     end
   end
 
@@ -165,7 +165,7 @@ class TreasureHuntsController < ApplicationController
   end
 
   def answer
-	
+
    	# shows form to input the answer
     if request.get?
       @hunt = TreasureHunt.find params[:id]

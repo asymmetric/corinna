@@ -9,6 +9,10 @@
 #admin:hover {
   background: #3b5998;
   color: white; }
+
+#share {
+	text-align: right; /* perche' non funziona? */
+}
 /*#admin:hover {
 	text-decoration: underline;
 }*/
