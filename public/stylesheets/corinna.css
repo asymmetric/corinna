@@ -3,11 +3,11 @@
 /*  border-top: 1px solid #ccc;*/
 }
 #delete {
-  color: #9F0000;
+	background-color: #3b5998;
+  color: white;
 }
 #delete:hover {
-  color: white;
-  background-color: #9F0000;
+	text-decoration: underline;
 }
 /*#list-odd {
   background-color: #F0F0FF;

@@ -49,10 +49,6 @@
     <% end %>
   <% end %>
 <% end %>
-<%= link_to 'Answer', { :action => :answer, :id => @hunt.id } %>
-<%= link_to 'Get hint', { :action => :hint, :id => @hunt.id } %>
-<%= link_to_if(@current_user.is_admin?(@hunt.id), "Start", { :action => :start, :id => @hunt.id } ) %>
-<%= link_to 'Send a fake hint', { :action => :fakehint, :id => @hunt.id } %>
-<%= link_to 'Get status', { :action => :status, :id => @hunt.id } %>
+
 <%= link_to 'Back', treasure_hunts_path, :id => :back %>
 

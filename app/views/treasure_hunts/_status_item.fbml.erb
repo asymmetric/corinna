@@ -1,6 +1,6 @@
 <div class="result clearfix" >
   
-  <%debugger; @user = Facebooker::User.new(status_item['id']) %>
+  <% @user = Facebooker::User.new(status_item['id']) %>
   <table >
     <td><%=fb_profile_pic(@user, :size => :square)%></td>
     <td>    

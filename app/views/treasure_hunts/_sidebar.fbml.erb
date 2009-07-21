@@ -1,9 +1,15 @@
 <ul class="actionspro">
-  <li class="actionspro_li"><a href="#" clicktoshowdialog="play" class="actionspro_a">Play!</a></li>
-  <li class="actionspro_li"><a href="#" clicktoshowdialog="invite_friend" class="actionspro_a">Invite a friend</a></li>
-  <% if @current_user and @current_user.is_admin? @hunt.id %>
-    <li class="actionspro_li"><%= link_to 'Destroy', @hunt,
+	<li class="actionspro_li"><a href="#" clicktoshowdialog="play" class="actionspro_a">Play!</a></li>
+	<li class="actionspro_li"><a href="#" clicktoshowdialog="invite_friend" class="actionspro_a">Invite a friend</a></li>
+	<li class="actionspro_li"><%= link_to 'Answer', { :action => :answer, :id => @hunt.id }, :class => "actionspro_a" %></li>
+	<li class="actionspro_li"><%= link_to 'Get hint', { :action => :hint, :id => @hunt.id }, :class => "actionspro_a" %></li>
+	<li class="actionspro_li"><%= link_to_if(@current_user.is_admin?(@hunt.id), "Start", { :action => :start, :id => @hunt.id }, :class => "actionspro_a"  )%></li>
+	<li class="actionspro_li"><%= link_to 'Send a fake hint', { :action => :fakehint, :id => @hunt.id }, :class => "actionspro_a" %></li>
+	<li class="actionspro_li"><%= link_to 'Get status', { :action => :status, :id => @hunt.id }, :class => "actionspro_a" %>
+	<% if @current_user and @current_user.is_admin? @hunt.id %>
+	<li class="actionspro_li"><%= link_to 'Destroy', @hunt,
                                   :confirm => 'Are you sure do you want to delete this treasure hunt?',
                                   :method => :delete, :class => 'actionspro_a', :id => 'delete' %></li>
-  <% end %>
+	<% end %>
+	</li>
 </ul>
