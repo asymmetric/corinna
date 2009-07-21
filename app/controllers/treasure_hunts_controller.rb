@@ -125,6 +125,13 @@ class TreasureHuntsController < ApplicationController
     respond_to do |format|
       begin
         @hint = @hunt.gethint @current_user.id, @current_user.password
+        begin
+          resp = @hunt.status @current_user.id, @current_user.password
+          xml = Nokogiri::XML resp
+          @status = xml.root.xpath 'thunt:status'
+        rescue ActiveTreasureHunt::XMLError => e
+          @nostatus = e.message
+        end
         format.html
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e

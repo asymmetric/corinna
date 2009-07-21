@@ -3,7 +3,7 @@
     <div class="result clearfix">
       <ul class="actionspro">
 	<li class="actionspro_li"><%= link_to 'Answer', { :action => :answer, :id => @hunt.id }, :class => "actionspro_a" %></li>
-	<li class="actionspro_li"><%= link_to 'See players\' status', { :action => :status, :id => @hunt.id }, :class => "actionspro_a" %>
+<!--	<li class="actionspro_li"><%= link_to 'See players\' status', { :action => :status, :id => @hunt.id }, :class => "actionspro_a" %>-->
 	<li class="actionspro_li"><%= link_to 'Send fake hint', { :action => :fakehint, :id => @hunt.id }, :class => "actionspro_a" %></li>
       </ul>
       <div class="info">
@@ -14,6 +14,12 @@
 	</dl>
       </div>
     </div>
+    <b>Players' status for this treasure hunt:</b>
+      <% if @nostatus %>
+	<%= @nostatus %>
+      <% else %>
+	<%= render(:partial => "status_item", :collection => @status) %>
+      <% end %>
   </div>
 </div>
 
