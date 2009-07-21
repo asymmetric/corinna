@@ -1,9 +1,10 @@
 <h2>Submit a fake hint</h2>
 
-<% form_tag :action => :fakehint, :id => @hunt.id do %>
-  <%= label_tag 'fakehint', 'Fake hint' %>
+<% form_tag :action => :fakehint, :id => @hunt.id, :class => :cleartext do %>
+  <!-- <%= label_tag 'fakehint', 'Fake hint' %> -->
   <%= text_area_tag :fakehint, nil, :size => "55x20" %>
+  <p />
   <%= label_tag 'turn', 'Turn' %>
-  <%= text_field_tag :turn, nil %>
-  <%= submit_tag 'Submit' %>
+  <%= text_field_tag :turn, nil, :class => :inputtext %>
+  <%= submit_tag 'Submit', :class => :inputsubmit %>
 <% end %>
