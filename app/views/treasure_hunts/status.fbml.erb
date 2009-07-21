@@ -2,8 +2,6 @@
   <b>Status:</b>
   <% @status = @xml.root.xpath 'thunt:status' %>
   <%= render(:partial => "status_item", :collection => @status) %>
-
 </p>
 
-
-<%= link_to 'Back', @hunt %>
+<%= link_to 'Back', @hunt, :action => :hint %>

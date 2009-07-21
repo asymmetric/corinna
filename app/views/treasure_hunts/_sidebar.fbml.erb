@@ -1,10 +1,6 @@
 <ul class="actionspro">
 	<li class="actionspro_li"><a href="#" clicktoshowdialog="play" class="actionspro_a">Play!</a></li>
-	<li class="actionspro_li"><%= link_to ' Invite friends', { :action => :invite } %></a></li>
-	<li class="actionspro_li"><%= link_to 'Answer', { :action => :answer, :id => @hunt.id }, :class => "actionspro_a" %></li>
-	<li class="actionspro_li"><%= link_to 'Get hint', { :action => :hint, :id => @hunt.id }, :class => "actionspro_a" %></li>
-	<li class="actionspro_li"><%= link_to 'Send a fake hint', { :action => :fakehint, :id => @hunt.id }, :class => "actionspro_a" %></li>
-	<li class="actionspro_li"><%= link_to 'Get status', { :action => :status, :id => @hunt.id }, :class => "actionspro_a" %>
+	<li class="actionspro_li"><%= link_to 'Invite friends', { :action => :invite }, :class => "actionspro_a" %></li>
 	<% if @current_user and @current_user.is_admin? @hunt.id %>
 	<li class="actionspro_li"><%= link_to_if(@current_user.is_admin?(@hunt.id), "Start", { :action => :start, :id => @hunt.id }, :class => "actionspro_a", :id => 'admin') %></li>
 	<li class="actionspro_li"><%= link_to 'Delete', @hunt,
@@ -13,3 +9,19 @@
 	<% end %>
 	</li>
 </ul>
+
+<% fb_dialog 'play', true do %>
+  <%= fb_dialog_title 'Play as:' %>
+  <% fb_dialog_content do %>
+    <% form_tag( { :action => :subscribe, :id => @hunt.id }, :id => 'subscribe_form' ) do %>
+	<%= radio_button_tag :button, :user, :checked => true %>
+	<%= label_tag 'button_user', @current_facebook_user.name %>
+	<br />
+	<%= radio_button_tag :button, :group %>
+	<%= label_tag 'button_group', "One of your groups:" %>
+	<%= @groups = @facebook_session.user.groups
+	    select_tag(:gid, options_for_select( @groups.collect { |g| [ g.name, g.id ] }, params[:gid])) %>
+    <% end %>
+  <% end %>
+  <%= fb_dialog_button :submit, 'Play!', :form_id => 'subscribe_form' %>
+<% end %>
