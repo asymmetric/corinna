@@ -5,4 +5,4 @@
   <%= select_tag(:answer_type, options_for_select( %w(URI geoloc picture video string), params[:answer_type]) ) %>
   <%= submit_tag 'Submit' %>
 <% end %>
-<%= link_to 'Back', @hunt, :action => :hint %>
+<%= link_to 'Back', :action => :hint %>
