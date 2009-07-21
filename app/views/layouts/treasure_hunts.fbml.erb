@@ -22,6 +22,6 @@
     <%= yield :layout %>
   </div>
 </div>
-<% unless cname == :index %>
+<% unless cname == :index  || cname == :answer %>
  <%= link_to 'Back', @hunt, :id => :back %>
 <% end %>
