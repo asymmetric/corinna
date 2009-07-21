@@ -165,20 +165,17 @@ class TreasureHuntsController < ApplicationController
   end
 
   def answer
-    # shows form to input the answer
+	
+   	# shows form to input the answer
     if request.get?
       @hunt = TreasureHunt.find params[:id]
 
-      respond_to do |format|
-        format.html
-        format.fbml
-      end
-    # shows response from the server
+		# shows response from the server
     elsif request.post?
       @hunt = TreasureHunt.find params[:id]
       @answer = params[:answer]
-      @answer_type = params[:answer_type]
-			if params[:answer] == :geoloc
+      @answer_type = params[:answer_type].downcase.intern
+			if @answer_type == :geoloc
 				cane = params[:title]
 				validates_numericality_of :cane
 				@answer[:lat] = params[:geoloc_lat]
@@ -193,9 +190,9 @@ class TreasureHuntsController < ApplicationController
         flash[:error] = "Error: #{e.to_s}"
       end
 
-      respond_to do |format|
-        format.html { redirect_to :action => @hint }
-        format.fbml { redirect_to :action => @hint }
+			respond_to do |format|
+				format.html
+				format.fbml
       end
     end
   end
