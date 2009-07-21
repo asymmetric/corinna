@@ -178,6 +178,13 @@ class TreasureHuntsController < ApplicationController
       @hunt = TreasureHunt.find params[:id]
       @answer = params[:answer]
       @answer_type = params[:answer_type]
+			if params[:answer] == :geoloc
+				cane = params[:title]
+				validates_numericality_of :cane
+				@answer[:lat] = params[:geoloc_lat]
+				@answer[:long] = params[:geoloc_long]
+				@answer[:planet] = params[:geoloc_planet]
+			end
 
       begin
         @resp = @hunt.answer @answer, @answer_type, @current_user.id, @current_user.password

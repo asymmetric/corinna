@@ -2,7 +2,14 @@
 
 <% form_tag :action => :answer, :id => @hunt.id do %>
   <%= text_area_tag :answer, nil, :size => "55x20" %>
-  <%= select_tag(:answer_type, options_for_select( %w(URI geoloc picture video string), params[:answer_type]) ) %>
+  <%= select_tag(:answer_type, options_for_select( %w(URI picture video string), params[:answer_type]) ) %>
+	<br />
+  <%= label_tag 'geoloc_lat', 'Latitude' %>
+  <%= text_field_tag :geoloc_lat, nil, :maxlength => 8 %>
+  <%= label_tag 'geoloc_lat', 'Longitude' %>
+  <%= text_field_tag :geoloc_long, nil, :maxlength => 8 %>
+  <%= label_tag 'geoloc_lat', 'Planet' %>
+  <%= text_field_tag :geolog_planet, nil, :maxlength => 8 %>
   <%= submit_tag 'Submit' %>
 <% end %>
 <%= link_to 'Back', @hunt %>
