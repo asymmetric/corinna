@@ -131,12 +131,13 @@ class TreasureHuntsController < ApplicationController
   end
 
   def status
-    @hunt = TreasureHunt.find params[:id]
+    hunt = TreasureHunt.find params[:id]
 
     respond_to do |format|
       begin
-        @resp = @hunt.status @current_user.id, @current_user.password
-        @xml = Nokogiri::XML @resp
+        resp = hunt.status @current_user.id, @current_user.password
+        xml = Nokogiri::XML resp
+        @status = xml.root.xpath 'thunt:status'
         format.html
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e

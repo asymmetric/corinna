@@ -1,7 +1,5 @@
-<p>
-  <b>Status:</b>
-  <% @status = @xml.root.xpath 'thunt:status' %>
-  <%= render(:partial => "status_item", :collection => @status) %>
-</p>
+<b>Status:</b>
+<%= render(:partial => "status_item", :collection => @status) %>
+
 
 <%= link_to 'Back', :action => :hint %>
