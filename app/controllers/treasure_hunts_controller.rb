@@ -39,11 +39,11 @@ class TreasureHuntsController < ApplicationController
         @hunt.save
         @current_user.thunts << { :id => @hunt.id, :password => hunt_pwd }
         @current_user.save
-        flash[:notice] = 'Treasure Hunt was successfully created.'
+        flash[:notice] = 'Treasure Hunt successfully created!'
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
       rescue ActiveTreasureHunt::XMLError => e
-        flash[:error] = "Error: #{e.to_s}"
+        flash[:error] = e.message
         @hunt.xml = ""
         format.html { render :action => "new" }
         format.fbml { render :action => "new" }
@@ -54,11 +54,16 @@ class TreasureHuntsController < ApplicationController
 
   # GET /treasure_hunts/1
   def show
-    @hunt = TreasureHunt.find(params[:id])
-
     respond_to do |format|
-      format.html
-      format.fbml
+      begin
+        @hunt = TreasureHunt.find(params[:id])
+        format.html
+        format.fbml
+      rescue ActiveTreasureHunt::XMLError => e
+        flash[:error] = e.message
+        format.html { redirect_to treasure_hunts_url }
+        format.fbml { redirect_to treasure_hunts_url }
+      end
     end
   end
 
@@ -77,11 +82,11 @@ class TreasureHuntsController < ApplicationController
            @fake_hint = params[:fakehint]
 
            @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
-           flash[:notice] = "Fake hint successfully sent"
+           flash[:notice] = "Fake hint successfully sent!"
            format.html { redirect_to @hunt }
            format.fbml { redirect_to @hunt }
          rescue ActiveTreasureHunt::XMLError => e
-           flash[:error] = "Error: #{e.to_s}"
+           flash[:error] = e.message
            format.html
            format.fbml
          end
@@ -96,16 +101,16 @@ class TreasureHuntsController < ApplicationController
       case params[:button]
       when "user"
         @hunt.subscribe :user, @current_user.id, @current_user.password
-        flash[:notice] = "Successfully subscribed"
+        flash[:notice] = "Successfully subscribed!"
       when "group"
         group_id = params[:gid].to_i
         group_name = @current_facebook_user.groups.find { |g| g.gid == group_id }.name
         @hunt.subscribe :group, @current_user.id, @current_user.password
         #@hunt.subscribe :group, group_id, @current_user.password
-        flash[:notice] = "Successfully subscribed as group #{group_name}"
+        flash[:notice] = "Successfully subscribed as group #{group_name}!"
       end
     rescue ActiveTreasureHunt::XMLError => e
-      #flash[:error] = "Subscription failed: #{e.to_s}"
+      #flash[:error] = e.message
     end
 
     respond_to do |format|
@@ -123,7 +128,7 @@ class TreasureHuntsController < ApplicationController
         format.html
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
-        flash[:error] = "Error: #{e.to_s}"
+        flash[:error] = e.message
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
       end
@@ -141,7 +146,7 @@ class TreasureHuntsController < ApplicationController
         format.html
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
-        flash[:error] = "Error: #{e.to_s}"
+        flash[:error] = e.message
         format.html { redirect_to(@hunt) }
         format.fbml { redirect_to(@hunt) }
       end
@@ -154,9 +159,9 @@ class TreasureHuntsController < ApplicationController
     begin
       hunt_pwd = self.get_admin_password @hunt.id
       @hint = @hunt.start @current_user.id, hunt_pwd
-      flash[:notice] = "Treasure Hunt successfully started"
+      flash[:notice] = "Treasure Hunt successfully started!"
     rescue ActiveTreasureHunt::XMLError => e
-      flash[:error] = "Error: #{e.to_s}"
+      flash[:error] = e.message
     end
 
     respond_to do |format|
@@ -194,7 +199,7 @@ class TreasureHuntsController < ApplicationController
         @resp = @hunt.answer @answer, @answer_type, @current_user.id, @current_user.password
         flash[:notice] = @resp
       rescue ActiveTreasureHunt::XMLError => e
-        flash[:error] = "Error: #{e.to_s}"
+        flash[:error] = e.message
       end
 
 
@@ -212,9 +217,9 @@ class TreasureHuntsController < ApplicationController
       @hunt.destroy(@current_user.id, @current_user.hunt_password(@hunt.id))
       @current_user.thunts.delete_if { |x| x.id == @hunt.id }
       @current_user.save
-      flash[:notice] = "Treasure Hunt successfully destroyed"
+      flash[:notice] = "Treasure Hunt successfully destroyed!"
     rescue ActiveTreasureHunt::XMLError => e
-      flash[:error] = "Error: #{e.to_s}"
+      flash[:error] = e.message
     end
 
     respond_to do |format|

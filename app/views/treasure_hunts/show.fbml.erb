@@ -5,8 +5,8 @@
 	<dl class="clearfix">
 	  <dt>Title:</dt><br />
 	  <dd class="result_name fn" id="show-title"><%=h @hunt.title %></dd>
-	
 	</dl>
+	<%= render :partial => "share_button" %>
       </div>
     <%= render :partial => "sidebar" %>
     </div>
@@ -15,7 +15,6 @@
 	<dl class="clearfix">
 	  <dt>Description:</dt><br />
 	  <dd id="show-desc"><%= prettyprint_blockinline(@hunt.xml, 'description') %></dd>
-		<!-- <fb:share-button class="url" href="http://apps.facebook.com/example" /> -->
 	</dl>
       </div>
     </div>

@@ -7,6 +7,7 @@
 	<li class="actionspro_li"><%= link_to 'Send fake hint', { :action => :fakehint, :id => @hunt.id }, :class => "actionspro_a" %></li>
       </ul>
       <div class="info">
+	<%= render :partial => "share_button" %>
 	<dl class="clearfix">
 	  <dt>Hint:</dt><br />
 	  <dd id="show-desc"><%= prettyprint_blockinline @hint, '.' %></dd>
