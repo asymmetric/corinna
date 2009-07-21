@@ -1,19 +1,7 @@
 <p>
   <b>Status:</b>
-  <% @status = @xml.root.xpath 'thunt:status'
-     @status.each do |status| %>
-	<div class="result clearfix" >
-	    <dl>
-            <dt>
-              <dd class="result_name fn">User: <%= Facebooker::User.new(status['id']).name %></dd>
-              <dd class="result_name fn">Turn Name: <%= status['turnName'] %></dd>
-              <dd class="result_name fn">Turn Id: <%= status['turnId'] %></dd>
-              <dd class="result_name fn">Turn Number: <%= status['turnNumber'] %></dd>
-              <dd class="result_name fn">Hint Number: <%= status['hintNumber'] %></dd>
-            </dt>
-	    </dl>
-	  </div>
-    <% end %>
+  <% @status = @xml.root.xpath 'thunt:status' %>
+  <%= render(:partial => "status_item", :collection => @status) %>
 
 </p>
 
