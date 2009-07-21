@@ -20,4 +20,9 @@
 	<%= fb_add_profile_section %>
     <%= yield :layout %>
   </div>
+	<% unless ( cname == :index || cname == :new) %>
+	<div id="share">
+	<%= fb_share_button url_for( { :action => :show, :id => @hunt.id, :only_path => false } ) %>
+	<% end %>
+	</div>
 </div>
