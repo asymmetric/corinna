@@ -210,13 +210,16 @@
          <h3>Geoloc</h3> 
 	</div>
 	<div class="dev_application_data"> 
-	  <div class="dev_app_insights clearfix"> 
-	   <% form_tag :action => :answer, :id => @hunt.id, :class => "clearfix" do %>
-           <%= label_tag 'geoloc_lat', 'Latitude' %>
+        <div class="dev_app_insights clearfix"> 
+        
+        <% form_tag :action => :answer, :id => @hunt.id, :class => "clearfix" do %>
+          <div>
+            <%= label_tag 'geoloc_lat', 'Latitude' %>
            <%= text_field_tag :geoloc_lat, nil, {:maxlength => 8, :class => "inputtext" } %>
            <%= label_tag 'geoloc_lat', 'Longitude' %>
            <%= text_field_tag :geoloc_long, nil, { :maxlength => 8, :class => "inputtext" } %>
            <%= label_tag 'geoloc_lat', 'Planet' %>
+           </div>
            <%= text_field_tag :geolog_planet, nil, { :maxlength => 8, :class => "inputtext" } %>
            <%= submit_tag 'Submit', :class => "inputsubmit" %>
            <% end %> 
@@ -229,7 +232,13 @@
 	</div>
 	<div class="dev_application_data"> 
 	  <div class="dev_app_insights clearfix"> 
-	   <p>Porca Madonna troia!</p> 
+          <% form_tag :action => :answer, :id => @hunt.id,:answer_type => "url", :class => "clearfix" do %>
+
+          <%= text_field_tag :url , nil, {:class => "inputtext" } %>
+          <%= label_tag 'url', 'URL' %>
+           <%= submit_tag 'Submit', :class => "inputsubmit" %>
+           <% end %> 
+          
           </div>     
         </div>  					
        </div>
@@ -239,7 +248,10 @@
 	</div>
 	<div class="dev_application_data"> 
 	  <div class="dev_app_insights clearfix"> 
-	   <p>Porca Madonna troia!</p> 
+	   <% form_tag :action => :answer, :id => @hunt.id, :answer_type => "string",:class => "clearfix" do %>
+             <%= text_area_tag :answer, nil, :size => "55x10" %>
+            <%= submit_tag 'Submit', :class => "inputsubmit" %>
+           <% end %> 
           </div>     
         </div>  					
        </div>
