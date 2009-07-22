@@ -228,9 +228,12 @@
        <div class="dev_application app_show" id="url_info" style="display:none"> <!-- 3 -->
         <div class="dev_application_header clearfix"> 
         <h3>URI </h3>
-        <h2>Insert a Uniform Resource Identifier</h2>
+        
 	</div>
 	<div class="dev_application_data"> <!-- 2 -->
+	   <div class="dev_app_insights clearfix">
+	    <div>Insert a Uniform Resource Identifier</div>
+	   </div>
 	  <div class="dev_app_insights clearfix"> <!-- 1 -->
           <% form_tag :action => :answer, :id => @hunt.id,:answer_type => "URI", :class => "clearfix" do %>
 
@@ -262,11 +265,11 @@
            
 	<div class="dev_application_data"> <!-- 2 -->
 	  <div class="dev_app_insights clearfix"> <!-- 1 -->
-           <div> Select foto from: </div> 
+           <div> Select photo from: </div> 
 	   <a href="http://www.flickr.com" target="_blank"><div>Flickr</div></a> 
           </div>
           <div class="dev_app_insights clearfix"> <!-- 1 -->  
-           <div> Insert url foto: </div> 
+           <div> Insert url photo: </div> 
 	   <div><% form_tag :action => :answer, :id => @hunt.id, :answer_type => "picture", :class => "clearfix" do %>
 	  	  	
   		<%= text_field_tag :answer, nil, :class => :inputtext %>
