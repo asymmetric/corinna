@@ -178,8 +178,7 @@ class TreasureHuntsController < ApplicationController
   end
 
   def answer
-
-   	# shows form to input the answer
+    # shows form to input the answer
     if request.get?
       @hunt = TreasureHunt.find params[:id]
 
@@ -192,15 +191,28 @@ class TreasureHuntsController < ApplicationController
 
     elsif request.post?
       @hunt = TreasureHunt.find params[:id]
-      @answer = params[:answer]
-      @answer_type = params[:answer_type].downcase.intern
-			if @answer_type == :geoloc
-				cane = params[:title]
-				validates_numericality_of :cane
-				@answer[:lat] = params[:geoloc_lat]
-				@answer[:long] = params[:geoloc_long]
-				@answer[:planet] = params[:geoloc_planet]
-			end
+      @answer_type = params[:answer_type]
+      @answer = {}
+      case @answer_type
+      when "geoloc"
+        @answer[:lat] = params[:geoloc_lat]
+        @answer[:long] = params[:geoloc_long]
+        @answer[:planet] = params[:geoloc_planet]
+      when "video"
+        @answer[:id] = params[:answer].gsub(/.*=([\w]*?)$/,'\1')
+        @answer[:service] = case params[:answer]
+                            when /google/
+                              :googlevideo
+                            when /youtube/
+                              :youtube
+                            end
+      when "picture"
+        @answer[:service] = "flickr"
+        @answer[:usr] = params[:answer].gsub(/.*?(\w*?)\/(\w*?)\/?$/,'\1')
+        @answer[:id] = params[:answer].gsub(/.*?(\w*?)\/(\w*?)\/?$/,'\2')
+      else
+        @answer = params[:answer]
+      end
 
       begin
         @resp = @hunt.answer @answer, @answer_type, @current_user.id, @current_user.password

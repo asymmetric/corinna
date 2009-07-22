@@ -169,7 +169,7 @@ module ActiveTreasureHunt
 
     def answer answer_xml, type, id, pwd
       xml = self.class.answer_builder.call(answer_xml, type, id, pwd, self.id)
-			st = ""
+      st = ""
       connection.post(build_path(self.class.answer_name), "xml=#{xml}", self.class.headers).tap do |response|
         body = extract_body response, self.class.answer_response_tag
         validate_response body

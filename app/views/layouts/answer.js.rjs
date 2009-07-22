@@ -1,0 +1,3 @@
+page.insert_html :bottom, :partial => "status"
+page.alert "Hello from RJS!"ormat.js
+page.select("2").each { |div| div.hide}
