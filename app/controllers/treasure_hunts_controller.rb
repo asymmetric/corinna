@@ -197,6 +197,15 @@ class TreasureHuntsController < ApplicationController
         @answer[:lat] = params[:geoloc_lat]
         @answer[:long] = params[:geoloc_long]
         @answer[:planet] = params[:geoloc_planet]
+      elsif @answer_type == "video"
+        @answer = {}
+        @answer[:id] = params[:answer].gsub(/.*=([\w]*?)$/,'\1')
+        @answer[:service] = case params[:answer]
+                            when /google/
+                              :googlevideo
+                            when /youtube/
+                              :youtube
+                            end
       else
         @answer = params[:answer]
       end
