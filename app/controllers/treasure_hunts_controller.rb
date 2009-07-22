@@ -192,13 +192,13 @@ class TreasureHuntsController < ApplicationController
     elsif request.post?
       @hunt = TreasureHunt.find params[:id]
       @answer_type = params[:answer_type]
-      if @answer_type == "geoloc"
-        @answer = {}
+      @answer = {}
+      case @answer_type
+      when "geoloc"
         @answer[:lat] = params[:geoloc_lat]
         @answer[:long] = params[:geoloc_long]
         @answer[:planet] = params[:geoloc_planet]
-      elsif @answer_type == "video"
-        @answer = {}
+      when "video"
         @answer[:id] = params[:answer].gsub(/.*=([\w]*?)$/,'\1')
         @answer[:service] = case params[:answer]
                             when /google/
@@ -206,6 +206,10 @@ class TreasureHuntsController < ApplicationController
                             when /youtube/
                               :youtube
                             end
+      when "picture"
+        @answer[:service] = "flickr"
+        @answer[:usr] = params[:answer].gsub(/.*?(\w*?)\/(\w*?)\/?$/,'\1')
+        @answer[:id] = params[:answer].gsub(/.*?(\w*?)\/(\w*?)\/?$/,'\2')
       else
         @answer = params[:answer]
       end
