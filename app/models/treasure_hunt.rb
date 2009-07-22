@@ -55,10 +55,10 @@ class TreasureHunt < ActiveTreasureHunt::Base
           xml.thunt type, :planet => (answer[:planet] || "Earth" ), :lat => answer[:lat], :long => answer[:long]
         when :picture
           raise Exception unless answer.is_a? Hash
-          xml.thunt type, :type => (answer[:type] || "flickr"), :usr => answer[:usr], :id => answer[:id]
+          xml.thunt type, :type => (answer[:service] || "flickr"), :usr => answer[:usr], :id => answer[:id]
         when :video
           raise Exception unless answer.is_a? Hash
-          xml.thunt type, :type => answer[:type], :id => answer[:id]
+          xml.thunt type, :type => answer[:service], :id => answer[:id]
         end
       end
       #xml.thunt type ( xml.text! answer )
