@@ -150,7 +150,7 @@
 	<div class="flag_nav_item" id="geoloc_li"> 
   	 <a href="#" onclick="show('geoloc_info'); return false;" class="clearfix"> 
 	  <div class="flag_nav_li_icon" ></div> 
-	  <div class="flag_nav_li_title">Geoloc</div> 
+	  <div class="flag_nav_li_title">GeoLocation</div> 
 	  <div class="flag_nav_top_mask"></div> 
 	 </a> 
 	 <span class="flag_nav_border_hack"> </span> 
@@ -158,7 +158,7 @@
       <div class="flag_nav_item" id="url_li"> 
 	<a href="#" onclick="show('url_info'); return false;" class="clearfix"> 
  	 <div class="flag_nav_li_icon" ></div> 
-	 <div class="flag_nav_li_title">Url</div> 
+	 <div class="flag_nav_li_title">URI</div> 
 	 <div class="flag_nav_top_mask"></div> 
 	</a> 
 	<span class="flag_nav_border_hack"> </span> 
@@ -207,28 +207,34 @@
        </div> 
        <div class="dev_application app_show" id="geoloc_info" style="display:none"> 
 	<div class="dev_application_header clearfix"> 
-         <h3>Geoloc</h3> 
+         <h3>GeoLocation</h3> 
 	</div>
 	<div class="dev_application_data"> 
-        <div class="dev_app_insights clearfix"> 
+         <div class="dev_app_insights clearfix"> 
         
-        <% form_tag :action => :answer, :id => @hunt.id, :class => "clearfix" do %>
+          <% form_tag :action => :answer, :id => @hunt.id, :class => "clearfix" do %>
           <div>
-            <%= label_tag 'geoloc_lat', 'Latitude' %>
+           <%= label_tag 'geoloc_lat', 'Latitude' %>  
            <%= text_field_tag :geoloc_lat, nil, {:maxlength => 8, :class => "inputtext" } %>
+          </div> 
+          <div>
            <%= label_tag 'geoloc_lat', 'Longitude' %>
            <%= text_field_tag :geoloc_long, nil, { :maxlength => 8, :class => "inputtext" } %>
+          </div> 
+          <div>
            <%= label_tag 'geoloc_lat', 'Planet' %>
-           </div>
            <%= text_field_tag :geolog_planet, nil, { :maxlength => 8, :class => "inputtext" } %>
+          </div>
+          <div>
            <%= submit_tag 'Submit', :class => "inputsubmit" %>
            <% end %> 
           </div>     
+         </div>
         </div>  					
        </div>
        <div class="dev_application app_show" id="url_info" style="display:none"> 
         <div class="dev_application_header clearfix"> 
- 	 <h3>Url</h3> 
+ 	 <h3>URI</h3> 
 	</div>
 	<div class="dev_application_data"> 
 	  <div class="dev_app_insights clearfix"> 
