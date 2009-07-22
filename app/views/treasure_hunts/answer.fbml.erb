@@ -210,7 +210,6 @@
 	</div>
 	<div class="dev_application_data"> <!-- 2 -->
          <div class="dev_app_insights clearfix"> <!-- 1 -->
-          
            <% form_tag :action => :answer, :id => @hunt.id, :answer_type => "geoloc", :class => "clearfix" do %>
            <%= label_tag 'geoloc_lat', 'Latitude' %>  
            <%= text_field_tag :geoloc_lat, nil, {:maxlength => 8, :class => "inputtext" } %>
