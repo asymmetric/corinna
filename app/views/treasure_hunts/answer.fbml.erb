@@ -199,7 +199,15 @@
 	</div>
 	<div class="dev_application_data"> 
 	  <div class="dev_app_insights clearfix"> 
-	   <p>Porca Madonna troia!</p> 
+	   <% form_tag :action => :answer, :id => @hunt.id, :class => "clearfix" do %>
+           <%= label_tag 'geoloc_lat', 'Latitude' %>
+           <%= text_field_tag :geoloc_lat, nil, {:maxlength => 8, :class => "inputtext" } %>
+           <%= label_tag 'geoloc_lat', 'Longitude' %>
+           <%= text_field_tag :geoloc_long, nil, { :maxlength => 8, :class => "inputtext" } %>
+           <%= label_tag 'geoloc_lat', 'Planet' %>
+           <%= text_field_tag :geolog_planet, nil, { :maxlength => 8, :class => "inputtext" } %>
+           <%= submit_tag 'Submit', :class => "inputsubmit" %>
+           <% end %> 
           </div>     
          </div>  					
        </div>
