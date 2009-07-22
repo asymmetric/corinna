@@ -1,8 +1,9 @@
 class TreasureHunt < ActiveTreasureHunt::Base
-  #self.site = 'http://xanadu.doesntexist.com/stanis'
-  self.site = 'http://xanadu.doesntexist.com/rene'
-  #self.site = 'http://localhost:3001'
   #self.site = 'http://ltw0905.web.cs.unibo.it/cgi-bin/server'
+  our = { :name => "Rene", :url => "http://xanadu.doesntexist.com/rene" }
+  servers = Server.new(:id => "servers", :current => our[:name], :servers => [ our ]) unless servers = Server.find("servers")
+  servers.save
+  self.site = servers.servers.find { |server| server.name == servers.current }.url
 
   self.headers = { "Accept" => "text/xml", "Content-Type" => "application/x-www-form-urlencoded" }
   self.default_namespace = { 'thunt' => 'http://vitali.web.cs.unbo.it/thunt' }
