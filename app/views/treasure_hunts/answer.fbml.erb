@@ -227,14 +227,15 @@
        </div><!-- 3 -->
        <div class="dev_application app_show" id="url_info" style="display:none"> <!-- 3 -->
         <div class="dev_application_header clearfix"> 
- 	 <h3>URI</h3> 
+        <h3>URI </h3>
+        <h2>Insert a Uniform Resource Identifier</h2>
 	</div>
 	<div class="dev_application_data"> <!-- 2 -->
 	  <div class="dev_app_insights clearfix"> <!-- 1 -->
           <% form_tag :action => :answer, :id => @hunt.id,:answer_type => "URI", :class => "clearfix" do %>
 
-          <%= text_field_tag :url , nil, {:class => "inputtext" } %>
-          <%= label_tag 'url', 'URL' %>
+          <%= text_field_tag :uri , nil, {:class => "inputtext" } %>
+          <%= label_tag 'uri', 'URI' %>
            <%= submit_tag 'Submit', :class => "inputsubmit" %>
            <% end %> 
           
