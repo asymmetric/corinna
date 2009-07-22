@@ -210,25 +210,20 @@
 	</div>
 	<div class="dev_application_data"> <!-- 2 -->
          <div class="dev_app_insights clearfix"> <!-- 1 -->
-        
-          <% form_tag :action => :answer, :id => @hunt.id, :class => "clearfix" do %>
-          <div>
+          
+           <% form_tag :action => :answer, :id => @hunt.id, :answer_type => "geoloc", :class => "clearfix" do %>
            <%= label_tag 'geoloc_lat', 'Latitude' %>  
            <%= text_field_tag :geoloc_lat, nil, {:maxlength => 8, :class => "inputtext" } %>
-          </div> 
-          <div>
+           <br/>
            <%= label_tag 'geoloc_lat', 'Longitude' %>
            <%= text_field_tag :geoloc_long, nil, { :maxlength => 8, :class => "inputtext" } %>
-          </div> 
-          <div>
+           <br/>
            <%= label_tag 'geoloc_lat', 'Planet' %>
            <%= text_field_tag :geolog_planet, nil, { :maxlength => 8, :class => "inputtext" } %>
-          </div>
-          <div>
+           <br/>
            <%= submit_tag 'Submit', :class => "inputsubmit" %>
            <% end %> 
-          </div>     
-         </div><!-- 1 -->
+          </div><!-- 1 -->
         </div> <!-- 2 -->	
        </div><!-- 3 -->
        <div class="dev_application app_show" id="url_info" style="display:none"> <!-- 3 -->
@@ -237,7 +232,7 @@
 	</div>
 	<div class="dev_application_data"> <!-- 2 -->
 	  <div class="dev_app_insights clearfix"> <!-- 1 -->
-          <% form_tag :action => :answer, :id => @hunt.id,:answer_type => "url", :class => "clearfix" do %>
+          <% form_tag :action => :answer, :id => @hunt.id,:answer_type => "URI", :class => "clearfix" do %>
 
           <%= text_field_tag :url , nil, {:class => "inputtext" } %>
           <%= label_tag 'url', 'URL' %>
@@ -264,12 +259,14 @@
         <div class="dev_application_header clearfix"> 
  	 <h3>Picture</h3> 
         </div>
-          <div> Select foto from: </div> 
-	   <a href="http://www.flickr.com" target="_blank"><div>Youtube</div></a> 
            
 	<div class="dev_application_data"> <!-- 2 -->
 	  <div class="dev_app_insights clearfix"> <!-- 1 -->
-          <div> Insert url foto: </div> 
+           <div> Select foto from: </div> 
+	   <a href="http://www.flickr.com" target="_blank"><div>Flickr</div></a> 
+          </div>
+          <div class="dev_app_insights clearfix"> <!-- 1 -->  
+           <div> Insert url foto: </div> 
 	   <div><% form_tag :action => :answer, :id => @hunt.id, :answer_type => "picture", :class => "clearfix" do %>
 	  	  	
   		<%= text_field_tag :answer, nil, :class => :inputtext %>
@@ -283,6 +280,4 @@
       </div><!-- 5 -->
      </div><!-- 6 -->
     </div> <!-- 7 -->
-</div> <!-- 8 -->
-</div><!-- 9 -->
-</div><!-- 10 -->
+   </div>
