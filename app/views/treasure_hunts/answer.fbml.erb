@@ -4,7 +4,7 @@
 <%= label_tag 'answer_type', 'Answer type' %>
 <% options = { "URI" => :URI, "Picture" => :picture, "Geolocation" => :geoloc,
       "Video" => :video, "String" => :string } %>
-<%= select_tag(:answer_type, options_for_select(options, :string)) %>
+<%= select_tag(:answer_type, options_for_select(options.sort, :string)) %>
 	<p />
   <%= text_area_tag :answer, nil, :size => "55x10" %>
 	<p />

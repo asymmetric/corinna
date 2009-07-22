@@ -178,7 +178,6 @@ class TreasureHuntsController < ApplicationController
   end
 
   def answer
-
     # shows form to input the answer
     if request.get?
       @hunt = TreasureHunt.find params[:id]
@@ -193,7 +192,7 @@ class TreasureHuntsController < ApplicationController
     elsif request.post?
       @hunt = TreasureHunt.find params[:id]
       @answer_type = params[:answer_type]
-      if @answer_type == :geoloc
+      if @answer_type == "geoloc"
         @answer = {}
         @answer[:lat] = params[:geoloc_lat]
         @answer[:long] = params[:geoloc_long]
