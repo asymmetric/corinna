@@ -188,10 +188,22 @@
          <h3>Video</h3>	
 	</div>
 	 <div class="dev_application_data"> 
-	  <div class="dev_app_insights clearfix"> 
-	   <p>Porca Madonna troia!</p> 
+	  <div class="dev_app_insights clearfix">
+	   <div> Select video from: </div> 
+	   <a href="http://www.youtube.it" target="_blank"><div>Youtube</div></a> 
+           <a href="http://video.google.it" target="_blank"><div>GoogleVideo</div></a>
           </div>     
-         </div> 
+         </div>
+         <div class="dev_app_insights clearfix">
+	   <div> Insert url video: </div> 
+	   <div><% form_tag :action => :answer, :id => @hunt.id, :answer_type => "video", :class => "clearfix" do %>
+	  	  	
+  		<%= text_field_tag :answer, nil, :class => :inputtext %>
+  		<%= submit_tag 'Submit', :class => :inputsubmit %>
+  		<% end %>
+          </div>
+         </div>
+          
        </div> 
        <div class="dev_application app_show" id="geoloc_info" style="display:none"> 
 	<div class="dev_application_header clearfix"> 
@@ -212,7 +224,7 @@
            <%= submit_tag 'Submit', :class => "inputsubmit" %>
            <% end %> 
           </div>     
-         </div>  					
+        </div>  					
        </div>
        <div class="dev_application app_show" id="url_info" style="display:none"> 
         <div class="dev_application_header clearfix"> 
