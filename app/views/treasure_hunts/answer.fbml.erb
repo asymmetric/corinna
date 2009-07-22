@@ -131,70 +131,69 @@
  }
 </script>
 
-<div id="content" class="mywidth clearfix"> 
- <div class="dashboard_header"> 
+<div id="content" class="mywidth clearfix"> <!-- 10 -->
+ <div class="dashboard_header"> <!-- popo -->
   <div class="dh_titlebar clearfix"></div> 
- </div>
-  <div class="content_no_sidebar"> 
-   <div class="dev_applications clearfix"> 
-    <div class="flag_nav flag_nav_has_icon dev_app_list" id="dev_app_list"> 
-     <div class="flag_nav_container"> <!-- Start selected nav link --> 
-      <div class="flag_nav_item" id="video_li"> 
+ </div><!-- popo -->
+  <div class="content_no_sidebar"> <!-- 9 -->
+   <div class="dev_applications clearfix"> <!-- 8 -->
+    <div class="flag_nav flag_nav_has_icon dev_app_list" id="dev_app_list"> <!-- 7 -->
+     <div class="flag_nav_container"> <!-- Start selected nav link --> <!-- 6 -->
+      <div class="flag_nav_item" id="video_li"><!-- 5 --> 
 	<a href="#" onclick="show('video_info'); return false;" class="clearfix"> 
          <div class="flag_nav_li_icon"></div> 
 	 <div class="flag_nav_li_title">Video</div> 
 	 <div class="flag_nav_top_mask"></div> 
 	</a> 
 	<span class="flag_nav_border_hack"> </span> 
-      </div> <!-- Unselected link --> 
-	<div class="flag_nav_item" id="geoloc_li"> 
+      </div> <!-- Unselected link --> <!-- 5 -->
+	<div class="flag_nav_item" id="geoloc_li"> <!-- 4 -->
   	 <a href="#" onclick="show('geoloc_info'); return false;" class="clearfix"> 
 	  <div class="flag_nav_li_icon" ></div> 
 	  <div class="flag_nav_li_title">GeoLocation</div> 
 	  <div class="flag_nav_top_mask"></div> 
 	 </a> 
 	 <span class="flag_nav_border_hack"> </span> 
-      </div> 
-      <div class="flag_nav_item" id="url_li"> 
+      </div> <!-- 4 -->
+      <div class="flag_nav_item" id="url_li"><!-- 3 --> 
 	<a href="#" onclick="show('url_info'); return false;" class="clearfix"> 
  	 <div class="flag_nav_li_icon" ></div> 
 	 <div class="flag_nav_li_title">URI</div> 
 	 <div class="flag_nav_top_mask"></div> 
 	</a> 
 	<span class="flag_nav_border_hack"> </span> 
-      </div> <!-- End Nav links --> 
-      <div class="flag_nav_item" id="string_li"> 
+      </div> <!-- End Nav links --> <!-- 3 -->
+      <div class="flag_nav_item" id="string_li"> <!-- 2 -->
 	<a href="#" onclick="show('string_info'); return false;" class="clearfix"> 
   	 <div class="flag_nav_li_icon" ></div> 
 	 <div class="flag_nav_li_title">String</div> 
 	 <div class="flag_nav_top_mask"></div> 
         </a> 
 	<span class="flag_nav_border_hack"> </span> 
-      </div> 		
-      <div class="flag_nav_item" id="picture_li"> 
+      </div> <!-- 2 -->		
+      <div class="flag_nav_item" id="picture_li"><!-- 1 --> 
        <a href="#" onclick="show('picture_info'); return false;" class="clearfix"> 
 	<div class="flag_nav_li_icon" ></div> 
         <div class="flag_nav_li_title">Picture</div> 
 	<div class="flag_nav_top_mask"></div> 
        </a> 
        <span class="flag_nav_border_hack"> </span> 
-      </div> 
+      </div> <!-- 1 -->
      </div> 
     </div> 
-    <div class="dev_app_infos_shadow"> 
-     <div class="dev_app_infos" id="dev_app_infos">  
-      <div class="dev_application app_show" id="video_info" style="display:none"> 
+    <div class="dev_app_infos_shadow"> <!-- 5 -->
+     <div class="dev_app_infos" id="dev_app_infos">  <!-- 4 -->
+      <div class="dev_application app_show" id="video_info" style="display:none"> <!-- 3 -->
 	<div class="dev_application_header clearfix"> 
          <h3>Video</h3>	
 	</div>
-	 <div class="dev_application_data"> 
+	 <div class="dev_application_data"> <!-- 2 -->
 	  <div class="dev_app_insights clearfix">
 	   <div> Select video from: </div> 
 	   <a href="http://www.youtube.it" target="_blank"><div>Youtube</div></a> 
-           <a href="http://video.google.it" target="_blank"><div>GoogleVideo</div></a>
-          </div>     
+           <a href="http://video.google.it" target="_blank"><div>GoogleVideo</div></a>     
          </div>
-         <div class="dev_app_insights clearfix">
+         <div class="dev_app_insights clearfix"><!-- 1 -->
 	   <div> Insert url video: </div> 
 	   <div><% form_tag :action => :answer, :id => @hunt.id, :answer_type => "video" do %>
 	  	  	
@@ -202,14 +201,15 @@
   		<%= submit_tag 'Submit', :class => :inputsubmit %>
   		<% end %>
           </div>
-         </div>    
-       </div> 
-       <div class="dev_application app_show" id="geoloc_info" style="display:none"> 
+         </div>    <!-- 1 -->
+       </div> <!-- 2 -->
+	</div><!-- 3 -->
+       <div class="dev_application app_show" id="geoloc_info" style="display:none"> <!-- 3 -->
 	<div class="dev_application_header clearfix"> 
          <h3>GeoLocation</h3> 
 	</div>
-	<div class="dev_application_data"> 
-         <div class="dev_app_insights clearfix"> 
+	<div class="dev_application_data"> <!-- 2 -->
+         <div class="dev_app_insights clearfix"> <!-- 1 -->
         
           <% form_tag :action => :answer, :id => @hunt.id, :class => "clearfix" do %>
           <div>
@@ -228,15 +228,15 @@
            <%= submit_tag 'Submit', :class => "inputsubmit" %>
            <% end %> 
           </div>     
-         </div>
-        </div>  					
-       </div>
-       <div class="dev_application app_show" id="url_info" style="display:none"> 
+         </div><!-- 1 -->
+        </div> <!-- 2 -->	
+       </div><!-- 3 -->
+       <div class="dev_application app_show" id="url_info" style="display:none"> <!-- 3 -->
         <div class="dev_application_header clearfix"> 
  	 <h3>URI</h3> 
 	</div>
-	<div class="dev_application_data"> 
-	  <div class="dev_app_insights clearfix"> 
+	<div class="dev_application_data"> <!-- 2 -->
+	  <div class="dev_app_insights clearfix"> <!-- 1 -->
           <% form_tag :action => :answer, :id => @hunt.id,:answer_type => "url", :class => "clearfix" do %>
 
           <%= text_field_tag :url , nil, {:class => "inputtext" } %>
@@ -244,31 +244,31 @@
            <%= submit_tag 'Submit', :class => "inputsubmit" %>
            <% end %> 
           
-          </div>     
-        </div>  					
-       </div>
-       <div class="dev_application app_show" id="string_info" style="display:none"> 
+          </div>     <!-- 1 -->
+        </div><!-- 2 -->
+       </div><!-- 3 -->
+       <div class="dev_application app_show" id="string_info" style="display:none"> <!-- 3 -->
 	<div class="dev_application_header clearfix"> 
          <h3>String</h3> 
 	</div>
-	<div class="dev_application_data"> 
-	  <div class="dev_app_insights clearfix"> 
+	<div class="dev_application_data"> <!-- 2 -->
+	  <div class="dev_app_insights clearfix"> <!-- 1 -->
 	   <% form_tag :action => :answer, :id => @hunt.id, :answer_type => "string",:class => "clearfix" do %>
              <%= text_area_tag :answer, nil, :size => "55x10" %>
             <%= submit_tag 'Submit', :class => "inputsubmit" %>
            <% end %> 
-          </div>     
-        </div>  					
-       </div>
-       <div class="dev_application app_show" id="picture_info" style="display:none"> 
+          </div>   <!-- 1 -->  
+        </div>  <!-- 2 -->					
+       </div><!-- 3 -->
+       <div class="dev_application app_show" id="picture_info" style="display:none"><!-- 3 --> 
         <div class="dev_application_header clearfix"> 
  	 <h3>Picture</h3> 
         </div>
           <div> Select foto from: </div> 
 	   <a href="http://www.flickr.com" target="_blank"><div>Youtube</div></a> 
            
-	<div class="dev_application_data"> 
-	  <div class="dev_app_insights clearfix"> 
+	<div class="dev_application_data"> <!-- 2 -->
+	  <div class="dev_app_insights clearfix"> <!-- 1 -->
           <div> Insert url foto: </div> 
 	   <div><% form_tag :action => :answer, :id => @hunt.id, :answer_type => "picture", :class => "clearfix" do %>
 	  	  	
@@ -276,11 +276,13 @@
   		<%= submit_tag 'Submit', :class => :inputsubmit %>
   		<% end %>
           </div>
-         </div>
-        </div>     
-        </div>  					
-       </div>
-      </div>
-     </div>
-    </div> 
-</div> 
+         </div><!-- 1 -->
+        </div><!-- 2 -->     
+        </div> <!-- 3 --> 					
+       </div><!-- 4 -->
+      </div><!-- 5 -->
+     </div><!-- 6 -->
+    </div> <!-- 7 -->
+</div> <!-- 8 -->
+</div><!-- 9 -->
+</div><!-- 10 -->
