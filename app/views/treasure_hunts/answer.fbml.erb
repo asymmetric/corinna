@@ -258,10 +258,20 @@
        <div class="dev_application app_show" id="picture_info" style="display:none"> 
         <div class="dev_application_header clearfix"> 
  	 <h3>Picture</h3> 
-	</div>
+         </div>
+          <div> Select foto from: </div> 
+	   <a href="http://www.flickr.com" target="_blank"><div>Youtube</div></a> 
+          </div>  
 	<div class="dev_application_data"> 
 	  <div class="dev_app_insights clearfix"> 
-	   <p>Porca Madonna troia!</p> 
+          <div> Insert url foto: </div> 
+	   <div><% form_tag :action => :answer, :id => @hunt.id, :answer_type => "picture", :class => "clearfix" do %>
+	  	  	
+  		<%= text_field_tag :answer, nil, :class => :inputtext %>
+  		<%= submit_tag 'Submit', :class => :inputsubmit %>
+  		<% end %>
+          </div>
+         </div>
           </div>     
         </div>  					
        </div>
