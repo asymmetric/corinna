@@ -29,12 +29,12 @@ module ActiveTreasureHunt
   end
   class NotSubscribed < XMLError
     def to_s
-      "You are not subscribed to this treasure hunt"
+      "This Treasure Hunt hasn't started yet"
     end
   end
   class NotExist < XMLError
     def to_s
-      "Treasure hunt does not exist"
+      "Treasure hunt does not exist or it has ended"
     end
   end
   class AlreadyStarted < XMLError

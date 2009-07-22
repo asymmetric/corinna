@@ -1,21 +1,30 @@
 .ubersearch .result {
   border: none;
-/*  border-top: 1px solid #ccc;*/
+  border-bottom: 1px solid #ccc;
 }
-#delete {
-  color: #9F0000;
+#admin {
+  background-color: #eceff6;
+  color: #3b5998;
 }
-#delete:hover {
-  color: white;
-  background-color: #9F0000;
+#admin:hover {
+  background: #3b5998;
+  color: white; }
+
+#share {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  float: none;
 }
+/*#admin:hover {
+	text-decoration: underline;
+}*/
 /*#list-odd {
   background-color: #F0F0FF;
 }*/
-#list-even {
+/*#list-even {
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-}
+}*/
 .ubersearch .result .info {
   width: auto;
 }

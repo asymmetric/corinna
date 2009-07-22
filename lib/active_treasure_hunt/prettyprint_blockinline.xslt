@@ -10,7 +10,7 @@
     <i><xsl:apply-templates /></i>
   </xsl:template>
   <xsl:template match="link">
-    <a href="{@href}"><xsl:value-of select="@href"/></a>
+    <a href="{@href}" target="_blank"><xsl:value-of select="@href"/></a>
     <xsl:apply-templates />
   </xsl:template>
   <xsl:template match="image">
@@ -40,7 +40,7 @@
     <xsl:apply-templates />
   </xsl:template>
   <xsl:template match="article">
-    <a href="http://{@lang}.wikipedia.org/wiki/{@id}"><img style="vertical-align: middle;" src="http://upload.wikimedia.org/wikipedia/commons/f/f1/Wikipedia-logo_kucuk.png" alt="Wikipedia logo" /><xsl:value-of select="@id" /></a>
+    <a href="http://{@lang}.wikipedia.org/wiki/{@id}" target="_blank"><img style="vertical-align: middle;" src="http://upload.wikimedia.org/wikipedia/commons/f/f1/Wikipedia-logo_kucuk.png" alt="Wikipedia logo" /><xsl:value-of select="@id" /></a>
     <xsl:apply-templates />
   </xsl:template>
 </xsl:stylesheet>

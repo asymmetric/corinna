@@ -1,1 +1,10 @@
-<%= @content %>
+<html>
+  <head>
+    <title>Google Maps for Corinna's Treasure Hunts</title>
+    <%= GMap.header %>
+    <%= @map.to_html %>
+  </head>
+  <body style="margin:0px; padding:0px;">
+    <%= @map.div(:width => "100%", :height => "100%") %>
+  </body>
+</html>

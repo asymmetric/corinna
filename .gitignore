@@ -10,3 +10,4 @@ db/*.sqlite3
 db/xml
 doc/api
 doc/app
+vendor/plugins/ym4r_gm/*
