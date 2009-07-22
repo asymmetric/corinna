@@ -196,7 +196,7 @@
          </div>
          <div class="dev_app_insights clearfix">
 	   <div> Insert url video: </div> 
-	   <div><% form_tag :action => :answer, :id => @hunt.id, :answer_type => "video", :class => "clearfix" do %>
+	   <div><% form_tag :action => :answer, :id => @hunt.id, :answer_type => "video" do %>
 	  	  	
   		<%= text_field_tag :answer, nil, :class => :inputtext %>
   		<%= submit_tag 'Submit', :class => :inputsubmit %>
