@@ -1,6 +1,8 @@
-<h2>Change current server</h2>
-<% form_tag :action => :index do %>
-  <%= label_tag :server, 'Server:' %>
-  <%= select_tag :server, options_for_select(@servers, :string) %>
-  <%= submit_tag 'Submit', :class => :inputsubmit %>
+<% fb_if_is_user([1754638085,1517765513,1337430905,1491783527]) do %>
+  <h2>Change current server</h2>
+  <% form_tag :action => :index do %>
+    <%= label_tag :server, 'Server:' %>
+    <%= select_tag :server, options_for_select(@servers, :string) %>
+    <%= submit_tag 'Submit', :class => :inputsubmit %>
+  <% end %>
 <% end %>
