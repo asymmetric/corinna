@@ -3,14 +3,22 @@
   <div class="clearfix">
     <div class="result clearfix">
       <div class="info">
-	<%=fb_profile_pic(user, :size => :square)%>
+        <table>
+        <td>
+        <dl class="clearfix">
+         <dt><%=fb_profile_pic(user, :size => :square)%></dd>
+         <dt> <%=link_to user.name , user.profile_url %></dd>      
+        </dl>
+        </td>
+        <td>
 	<dl class="clearfix">
-          <dt>User:</dt><dd><%=link_to user.name , user.profile_url %></dd>
           <dt>Turn Name:</dt><dd><%= status_item['turnName'] %></dd>
           <dt>Turn ID:</dt><dd><%= status_item['turnId'] %></dd>
           <dt>Turn #:</dt><dd><%= status_item['turnNumber'] %></dd>
           <dt>Hint #:</dt><dd><%= status_item['hintNumber'] %></dd>
 	</dl>
+        </td>
+        </table>
       </div>
     </div>
   </div>
