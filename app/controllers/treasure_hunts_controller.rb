@@ -1,10 +1,9 @@
 class TreasureHuntsController < ApplicationController
   ensure_application_is_installed_by_facebook_user
-  before_filter :get_current_facebook_user
+  before_filter :get_server, :get_current_facebook_user
 
   # GET /treasure_hunts
   def index
-    #TreasureHunt.set_site = Server.find(params[:server]).url
     @hunts = TreasureHunt.find(:all)
 
     respond_to do |format|
@@ -38,16 +37,17 @@ class TreasureHuntsController < ApplicationController
     respond_to do |format|
       begin
         @hunt.save
-        @current_user.thunts << { :id => @hunt.id, :password => hunt_pwd }
+        user_serv = @current_user.find_or_create_server @server.id
+        user_serv.thunts << { :id => @hunt.id, :password => hunt_pwd }
         @current_user.save
         flash[:notice] = 'Treasure Hunt successfully created!'
-        format.html { redirect_to(@hunt) }
-        format.fbml { redirect_to(@hunt) }
+        format.html { redirect_to [@server, @hunt] }
+        format.fbml { redirect_to [@server, @hunt] }
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message
         @hunt.xml = ""
-        format.html { render :action => "new" }
-        format.fbml { render :action => "new" }
+        format.html { render :action => :new }
+        format.fbml { render :action => :new }
       end
     end
 
@@ -63,8 +63,8 @@ class TreasureHuntsController < ApplicationController
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message
-        format.html { redirect_to treasure_hunts_url }
-        format.fbml { redirect_to treasure_hunts_url }
+        format.html { redirect_to :action => :index }
+        format.fbml { redirect_to :action => :index }
       end
     end
   end
@@ -84,8 +84,8 @@ class TreasureHuntsController < ApplicationController
 
            @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
            flash[:notice] = "Fake hint successfully sent!"
-           format.html { redirect_to @hunt }
-           format.fbml { redirect_to @hunt }
+           format.html { redirect_to [@server, @hunt] }
+           format.fbml { redirect_to [@server, @hunt] }
          rescue ActiveTreasureHunt::XMLError => e
            flash[:error] = e.message
            format.html
@@ -107,7 +107,7 @@ class TreasureHuntsController < ApplicationController
         group_id = params[:gid].to_i
         group_name = @current_facebook_user.groups.find { |g| g.gid == group_id }.name
         @hunt.subscribe :group, @current_user.id, @current_user.password
-        #@hunt.subscribe :group, group_id, @current_user.password
+        # @hunt.subscribe :group, group_id, @current_user.password
         flash[:notice] = "Successfully subscribed as group #{group_name}!"
       end
     rescue ActiveTreasureHunt::XMLError => e
@@ -137,8 +137,8 @@ class TreasureHuntsController < ApplicationController
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message
-        format.html { redirect_to(@hunt) }
-        format.fbml { redirect_to(@hunt) }
+        format.html { redirect_to [@server, @hunt] }
+        format.fbml { redirect_to [@server, @hunt] }
       end
     end
   end
@@ -155,8 +155,8 @@ class TreasureHuntsController < ApplicationController
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message
-        format.html { redirect_to(@hunt) }
-        format.fbml { redirect_to(@hunt) }
+        format.html { redirect_to [@server, @hunt] }
+        format.fbml { redirect_to [@server, @hunt] }
       end
     end
   end
@@ -165,16 +165,15 @@ class TreasureHuntsController < ApplicationController
     @hunt = TreasureHunt.find params[:id]
 
     begin
-      hunt_pwd = self.get_admin_password @hunt.id
+      hunt_pwd = @current_user.hunt_password @hunt.id, @server.id
       @hint = @hunt.start @current_user.id, hunt_pwd
       flash[:notice] = "Treasure Hunt successfully started!"
     rescue ActiveTreasureHunt::XMLError => e
       flash[:error] = e.message
     end
-
     respond_to do |format|
-      format.html { redirect_to @hunt }
-      format.fbml { redirect_to @hunt }
+      format.html { redirect_to [@server, @hunt] }
+      format.fbml { redirect_to [@server, @hunt] }
     end
   end
 
@@ -182,7 +181,6 @@ class TreasureHuntsController < ApplicationController
     # shows form to input the answer
     if request.get?
       @hunt = TreasureHunt.find params[:id]
-
 
       respond_to do |format|
         format.html
@@ -234,8 +232,8 @@ class TreasureHuntsController < ApplicationController
   def destroy
     @hunt = TreasureHunt.find(params[:id])
     begin
-      @hunt.destroy(@current_user.id, @current_user.hunt_password(@hunt.id))
-      @current_user.thunts.delete_if { |x| x.id == @hunt.id }
+      @hunt.destroy(@current_user.id, @current_user.hunt_password(@hunt.id, @server.id))
+      @current_user.find_or_create_server(@server.id).thunts.delete_if { |x| x.id == @hunt.id }
       @current_user.save
       flash[:notice] = "Treasure Hunt successfully destroyed!"
     rescue ActiveTreasureHunt::XMLError => e
@@ -243,8 +241,8 @@ class TreasureHuntsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to(treasure_hunts_url) }
-      format.fbml { redirect_to(treasure_hunts_url) }
+      format.html { redirect_to :action => :index }
+      format.fbml { redirect_to :action => :index }
     end
   end
 
@@ -257,21 +255,21 @@ class TreasureHuntsController < ApplicationController
     end
   end
 
-  protected
-  def get_admin_password(hunt_id)
-    @current_user.thunts.find { |h| h.id == hunt_id }.password
+  private
+  def get_server
+    @server = Server.find(params[:server_id])
+    TreasureHunt.site = @server.url
   end
 
-  private
   def get_current_facebook_user
     @current_facebook_user = facebook_session.user
-    @current_user = User.find(@current_facebook_user.to_s)
-    unless @current_user
+    unless @current_user = User.find(@current_facebook_user.to_s)
       @current_user = User.new
       @current_user.id = @current_facebook_user.to_s
       @current_user.password = ActiveSupport::SecureRandom.hex
-      @current_user.thunts = []
+      @current_user.servers = [{ :id => @server.id, :thunts => []}]
       @current_user.save
+      @current_user = User.find(@current_facebook_user.to_s)
     end
   end
 end

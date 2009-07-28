@@ -8,5 +8,9 @@
   <%= @server.url %>
 </p>
 
+<p>
+  <b><%= link_to 'Treasure Hunts on this server', server_treasure_hunts_path(@server) %></b>
+</p>
+
 <%= link_to 'Edit', edit_server_path(@server) %> |
 <%= link_to 'Back', servers_path %>

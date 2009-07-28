@@ -21,7 +21,7 @@ class ServersController < ApplicationController
 
   def create
     @server = Server.new(params[:server])
-    @server.id = @server.title.downcase[0..10]
+    @server.id = @server.title.strip.tr(" ", "_").downcase[0..10]
     respond_to do |format|
       if @server.save
         flash[:notice] = 'Server was successfully created.'
@@ -36,10 +36,6 @@ class ServersController < ApplicationController
 
   def edit
     @server = Server.find(params[:id])
-    #respond_to do |format|
-    #  format.html
-    #  format.fbml
-    #end
   end
 
   def show

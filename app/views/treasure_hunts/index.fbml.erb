@@ -6,15 +6,15 @@
 	<div class="result clearfix">
 	  <div class="info">
 	    <dl>
-	      <dt>Title:</dt> <dd class="result_name fn"><%=link_to h(hunt.title), hunt %></dd>
+	      <dt>Title:</dt> <dd class="result_name fn"><%= link_to h(hunt.title), { :id => hunt, :action => :show } %></dd>
 	      <dt>Description:</dt> <dd><%= truncate(prettyprint_blockinline(hunt.xml, 'description').strip, :length => 160).gsub(/<[^>]*$/,'...').gsub(/<\/?img.*?>/,'').gsub(/<\/?p.*?>/,'') %></dd>
 	    </dl>
 	  </div>
 	  <ul class="actionspro">
-	    <li class="actionspro_li"><%= link_to 'Show', hunt, :class => 'actionspro_a' %></li>
-	    <li class="actionspro_li"><%= link_to 'Invite friends', {:id => hunt, :action => :invite }, :class => 'actionspro_a'%></li>
-	    <% if @current_user and @current_user.is_admin? hunt.id %>
-	      <li class="actionspro_li"><%= link_to 'Delete', hunt,
+	    <li class="actionspro_li"><%= link_to 'Show', { :id => hunt, :action => :show }, :class => 'actionspro_a' %></li>
+	    <li class="actionspro_li"><%= link_to 'Invite friends', { :id => hunt.id, :action => :invite }, :class => 'actionspro_a'%></li>
+	    <% if @current_user and @current_user.is_admin? hunt.id, @server.id %>
+	      <li class="actionspro_li"><%= link_to 'Delete', { :id => hunt },
 					    :confirm => 'Are you sure do you want to delete this treasure hunt?',
 					    :method => :delete, :class => 'actionspro_a', :id => 'admin' %></li>
 	    <% end %>
@@ -22,7 +22,7 @@
 	</div>
       <% end %>
     <% else %>
-      <p class="result clearfix" id="info">There aren't any, <%= link_to 'create one now and start playing!', new_treasure_hunt_path %></p>
+      <p class="result clearfix" id="info">There aren't any, <%= link_to 'create one now and start playing!', new_server_treasure_hunt_path %></p>
     <% end %>
   </div>
 </div>

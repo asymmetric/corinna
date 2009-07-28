@@ -1,11 +1,5 @@
 class TreasureHunt < ActiveTreasureHunt::Base
-
-  #our = { :name => "Rene", :url => "http://xanadu.doesntexist.com/rene" }
-  #servers = Server.new(:id => "servers", :current => our[:name], :servers => [ our ]) unless servers = Server.find("servers")
-  #servers.save
-  self.site = "http://xanadu.doesntexist.com/rene" #servers.servers.find { |server| server.name == servers.current }.url
-  #self.site = "http://localhost:3001"
-  #def self.set_site=(site)
+  #def self.set_site= site
   #  self.site = site
   #end
   self.headers = { "Accept" => "text/xml", "Content-Type" => "application/x-www-form-urlencoded" }
@@ -30,7 +24,9 @@ class TreasureHunt < ActiveTreasureHunt::Base
     xml = Builder::XmlMarkup.new
     xml.instruct!
     xml.thunt tag, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt", :turn => turn, :id => id, :pwd => password, :thunt => hunt do
-      xml << fake_hint
+      xml.thunt :para do
+        xml << fake_hint
+      end
     end
   end
 

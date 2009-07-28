@@ -4,9 +4,9 @@
 <%= javascript_include_tag :defaults %>
 <% cname = controller.action_name.intern %>
 <% fb_dashboard do %>
-	<%= fb_action 'Home', treasure_hunts_path %>
+	<%= fb_action 'Home', server_treasure_hunts_path %>
 	<% if ( cname == :index || cname == :new) %>
-		<%= fb_create_button 'Create a new Treasure Hunt', new_treasure_hunt_path %>
+		<%= fb_create_button 'Create a new Treasure Hunt', new_server_treasure_hunt_path %>
 	<% end %>
 	<%= fb_help 'Feedback', fb_about_url %>
 <% end %>
