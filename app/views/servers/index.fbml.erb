@@ -1,0 +1,29 @@
+<div id="product-list">
+  <h1>Listing servers</h1>
+
+  <table>
+  <% for server in @servers %>
+    <tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+
+      <td class="list-description">
+        <dl>
+          <dt><%=h server.title %></dt>
+          <dd><%=h truncate(server.url,:length => 80) %></dd>
+        </dl>
+      </td>
+
+      <td class="list-actions">
+        <%= link_to 'Show', server %><br/>
+        <%= link_to 'Edit', edit_server_path(server) %><br/>
+        <%= link_to 'Destroy', server,
+                    :confirm => 'Are you sure?',
+                    :method => :delete %>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+</div>
+
+<br />
+
+<%= link_to 'New server', new_server_path %>

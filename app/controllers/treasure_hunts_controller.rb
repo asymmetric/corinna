@@ -4,6 +4,7 @@ class TreasureHuntsController < ApplicationController
 
   # GET /treasure_hunts
   def index
+    #TreasureHunt.set_site = Server.find(params[:server]).url
     @hunts = TreasureHunt.find(:all)
 
     respond_to do |format|
@@ -56,6 +57,7 @@ class TreasureHuntsController < ApplicationController
   def show
     respond_to do |format|
       begin
+        #TreasureHunt.set_site = Server.find(params[:server]).url
         @hunt = TreasureHunt.find(params[:id])
         format.html
         format.fbml
@@ -68,7 +70,6 @@ class TreasureHuntsController < ApplicationController
   end
 
   def fakehint
-
     respond_to do |format|
       if request.get?
         @hunt = TreasureHunt.find params[:id]

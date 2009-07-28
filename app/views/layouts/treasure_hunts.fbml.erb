@@ -5,9 +5,6 @@
 <% cname = controller.action_name.intern %>
 <% fb_dashboard do %>
 	<%= fb_action 'Home', treasure_hunts_path %>
-	<% fb_if_is_user([1754638085,1517765513,1337430905,1491783527]) do %>
-	  <%= fb_action 'Servers', :controller => :admin %>
-	<% end %>
 	<% if ( cname == :index || cname == :new) %>
 		<%= fb_create_button 'Create a new Treasure Hunt', new_treasure_hunt_path %>
 	<% end %>

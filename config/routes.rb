@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :treasure_hunts
+#  map.resources :treasure_hunts, :except => [:update, :edit]
+  map.resources :servers, :has_many => :treasure_hunts #, :member => { :invite => :get, :subscribe => :post, :hint => :get, :status => :get, :start => :get}
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
