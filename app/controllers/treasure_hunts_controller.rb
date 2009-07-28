@@ -37,7 +37,7 @@ class TreasureHuntsController < ApplicationController
     respond_to do |format|
       begin
         @hunt.save
-        user_serv = @current_user.find_or_create_server @server.id
+        user_serv = @current_user.find_server @server.id
         user_serv.thunts << { :id => @hunt.id, :password => hunt_pwd }
         @current_user.save
         flash[:notice] = 'Treasure Hunt successfully created!'
@@ -233,7 +233,7 @@ class TreasureHuntsController < ApplicationController
     @hunt = TreasureHunt.find(params[:id])
     begin
       @hunt.destroy(@current_user.id, @current_user.hunt_password(@hunt.id, @server.id))
-      @current_user.find_or_create_server(@server.id).thunts.delete_if { |x| x.id == @hunt.id }
+      @current_user.find_server(@server.id).thunts.delete_if { |x| x.id == @hunt.id }
       @current_user.save
       flash[:notice] = "Treasure Hunt successfully destroyed!"
     rescue ActiveTreasureHunt::XMLError => e
@@ -267,7 +267,7 @@ class TreasureHuntsController < ApplicationController
       @current_user = User.new
       @current_user.id = @current_facebook_user.to_s
       @current_user.password = ActiveSupport::SecureRandom.hex
-      @current_user.servers = [{ :id => @server.id, :thunts => []}]
+      @current_user.servers = Server.find(:all).collect { |serv| { :id => serv.id, :thunts => [] } }
       @current_user.save
       @current_user = User.find(@current_facebook_user.to_s)
     end

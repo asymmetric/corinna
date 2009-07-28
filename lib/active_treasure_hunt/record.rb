@@ -7,7 +7,7 @@ module ActiveTreasureHunt
         "#{dir_path}/#{id}.#{format.extension}"
       end
 
-      def find(arg)
+      def find(arg, none = {})
         case arg
         when :all then instantiate_collection(Dir.glob("#{dir_path}/*.#{format.extension}"))
         else
