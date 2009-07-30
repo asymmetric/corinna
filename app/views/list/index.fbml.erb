@@ -1,0 +1,28 @@
+<div class="ubersearch">
+  <% for server in @servers %>
+    <strong><%= pluralize server[:hunts].size, "treasure hunt" %> found on server <%= link_to server[:server].title, server_treasure_hunts_path(server[:server]) %></strong>
+    <div class="clearfix">
+      <% if server[:hunts].size > 0 %>
+      <% for hunt in server[:hunts] %>
+	<div class="result clearfix">
+	  <div class="info">
+	    <dl>
+	      <dt>Title:</dt> <dd class="result_name fn"><%= link_to h(hunt.title), [server[:server], hunt] %></dd>
+	      <dt>Description:</dt> <dd><%= truncate(prettyprint_blockinline(hunt.xml, 'description').strip, :length => 160).gsub(/<[^>]*$/,'...').gsub(/<\/?img.*?>/,'').gsub(/<\/?p.*?>/,'') %></dd>
+	    </dl>
+	  </div>
+	  <ul class="actionspro">
+	    <li class="actionspro_li"><%= link_to 'Show', [server[:server], hunt], :class => 'actionspro_a' %></li>
+	    <li class="actionspro_li"><%= link_to 'Invite friends',  invite_server_treasure_hunt_path(server[:server], hunt), :class => 'actionspro_a'%></li>
+	    <% if @current_user and @current_user.is_admin? hunt.id, @server.id %>
+	      <li class="actionspro_li"><%= link_to 'Delete', { :id => hunt },
+					    :confirm => 'Are you sure do you want to delete this treasure hunt?',
+					    :method => :delete, :class => 'actionspro_a', :id => 'admin' %></li>
+	    <% end %>
+	  </ul>
+	</div>
+      <% end %>
+      <% end %>
+  </div>
+    <% end %>
+</div>
