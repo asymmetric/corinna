@@ -7,8 +7,8 @@ tmp/
 config/database.yml
 config/facebooker.yml
 db/*.sqlite3
-db/xml
-db/servers
+db/users/*.xml
+db/servers/*.xml
 doc/api
 doc/app
 vendor/plugins/ym4r_gm/*

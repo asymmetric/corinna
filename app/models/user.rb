@@ -1,5 +1,5 @@
 class User < ActiveTreasureHunt::Record
-  self.dir_path = "#{RAILS_ROOT}/db/xml"
+  self.dir_path = "#{RAILS_ROOT}/db/users"
 
   def is_admin? hunt_id, server_id
     hunt_id = hunt_id.to_s unless hunt_id.is_a? String

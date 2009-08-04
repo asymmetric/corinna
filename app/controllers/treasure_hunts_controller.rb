@@ -260,6 +260,7 @@ class TreasureHuntsController < ApplicationController
   def get_server
     @server = Server.find(params[:server_id])
     TreasureHunt.site = @server.url
+    TreasureHunt.prefix = "#{TreasureHunt.site.path}/"
   end
 
   def get_current_facebook_user
