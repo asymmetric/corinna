@@ -1,6 +1,0 @@
-<h2>Change current server</h2>
-<% form_tag :action => :index do %>
-  <%= label_tag :server, 'Server:' %>
-  <%= select_tag :server, options_for_select(@servers, :string) %>
-  <%= submit_tag 'Submit', :class => :inputsubmit %>
-<% end %>

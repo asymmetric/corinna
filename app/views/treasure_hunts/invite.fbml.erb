@@ -1,8 +1,6 @@
 <% content_for("invite_user") do %>
-    Hey! I found this treasure hunt and I want to play it with you! <%= fb_req_choice("Check it out!", "treasure_hunts/#{@hunt.id}") %>
+    Hey! I found this treasure hunt and I want to play it with you! <%= fb_req_choice("Check it out!", url_for([@server, @hunt])) %>
 <% end %>
-<% fb_request_form("#{@hunt.title}","invite_user", url_for(@hunt)) do %>
-  <%= fb_multi_friend_selector "Select some friends you want to play #{@hunt.title} with" %>
+<% fb_request_form(@hunt.title.strip,"invite_user", url_for(:action => :show)) do %> <!-- TODO test -->
+  <%= fb_multi_friend_selector "Select some friends you want to play \"#{@hunt.title.strip}\" with", :bypass => :cancel %>
 <% end %>
-
-<%= link_to 'Back', @hunt, :id => :back %>

@@ -1,5 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :treasure_hunts
+  map.resources :servers do |server|
+    server.resources :treasure_hunts, :except => [:update, :edit],
+    :member => { :invite => :get, :subscribe => :post, :hint => :get, :status => :get, :start => :get, :answer => [:get, :post], :fakehint => [:get, :post] }
+  end
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
@@ -32,15 +35,15 @@ ActionController::Routing::Routes.draw do |map|
   #   end
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  map.root :controller => "treasure_hunts"
+  map.root :controller => "list"
 
   # See how all your routes lay out with "rake routes"
 
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing the them or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:id/:action/'
-  map.connect ':controller/:id/:action.:format'
+  #map.connect ':controller/:id/:action/'
+  #map.connect ':controller/:id/:action.:format'
   #map.connect ':controller/:action/:id'
   #map.connect ':controller/:action/:id.:format'
 end

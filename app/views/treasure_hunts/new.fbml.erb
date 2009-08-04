@@ -1,8 +1,6 @@
-<h2>New Treasure Hunt</h2>
+<h1 class="center">New Treasure Hunt</h1>
 
-<% facebook_form_for @hunt do |f| %>
+<% facebook_form_for [@server, @hunt] do |f| %>
     <%= f.text_area :xml, :rows => 20 %>
     <%= f.buttons 'Create!' %>
 <% end %>
-
-<%= link_to 'Back', @hunt, :id => :back %>

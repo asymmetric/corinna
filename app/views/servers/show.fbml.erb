@@ -1,0 +1,21 @@
+<div class="ubersearch">
+  <div class="clearfix">
+    <div class="result clearfix">
+      <div class="info">
+	<dl class="clearfix">
+	  <dt>Title:</dt><br />
+	  <dd class="result_name fn" id="show-title"><%=h @server.title %></dd>
+	  <dt>URL:</dt><br />
+	  <dd id="show-desc"><%= link_to @server.url %></dd>
+	</dl>
+      </div>
+    <ul class="actionspro">
+	<li class="actionspro_li"><%= link_to 'Treasure Hunts', server_treasure_hunts_path(@server), :class => 'actionspro_a' %></li>
+	<li class="actionspro_li"><%= link_to 'Edit', edit_server_path, :class => 'actionspro_a', :id => 'admin' %></li>
+        <li class="actionspro_li"><%= link_to 'Destroy', @server,
+        :confirm => 'Are you sure do you want to delete this server?',
+        :method => :delete, :class => 'actionspro_a', :id => 'admin' %></li>
+    </ul>
+    </div>
+  </div>
+</div>

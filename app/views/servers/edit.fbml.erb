@@ -1,0 +1,8 @@
+<h1 class="center">Editing server <%= @server.id %></h1>
+
+<% facebook_form_for(@server) do |f| %>
+  <%= f.error_messages %>
+  <%= f.text_field :title %>
+  <%= f.text_field :url %>
+  <%= f.buttons 'Update' %>
+<% end %>

@@ -17,46 +17,10 @@ module ActiveTreasureHunt
   class Base < ActiveResource::Base
     class << self
       attr_writer :headers
-      attr_accessor :default_namespace
-      attr_accessor :default_request_builder
-      attr_accessor :subscription_builder
-      attr_accessor :fakehint_builder
-      attr_accessor :element_tag
-      attr_accessor :answer_builder
-      attr_accessor :status_builder
+      attr_accessor :default_namespace, :default_request_builder, :subscription_builder, :fakehint_builder, :element_tag, :answer_builder, :status_builder, :create_response_tag, :destroy_name, :destroy_response_tag, :destroy_request_tag, :fakehint_name, :fakehint_request_tag, :fakehint_response_tag, :subscribe_name, :subscribe_request_tag, :subscribe_response_tag, :gethint_name, :gethint_request_tag, :gethint_response_tag, :start_name, :start_request_tag, :start_response_tag, :answer_name, :answer_request_tag, :answer_response_tag, :status_name, :status_request_tag, :status_response_tag
       attr_accessor_with_default(:ok_status) { "accepted" }
       attr_accessor_with_default(:no_exception_status) { %w(accepted wrong right win loose) }
-
       attr_accessor_with_default(:create_name) { element_name.pluralize }
-      attr_accessor :create_response_tag
-
-      attr_accessor :destroy_name
-      attr_accessor :destroy_response_tag
-      attr_accessor :destroy_request_tag
-
-      attr_accessor :fakehint_name
-      attr_accessor :fakehint_request_tag
-      attr_accessor :fakehint_response_tag
-
-      attr_accessor :subscribe_name
-      attr_accessor :subscribe_request_tag
-      attr_accessor :subscribe_response_tag
-
-      attr_accessor :gethint_name
-      attr_accessor :gethint_request_tag
-      attr_accessor :gethint_response_tag
-
-      attr_accessor :start_name
-      attr_accessor :start_request_tag
-      attr_accessor :start_response_tag
-
-      attr_accessor :answer_name
-      attr_accessor :answer_request_tag
-      attr_accessor :answer_response_tag
-
-      attr_accessor :status_name
-      attr_accessor :status_request_tag
-      attr_accessor :status_response_tag
 
       def build_path(action_name, prefix_options = {}, query_options = nil)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
@@ -72,7 +36,7 @@ module ActiveTreasureHunt
           instantiate_collection(get(from, options[:params]))
         when String
           path = "#{from}#{query_string(options[:params])}"
-          instantiate_collection(connection.get(path, headers).body || [])
+          instantiate_collection((connection.get(path, headers).body || []))
         else
           prefix_options, query_options = split_options(options[:params])
           path = build_path(collection_name, prefix_options, query_options)
