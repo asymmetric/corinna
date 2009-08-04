@@ -1,5 +1,5 @@
 class ServersController < ApplicationController
-  
+  layout "list"
   # GET /treasure_hunts
   def index
     @servers = Server.find(:all)
@@ -21,9 +21,13 @@ class ServersController < ApplicationController
 
   def create
     @server = Server.new(params[:server])
-    @server.id = @server.title.strip.tr(" ", "_").downcase[0..10]
+    @server.id = @server.title.strip.tr(" ", "_").downcase[0..15]
     respond_to do |format|
       if @server.save
+        User.find(:all).each do |user|
+          user.servers << { :id => @server.id, :thunts => [] }
+          user.save
+        end
         flash[:notice] = 'Server was successfully created.'
         format.html { redirect_to @server }
         format.fbml { redirect_to @server }
@@ -64,7 +68,11 @@ class ServersController < ApplicationController
 
   def destroy
     @server = Server.find(params[:id])
-    @server.destroy
+    unless Server.default == @server
+      @server.destroy
+    else
+      flash[:error] = "Can't delete default server."
+    end
 
     respond_to do |format|
       format.html { redirect_to servers_url }

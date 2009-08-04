@@ -1,29 +1,22 @@
-<div id="product-list">
-  <h1>Listing servers</h1>
-
-  <table>
-  <% for server in @servers %>
-    <tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
-
-      <td class="list-description">
-        <dl>
-          <dt><%=h server.title %></dt>
-          <dd><%=h truncate(server.url,:length => 80) %></dd>
-        </dl>
-      </td>
-
-      <td class="list-actions">
-	<%= link_to 'Treasure Hunts', server_treasure_hunts_path(server) %><br/>
-        <%= link_to 'Edit', edit_server_path(server) %><br/>
-        <%= link_to 'Destroy', server,
-                    :confirm => 'Are you sure?',
-                    :method => :delete %>
-      </td>
-    </tr>
-  <% end %>
-  </table>
+<div class="ubersearch">
+  <strong><%= pluralize @servers.size, "server" %> found</strong>
+  <div class="clearfix">
+    <% for server in @servers %>
+      <div class="result clearfix">
+	<div class="info">
+	  <dl>
+	    <dt>Title:</dt> <dd class="result_name fn"><%= link_to h(server.title), server %></dd>
+	    <dt>URL:</dt> <dd><%= link_to h(server.url), server.url %></dd>
+	  </dl>
+	</div>
+	<ul class="actionspro">
+	  <li class="actionspro_li"><%= link_to 'Show', server, :class => 'actionspro_a' %></li>
+	  <li class="actionspro_li"><%= link_to 'Edit', edit_server_path(server), :class => 'actionspro_a', :id => 'admin' %></li>
+	  <li class="actionspro_li"><%= link_to 'Destroy', server,
+					:confirm => 'Are you sure do you want to delete this server?',
+					:method => :delete, :class => 'actionspro_a', :id => 'admin' %></li>
+	</ul>
+      </div>
+    <% end %>
+  </div>
 </div>
-
-<br />
-
-<%= link_to 'New server', new_server_path %>

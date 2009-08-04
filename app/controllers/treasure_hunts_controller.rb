@@ -1,6 +1,7 @@
 class TreasureHuntsController < ApplicationController
   ensure_application_is_installed_by_facebook_user
   before_filter :get_server, :get_current_facebook_user
+  layout "list"
 
   # GET /treasure_hunts
   def index
@@ -63,8 +64,8 @@ class TreasureHuntsController < ApplicationController
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message
-        format.html { redirect_to :action => :index }
-        format.fbml { redirect_to :action => :index }
+        format.html { redirect_to :controller => :list }
+        format.fbml { redirect_to :controller => :list }
       end
     end
   end
@@ -241,8 +242,8 @@ class TreasureHuntsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to :action => :index }
-      format.fbml { redirect_to :action => :index }
+      format.html { redirect_to :controller => :list }
+      format.fbml { redirect_to :controller => :list }
     end
   end
 

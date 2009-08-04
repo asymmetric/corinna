@@ -1,12 +1,10 @@
+<h1><%= @hunt.title %></h1>
 <div class="ubersearch">
   <div class="clearfix">
     <div class="result clearfix">
       <ul class="actionspro">
 	<li class="actionspro_li"><%= link_to 'Answer', { :action => :answer }, :class => "actionspro_a" %></li>
-<!--	<li class="actionspro_li"><%= link_to 'See players\' status', { :action => :status }, :class => "actionspro_a" %>-->
         <li class="actionspro_li"><%= link_to 'Send fake hint', { :action => :fakehint }, :class => "actionspro_a" %></li>
-<!--     <li class="actionspro_li"><%= link_to 'Get hint', { :action => :hint }, :class => "actionspro_a" %></li>-->
-
       </ul>
       <div class="info">
 	<%= render :partial => "share_button" %>

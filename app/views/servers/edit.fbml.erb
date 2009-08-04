@@ -1,18 +1,8 @@
-<h1>Editing server</h1>
+<h1 class="center">Editing server <%= @server.id %></h1>
 
-<% form_for(@server) do |f| %>
+<% facebook_form_for(@server) do |f| %>
   <%= f.error_messages %>
-
-  <p>
-    <%= f.label :title %><br />
-    <%= f.text_field :title %>
-  </p>
-  <p>
-    <%= f.label :url %><br />
-    <%= f.text_field :url %>
-  </p>
-
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
+  <%= f.text_field :title %>
+  <%= f.text_field :url %>
+  <%= f.buttons 'Update' %>
 <% end %>

@@ -8,10 +8,5 @@ class ApplicationController < ActionController::Base
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
-  #before_filter :get_server
 
-#  private
-#  def get_server
-#    TreasureHunt
-#  end
 end
