@@ -55,7 +55,7 @@ class ServersController < ApplicationController
     @server = Server.find(params[:id])
 
     respond_to do |format|
-      if @server.update_attributes(params[:server])
+      if @server != @default_server and @server.update_attributes(params[:server])
         flash[:notice] = 'Server was successfully updated.'
         format.html { redirect_to @server }
         format.fbml { redirect_to @server }
@@ -68,11 +68,7 @@ class ServersController < ApplicationController
 
   def destroy
     @server = Server.find(params[:id])
-    unless Server.default == @server
-      @server.destroy
-    else
-      flash[:error] = "Can't delete default server."
-    end
+    @server.destroy unless @default_server == @server
 
     respond_to do |format|
       format.html { redirect_to servers_url }

@@ -29,6 +29,6 @@
       </div>
     <% end %>
   <% else %>
-    <p class="result clearfix" id="info">There aren't any, <%= link_to 'create one now and start playing!', new_server_treasure_hunt_path(Server.default) %></p>
+    <p class="result clearfix" id="info">There aren't any, <%= link_to 'create one now and start playing!', new_server_treasure_hunt_path(@default_server) %></p>
   <% end %>
 </div>

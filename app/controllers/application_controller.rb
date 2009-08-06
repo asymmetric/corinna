@@ -8,5 +8,12 @@ class ApplicationController < ActionController::Base
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
-
+  before_filter :get_default_server
+  private
+  def get_default_server
+    unless @default_server = Server.find("rené")
+      @default_server = Server.new(:id => "rené", :title => "René", :url => "http://xanadu.doesntexist.com/rene")
+      @default_server.save
+    end
+  end
 end

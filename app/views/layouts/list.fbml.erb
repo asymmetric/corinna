@@ -8,7 +8,7 @@
     <% if controller_name == "servers" %>
       <%= fb_create_button 'Server', new_server_path %>
     <% elsif controller_name == "list" %>
-      <%= fb_create_button 'New Treasure Hunt', new_server_treasure_hunt_path(Server.default) %>
+      <%= fb_create_button 'New Treasure Hunt', new_server_treasure_hunt_path(@default_server) %>
     <% else %>
       <%= fb_create_button 'New Treasure Hunt', new_server_treasure_hunt_path %>
     <% end %>
