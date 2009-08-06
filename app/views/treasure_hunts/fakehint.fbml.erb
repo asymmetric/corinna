@@ -7,7 +7,7 @@
   <%= text_area_tag :fakehint, nil, :size => "55x20" %>
   <p />
   <%= label_tag 'turn', 'Turn' %>
-  <% #select_tag :turn, options_for_select( (0..15).to_a ) %>
+  <%= select_tag :turn, options_for_select( @turns ) %>
   <%= text_field_tag :turn, nil, :class => :inputtext %>
   <%= submit_tag 'Submit', :class => :inputsubmit %>
 <% end %>

@@ -101,6 +101,8 @@ class TreasureHuntsController < ApplicationController
           resp = @hunt.status @current_user.id, @current_user.password
           xml = Nokogiri::XML resp
           @status = xml.root.xpath 'thunt:status'
+          @turns = xml.root.xpath('thunt:status/@turnNumber').to_a
+          @turn_names = xml.root.xpath('thunt:status/@turnName')
         rescue ActiveTreasureHunt::XMLError => e
           @status = e
         end
