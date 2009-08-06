@@ -36,7 +36,7 @@ module ActiveTreasureHunt
       update_attributes(name => value)
     end
 
-    def update_attributes(attributes) 
+    def update_attributes(attributes)
       load(attributes) && save
     end
   end

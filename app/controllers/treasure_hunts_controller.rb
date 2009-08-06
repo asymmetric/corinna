@@ -69,10 +69,41 @@ class TreasureHuntsController < ApplicationController
     end
   end
 
+  def hint
+    @hunt = TreasureHunt.find params[:id]
+
+    respond_to do |format|
+      begin
+        @hint = @hunt.gethint @current_user.id, @current_user.password
+        begin
+          resp = @hunt.status @current_user.id, @current_user.password
+          xml = Nokogiri::XML resp
+          @status = xml.root.xpath 'thunt:status'
+        rescue ActiveTreasureHunt::XMLError => e
+          @nostatus = e.message
+        end
+        format.html
+        format.fbml
+      rescue ActiveTreasureHunt::XMLError => e
+        flash[:error] = e.message
+        format.html { redirect_to [@server, @hunt] }
+        format.fbml { redirect_to [@server, @hunt] }
+      end
+    end
+  end
+
   def fakehint
     respond_to do |format|
       if request.get?
         @hunt = TreasureHunt.find params[:id]
+
+        begin
+          resp = @hunt.status @current_user.id, @current_user.password
+          xml = Nokogiri::XML resp
+          @status = xml.root.xpath 'thunt:status'
+        rescue ActiveTreasureHunt::XMLError => e
+          @status = e
+        end
 
         format.html
         format.fbml
@@ -117,29 +148,6 @@ class TreasureHuntsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to :action => :hint }
       format.fbml { redirect_to :action => :hint }
-    end
-  end
-
-  def hint
-    @hunt = TreasureHunt.find params[:id]
-
-    respond_to do |format|
-      begin
-        @hint = @hunt.gethint @current_user.id, @current_user.password
-        begin
-          resp = @hunt.status @current_user.id, @current_user.password
-          xml = Nokogiri::XML resp
-          @status = xml.root.xpath 'thunt:status'
-        rescue ActiveTreasureHunt::XMLError => e
-          @nostatus = e.message
-        end
-        format.html
-        format.fbml
-      rescue ActiveTreasureHunt::XMLError => e
-        flash[:error] = e.message
-        format.html { redirect_to [@server, @hunt] }
-        format.fbml { redirect_to [@server, @hunt] }
-      end
     end
   end
 

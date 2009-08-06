@@ -7,8 +7,9 @@ class ListController < ApplicationController
       TreasureHunt.prefix = "#{TreasureHunt.site.path}/"
       { :server => server , :hunts => (TreasureHunt.find(:all) rescue []) }
     end
-    @hunts_n = 0
-    @servers.each { |server| @hunts_n += server[:hunts].size }
+    #@hunts_n = 0
+    #@servers.each { |server| @hunts_n += server[:hunts].size }
+    @hunts_n = @servers.inject(0) { |total, server| total + server[:hunts].size } || 0
     respond_to do |format|
       format.fbml
       format.html
