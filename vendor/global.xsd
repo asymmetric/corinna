@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://vitali.web.cs.unbo.it/thunt"
+	   targetNamespace="http://vitali.web.cs.unbo.it/thunt" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:complexType name="Tblocks">
+    <xs:sequence>
+      <xs:element name="para" type="TBlockInline" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TBlockInline" mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="bold" type="TBlockInline"/>
+      <xs:element name="italic" type="TBlockInline"/>
+      <xs:element name="link" type="Tlink"/>
+      <xs:element name="image" type="Timage"/>
+      <xs:element name="location" type="Tlocation"/>
+      <xs:element name="picture" type="Tpicture"/>
+      <xs:element name="video" type="Tvideo"/>
+      <xs:element name="article" type="Tarticle"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="Tlink">
+    <xs:complexContent>
+      <xs:extension base="TBlockInline">
+	<xs:attribute name="href" type="xs:anyURI" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Timage">
+    <xs:attribute name="type" type="TimageType" use="required"/>
+    <xs:attribute name="src" type="xs:anyURI" use="required"/>
+  </xs:complexType>
+  <xs:simpleType name="TimageType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="inline"/>
+      <xs:enumeration value="block"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Tlocation">
+    <xs:attribute name="planet" type="xs:string" default="Earth"/>
+    <xs:attribute name="lat" type="xs:double" use="required"/>
+    <xs:attribute name="long" type="xs:double" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="Tpicture">
+    <xs:attribute name="type" type="xs:string" default="flickr"/>
+    <xs:attribute name="usr" type="xs:string" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="Tvideo">
+    <xs:attribute name="type" type="TvideoType" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:simpleType name="TvideoType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="youtube"/>
+      <xs:enumeration value="googlevideo"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Tarticle">
+    <xs:attribute name="type" type="xs:string" default="wikipedia"/>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="lang" type="xs:language" use="required"/>
+  </xs:complexType>
+</xs:schema>

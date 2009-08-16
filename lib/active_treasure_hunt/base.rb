@@ -87,28 +87,29 @@ module ActiveTreasureHunt
     def destroy(user_id, user_password)
       xml = self.class.default_request_builder.call(self.class.destroy_request_tag, user_id, user_password, self.id)
       connection.post(build_path(self.class.destroy_name), "xml=#{xml}", self.class.headers).tap do |response|
-        validate_response(extract_body(response, self.class.destroy_response_tag))
+        get_response(extract_body(response, self.class.destroy_response_tag))
       end
     end
 
     def fakehint(hint, turn, id, pwd)
       xml = self.class.fakehint_builder.call(hint, turn, id, pwd, self.id)
+      validate_fakehint xml
       connection.post(build_path(self.class.fakehint_name), "xml=#{xml}", self.class.headers).tap do |response|
-        validate_response(extract_body(response, self.class.fakehint_response_tag))
+        get_response(extract_body(response, self.class.fakehint_response_tag))
       end
     end
 
     def subscribe(type, id, pwd)
       xml = self.class.subscription_builder.call(type, id, pwd, self.id)
       connection.post(build_path(self.class.subscribe_name), "xml=#{xml}", self.class.headers).tap do |response|
-        validate_response response.body
+        get_response response.body
       end
     end
 
     def start(id, pwd)
       xml = self.class.default_request_builder.call(self.class.start_request_tag, id, pwd, self.id)
       connection.post(build_path(self.class.start_name), "xml=#{xml}", self.class.headers).tap do |response|
-        validate_response(extract_body(response, self.class.start_response_tag))
+        get_response(extract_body(response, self.class.start_response_tag))
       end
     end
 
@@ -116,7 +117,7 @@ module ActiveTreasureHunt
       xml = self.class.default_request_builder.call(self.class.gethint_request_tag, id, pwd, self.id)
       connection.post(build_path(self.class.gethint_name), "xml=#{xml}", self.class.headers).tap do |response|
         body = extract_body(response, self.class.gethint_response_tag)
-        validate_response body
+        get_response body
         self.xml = response.body
       end
       self.xml
@@ -125,7 +126,7 @@ module ActiveTreasureHunt
     def status(id,pwd)
       xml = self.class.default_request_builder.call(self.class.status_request_tag, id, pwd, self.id)
       connection.post(build_path(self.class.status_name), "xml=#{xml}", self.class.headers).tap do |response|
-        validate_response response.body
+        get_response response.body
         self.xml = response.body
       end
       self.xml
@@ -136,7 +137,7 @@ module ActiveTreasureHunt
       st = ""
       connection.post(build_path(self.class.answer_name), "xml=#{xml}", self.class.headers).tap do |response|
         body = extract_body response, self.class.answer_response_tag
-        validate_response body
+        get_response body
         st = body['status']
       end
       st
@@ -151,7 +152,7 @@ module ActiveTreasureHunt
     def create
       connection.post(build_path(self.class.create_name), "xml=#{self.xml}", self.class.headers).tap do |response|
         body = extract_body(response, self.class.create_response_tag)
-        validate_response(body)
+        get_response(body)
         self.id = id_from_response(body)
         load_attributes_from_response(response)
       end
@@ -165,7 +166,17 @@ module ActiveTreasureHunt
       self.class.format.decode(response.body)
     end
 
-    def validate_response(body)
+
+    def validate_fakehint body
+      xsd = ""
+      File.open('vendor/sendfalsehint.xsd') { |file| xsd = Nokogiri::XML::Schema file }
+      doc = Nokogiri::XML body
+      resp = xsd.validate doc
+
+      raise ActiveTreasureHunt::NotValid unless resp.empty?
+    end
+
+    def get_response(body)
       status = case body
                when Hash
                  body['status']
