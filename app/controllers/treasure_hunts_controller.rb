@@ -215,7 +215,17 @@ class TreasureHuntsController < ApplicationController
       end
 
       begin
-        @resp = @hunt.answer @answer, @answer_type, @current_user.id, @current_user.password
+        reply = @hunt.answer @answer, @answer_type, @current_user.id, @current_user.password
+        case reply
+        when "wrong"
+          @resp = "Sorry, wrong answer"
+        when "right"
+          @resp = "You got it right!"
+        when "win"
+          @resp = "You won the Treasure Hunt!"
+        when "loose"
+          @resp = "You loose!"
+        end
         flash[:notice] = @resp
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message
