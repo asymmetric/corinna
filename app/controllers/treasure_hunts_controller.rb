@@ -77,22 +77,22 @@ class TreasureHuntsController < ApplicationController
 
         format.html
         format.fbml
-       elsif request.post?
-         begin
-           @hunt = TreasureHunt.find params[:id]
-           @turn = params[:turn]
-           @fake_hint = params[:fakehint]
+      elsif request.post?
+        begin
+          @hunt = TreasureHunt.find params[:id]
+          @turn = params[:turn]
+          @fake_hint = params[:fakehint]
 
-           @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
-           flash[:notice] = "Fake hint successfully sent!"
-           format.html { redirect_to [@server, @hunt] }
-           format.fbml { redirect_to [@server, @hunt] }
-         rescue ActiveTreasureHunt::XMLError => e
-           flash[:error] = e.message
-           format.html
-           format.fbml
-         end
-       end
+          @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
+          flash[:notice] = "Fake hint successfully sent!"
+          format.html { redirect_to [@server, @hunt] }
+          format.fbml { redirect_to [@server, @hunt] }
+        rescue ActiveTreasureHunt::XMLError => e
+          flash[:error] = e.message
+          format.html
+          format.fbml
+        end
+      end
     end
   end
 
