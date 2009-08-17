@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :servers do |server|
     server.resources :treasure_hunts, :except => [:update, :edit],
-    :member => { :invite => :get, :subscribe => :post, :hint => :get, :status => :get, :start => :get, :answer => [:get, :post], :fakehint => [:get, :post] }
+    :member => { :show => [:get, :delete, :post], :invite => :get, :subscribe => :post, :hint => :get, :status => :get, :start => :get, :answer => [:get, :post], :fakehint => [:get, :post] }
   end
   # The priority is based upon order of creation: first created -> highest priority.
 
