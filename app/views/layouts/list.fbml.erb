@@ -20,7 +20,11 @@
   </div>
   <div id="main">
     <div id="notice">
-      <%= facebook_messages if (flash[:notice] or flash[:error]) %>
+      <% if flash[:info] %>
+      <%= fb_explanation(flash[:notice], flash[:info]) %>
+      <% elsif (flash[:notice] or flash[:error]) %>
+      <%= facebook_messages %>
+      <% end %>
     </div>
     <%= fb_add_profile_section %>
     <%= yield :layout %>

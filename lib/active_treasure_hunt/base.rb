@@ -87,14 +87,14 @@ module ActiveTreasureHunt
     def destroy(user_id, user_password)
       xml = self.class.default_request_builder.call(self.class.destroy_request_tag, user_id, user_password, self.id)
       connection.post(build_path(self.class.destroy_name), "xml=#{xml}", self.class.headers).tap do |response|
-        validate_response(extract_body(response, self.class.destroy_response_tag))
+        validate_response response.body
       end
     end
 
     def fakehint(hint, turn, id, pwd)
       xml = self.class.fakehint_builder.call(hint, turn, id, pwd, self.id)
       connection.post(build_path(self.class.fakehint_name), "xml=#{xml}", self.class.headers).tap do |response|
-        validate_response(extract_body(response, self.class.fakehint_response_tag))
+        validate_response response.body
       end
     end
 
@@ -108,18 +108,16 @@ module ActiveTreasureHunt
     def start(id, pwd)
       xml = self.class.default_request_builder.call(self.class.start_request_tag, id, pwd, self.id)
       connection.post(build_path(self.class.start_name), "xml=#{xml}", self.class.headers).tap do |response|
-        validate_response(extract_body(response, self.class.start_response_tag))
+        validate_response response.body
       end
     end
 
     def gethint(id, pwd)
       xml = self.class.default_request_builder.call(self.class.gethint_request_tag, id, pwd, self.id)
       connection.post(build_path(self.class.gethint_name), "xml=#{xml}", self.class.headers).tap do |response|
-        body = extract_body(response, self.class.gethint_response_tag)
-        validate_response body
+        validate_response response.body
         self.xml = response.body
-      end
-      self.xml
+      end.body
     end
 
     def status(id,pwd)
@@ -127,19 +125,16 @@ module ActiveTreasureHunt
       connection.post(build_path(self.class.status_name), "xml=#{xml}", self.class.headers).tap do |response|
         validate_response response.body
         self.xml = response.body
-      end
-      self.xml
+      end.body
     end
 
     def answer answer_xml, type, id, pwd
       xml = self.class.answer_builder.call(answer_xml, type, id, pwd, self.id)
-      st = ""
       connection.post(build_path(self.class.answer_name), "xml=#{xml}", self.class.headers).tap do |response|
-        body = extract_body response, self.class.answer_response_tag
-        validate_response body
-        st = body['status']
-      end
-      st
+        validate_response response.body
+        load_attributes_from_response response
+        self.xml = response.body
+      end.body
     end
 
     protected
@@ -150,8 +145,8 @@ module ActiveTreasureHunt
     # Create (i.e., \save to the remote service) the \new resource.
     def create
       connection.post(build_path(self.class.create_name), "xml=#{self.xml}", self.class.headers).tap do |response|
+        validate_response(response)
         body = extract_body(response, self.class.create_response_tag)
-        validate_response(body)
         self.id = id_from_response(body)
         load_attributes_from_response(response)
       end
@@ -166,13 +161,8 @@ module ActiveTreasureHunt
     end
 
     def validate_response(body)
-      status = case body
-               when Hash
-                 body['status']
-               when String
-                xml = Nokogiri::XML body
-                xml.root.xpath('@status').to_s
-               end
+      xml = Nokogiri::XML body
+      status = xml.root.xpath('@status').to_s
 
       unless self.class.no_exception_status.member? status
         begin

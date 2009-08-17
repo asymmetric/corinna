@@ -77,22 +77,22 @@ class TreasureHuntsController < ApplicationController
 
         format.html
         format.fbml
-       elsif request.post?
-         begin
-           @hunt = TreasureHunt.find params[:id]
-           @turn = params[:turn]
-           @fake_hint = params[:fakehint]
+      elsif request.post?
+        begin
+          @hunt = TreasureHunt.find params[:id]
+          @turn = params[:turn]
+          @fake_hint = params[:fakehint]
 
-           @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
-           flash[:notice] = "Fake hint successfully sent!"
-           format.html { redirect_to [@server, @hunt] }
-           format.fbml { redirect_to [@server, @hunt] }
-         rescue ActiveTreasureHunt::XMLError => e
-           flash[:error] = e.message
-           format.html
-           format.fbml
-         end
-       end
+          @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
+          flash[:notice] = "Fake hint successfully sent!"
+          format.html { redirect_to [@server, @hunt] }
+          format.fbml { redirect_to [@server, @hunt] }
+        rescue ActiveTreasureHunt::XMLError => e
+          flash[:error] = e.message
+          format.html
+          format.fbml
+        end
+      end
     end
   end
 
@@ -179,49 +179,49 @@ class TreasureHuntsController < ApplicationController
   end
 
   def answer
-    # shows form to input the answer
     if request.get?
       @hunt = TreasureHunt.find params[:id]
 
+      # shows form to input the answer
       respond_to do |format|
         format.html
         format.fbml
       end
-      # shows response from the server
 
     elsif request.post?
       @hunt = TreasureHunt.find params[:id]
-      @answer_type = params[:answer_type]
-      @answer = {}
-      case @answer_type
+      answer_type = params[:answer_type]
+      answer = {}
+      case answer_type
       when "geoloc"
-        @answer[:lat] = params[:geoloc_lat]
-        @answer[:long] = params[:geoloc_long]
-        @answer[:planet] = params[:geoloc_planet]
+        answer[:lat] = params[:geoloc_lat]
+        answer[:long] = params[:geoloc_long]
+        answer[:planet] = params[:geoloc_planet]
       when "video"
-        @answer[:id] = params[:answer].gsub(/.*=([\w]*?)$/,'\1')
-        @answer[:service] = case params[:answer]
-                            when /google/
-                              :googlevideo
-                            when /youtube/
-                              :youtube
-                            end
+        answer[:id] = params[:answer].gsub(/.*=([\w]*?)$/,'\1')
+        answer[:service] = case params[:answer]
+                           when /google/
+                             :googlevideo
+                           when /youtube/
+                             :youtube
+                           end
       when "picture"
-        @answer[:service] = "flickr"
-        @answer[:usr] = params[:answer].gsub(/.*?(\w*?)\/(\w*?)\/?$/,'\1')
-        @answer[:id] = params[:answer].gsub(/.*?(\w*?)\/(\w*?)\/?$/,'\2')
+        answer[:service] = "flickr"
+        answer[:usr] = params[:answer].gsub(/.*?(\w*?)\/(\w*?)\/?$/,'\1')
+        answer[:id] = params[:answer].gsub(/.*?(\w*?)\/(\w*?)\/?$/,'\2')
       else
-        @answer = params[:answer]
+        answer = params[:answer]
       end
 
       begin
-        @resp = @hunt.answer @answer, @answer_type, @current_user.id, @current_user.password
-        flash[:notice] = @resp
+        response = Nokogiri::Slop(@hunt.answer(answer, answer_type, @current_user.id, @current_user.password))
+        flash[:notice] = "#{response.root['status'].capitalize}!"
+        flash[:info] = prettyprint_blockinline(response.root.to_xml, '.').strip[0..200].gsub(/<[^>]*$/,'...').gsub(/<\/?img.*?>/,'').gsub(/<\/?p.*?>/,'')
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message
       end
 
-
+      # shows response from the server
       respond_to do |format|
         format.html { redirect_to :action => :hint }
         format.fbml { redirect_to :action => :hint }
