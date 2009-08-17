@@ -11,7 +11,7 @@
 		<dl>
 		  <dt>Title:</dt> <dd class="result_name fn"><%= link_to h(hunt.title), [server[:server], hunt] %></dd>
 		  <dt>Server:</dt> <dd><%= link_to h(server[:server].title), server[:server] %></dd>
-		  <dt>Description:</dt> <dd><%= truncate(prettyprint_blockinline(hunt.xml, 'description').strip, :length => 160).gsub(/<[^>]*$/,'...').gsub(/<\/?img.*?>/,'').gsub(/<\/?p.*?>/,'') %></dd>
+		  <dt>Description:</dt> <dd><%= truncate(prettyprint_blockinline(hunt.xml, 'description').strip, :length => 200).gsub(/<[^>]*$/,'...').gsub(/(<\/?img)(.*?>)/,'\1 style="width:auto; height:10em; display:block" \2').gsub(/<\/?p.*?>/,'') %></dd>
 		</dl>
 	      </div>
 	      <ul class="actionspro">

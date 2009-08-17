@@ -221,7 +221,7 @@ class TreasureHuntsController < ApplicationController
                            when "win" then "Congratulations! You won the Treasure Hunt!"
                            when "lose" then "You lose!"
                            end
-          flash[:info] = prettyprint_blockinline(response.root.to_xml, '.').strip[0..200].gsub(/<[^>]*$/,'...').gsub(/<\/?img.*?>/,'').gsub(/<\/?p.*?>/,'')
+          flash[:info] = prettyprint_blockinline(response.root.to_xml, '.').strip[0..200].gsub(/<[^>]*$/,'...').gsub(/(<\/?img)(.*?>)/,'\1 style="width:auto; height:15em;" \2').gsub(/<\/?p.*?>/,'')
           format.html { redirect_to :action => :hint }
           format.fbml { redirect_to :action => :hint }
         rescue Nokogiri::XML::SyntaxError => e
