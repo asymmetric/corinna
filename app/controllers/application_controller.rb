@@ -8,7 +8,8 @@ class ApplicationController < ActionController::Base
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
-  before_filter :get_default_server
+  ensure_application_is_installed_by_facebook_user
+  before_filter :get_default_server, :get_current_facebook_user
   helper_method :prettyprint_blockinline
 
   def prettyprint_blockinline(xml, xpath)
@@ -26,6 +27,17 @@ class ApplicationController < ActionController::Base
     unless @default_server = Server.find("rené")
       @default_server = Server.new(:id => "rené", :title => "René", :url => "http://xanadu.doesntexist.com/rene")
       @default_server.save
+    end
+  end
+  def get_current_facebook_user
+    @current_facebook_user = facebook_session.user
+    unless @current_user = User.find(@current_facebook_user.to_s)
+      @current_user = User.new
+      @current_user.id = @current_facebook_user.to_s
+      @current_user.password = ActiveSupport::SecureRandom.hex
+      @current_user.servers = Server.find(:all).collect { |serv| { :id => serv.id, :thunts => [] } }
+      @current_user.save
+      @current_user = User.find(@current_facebook_user.to_s)
     end
   end
 end

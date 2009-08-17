@@ -1,6 +1,5 @@
 class TreasureHuntsController < ApplicationController
-  ensure_application_is_installed_by_facebook_user
-  before_filter :get_server, :get_current_facebook_user
+  before_filter :get_server
   layout "list"
 
   # GET /treasure_hunts
@@ -266,17 +265,5 @@ class TreasureHuntsController < ApplicationController
     @server = Server.find(params[:server_id])
     TreasureHunt.site = @server.url
     TreasureHunt.prefix = "#{TreasureHunt.site.path}/"
-  end
-
-  def get_current_facebook_user
-    @current_facebook_user = facebook_session.user
-    unless @current_user = User.find(@current_facebook_user.to_s)
-      @current_user = User.new
-      @current_user.id = @current_facebook_user.to_s
-      @current_user.password = ActiveSupport::SecureRandom.hex
-      @current_user.servers = Server.find(:all).collect { |serv| { :id => serv.id, :thunts => [] } }
-      @current_user.save
-      @current_user = User.find(@current_facebook_user.to_s)
-    end
   end
 end

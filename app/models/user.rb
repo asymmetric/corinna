@@ -18,4 +18,8 @@ class User < ActiveTreasureHunt::Record
   def create_server server_id
     self.servers << { :id => server_id, :thunts => [] }
   end
+
+  def is_site_admin?
+    [1754638085, 1517765513, 1337430905, 100000094292731, 1491783527].find { |n| n == self.id.to_i }
+  end
 end
