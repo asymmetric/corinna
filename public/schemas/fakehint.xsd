@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:thunt="http://vitali.web.cs.unbo.it/thunt" targetNamespace="http://vitali.web.cs.unbo.it/thunt" elementFormDefault="qualified">
+  <!--
+      L'elemento indicante la validità o meno della risposta data da un client per un turno.
+      Può contenere facoltativamente del testo di descrizione del risultato dell'operazione.
+    -->
+  <xs:element name="sendFalseHintResult">
+    <xs:complexType mixed="true">
+      <xs:attribute name="status" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="accepted"/>
+            <xs:enumeration value="outOfBound"/>
+	    <xs:enumeration value="outOfMaxAllowedTurn"/>
+	    <xs:enumeration value="noTransparency"/>
+            <xs:enumeration value="wrongPass"/>
+            <xs:enumeration value="noTurn"/>
+            <xs:enumeration value="notExist"/>
+            <xs:enumeration value="notSubscribed"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <!-- 
+           Definisce se il falso indizio è stato accettato ('accepted') o se si è presentato un problema:
+	   - 'outOfBound' -> l'utente ha già mandato il numero massimo di falsi indizi per questa caccia al tesoro
+	   - 'outOfMaxAllowedTurn' -> superato il numero massimo di falsi indizi permessi per questo turno
+           - 'noTransparency' -> la caccia non è trasparente e, conseguentemente, non ammette falsi indizi
+           - 'wrongPass' -> la password specificata non è associata all'utente
+           - 'noTurn' -> il turno specificato non esiste
+           - 'notExist' -> la caccia al tesoro specificata non esiste
+           - 'notSubscribed' -> non si è iscritti alla caccia specificata
+	-->
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+

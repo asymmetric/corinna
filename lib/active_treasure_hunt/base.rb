@@ -93,6 +93,7 @@ module ActiveTreasureHunt
 
     def fakehint(hint, turn, id, pwd)
       xml = self.class.fakehint_builder.call(hint, turn, id, pwd, self.id)
+      validate_fakehint xml
       connection.post(build_path(self.class.fakehint_name), "xml=#{xml}", self.class.headers).tap do |response|
         validate_response response.body
       end
@@ -160,7 +161,12 @@ module ActiveTreasureHunt
       self.class.format.decode(response.body)
     end
 
+    def validate_fakehint body
+      validate_with_schema "sendfalsehint", body
+    end
+    
     def validate_response(body)
+      validate_with_schema get_caller_name, body
       xml = Nokogiri::XML body
       status = xml.root.xpath('@status').to_s
 
@@ -172,6 +178,21 @@ module ActiveTreasureHunt
         end
         raise error_class.new
       end
+    end
+
+    private
+    def get_caller_name
+      Regexp.last_match[3] if /^(.+?):(\d+)(?::in `(.*)')?/ =~ caller(2).first
+    end
+
+    def validate_with_schema(file, doc)
+      schema = ""
+      File.open("#{RAILS_ROOT}/public/schemas/#{file}.xsd") do |file|
+        schema = Nokogiri::XML::Schema file
+      end
+      xml = Nokogiri::XML::Document.parse(doc, nil, nil, Nokogiri::XML::ParseOptions::STRICT)
+      schema.validate(xml).each { |error| raise error }
+      xml
     end
   end
 end

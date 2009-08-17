@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:thunt="http://vitali.web.cs.unbo.it/thunt" targetNamespace="http://vitali.web.cs.unbo.it/thunt" elementFormDefault="qualified">
+  <xs:element name="removeTreasureHuntResult">
+    <xs:complexType>
+      <xs:attribute name="status" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="accepted"/>
+            <xs:enumeration value="wrongPass"/>
+            <xs:enumeration value="notExist"/>
+            <xs:enumeration value="noPermission"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <!-- 
+           Definisce se la rimozione si è conclusa con successo ('accepted') o se si è presentato un problema:
+           - 'wrongPass' -> la password specificata non è associata all'utente 
+           - 'notExist' -> la caccia al tesoro specificata non esiste
+           - 'noPermission' -> l'utente non ha i permessi per rimuovere la caccia al tesoro
+	-->
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

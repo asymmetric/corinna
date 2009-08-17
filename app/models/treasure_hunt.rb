@@ -24,9 +24,7 @@ class TreasureHunt < ActiveTreasureHunt::Base
     xml = Builder::XmlMarkup.new
     xml.instruct!
     xml.thunt tag, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt", :turn => turn, :id => id, :pwd => password, :thunt => hunt do
-      xml.thunt :para do
         xml << fake_hint
-      end
     end
   end
 

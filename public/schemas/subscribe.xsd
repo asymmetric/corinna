@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:thunt="http://vitali.web.cs.unbo.it/thunt" targetNamespace="http://vitali.web.cs.unbo.it/thunt" elementFormDefault="qualified">
+  <!--
+      L'elemento contenente la risposta da parte del server per l'operazione di sottoscrizione.
+      Può contenere facoltativamente del testo di descrizione del risultato dell'operazione.
+    -->
+  <xs:element name="sendSubscriptionResult">
+    <xs:complexType mixed="true">
+      <xs:attribute name="status" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="accepted"/>
+            <xs:enumeration value="passAlreadyAssigned"/>
+            <xs:enumeration value="notExist"/>
+            <xs:enumeration value="noPermission"/>
+            <xs:enumeration value="alreadySubscribed"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <!-- 
+           Definisce se la sottoscrizione è andata a buon fine ('accepted') o se si è presentato un problema nella sottoscrizione:
+           - 'notExist' -> la caccia al tesoro specificata non esiste
+           - 'passAlreadyAssigned' -> la password specificata è già stata assegnata
+           - 'noPermission' -> non si hanno i permessi necessari per partecipare alla caccia al tesoro specificata
+           - 'alreadySubscripted' -> si è già iscritti a questa caccia al tesoro
+	-->
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

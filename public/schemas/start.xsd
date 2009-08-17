@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:thunt="http://vitali.web.cs.unbo.it/thunt" targetNamespace="http://vitali.web.cs.unbo.it/thunt" elementFormDefault="qualified">
+  <!-- Può contenere facoltativamente del testo di descrizione del risultato dell'operazione. -->
+  <xs:element name="startResult">
+    <xs:complexType>
+      <xs:attribute name="time" type="xs:time"/>
+      <xs:attribute name="status" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="accepted"/>
+            <xs:enumeration value="wrongPass"/>
+            <xs:enumeration value="notExist"/>
+            <xs:enumeration value="noPermission"/>
+            <xs:enumeration value="alreadyStarted"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <!-- Il tempo in cui è partita la caccia al tesoro, presente solo se non si sono verificati problemi nell'operazione -->
+      <!-- 
+           Definisce se il caricamento si è concluso con successo ('accepted') o se si � presentato un problema:
+           - 'wrongPass' -> la password specificata non è associata all'utente 
+           - 'notExist' -> la caccia al tesoro specificata non esiste
+           - 'noPermission' -> l'utente non ha i permessi per rimuovere la caccia al tesoro
+           - 'alreadyStarted' -> la caccia al tesoro è già in corso
+	-->
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

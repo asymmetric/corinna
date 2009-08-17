@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:thunt="http://vitali.web.cs.unbo.it/thunt" xmlns="http://vitali.web.cs.unbo.it/thunt" targetNamespace="http://vitali.web.cs.unbo.it/thunt" elementFormDefault="qualified">
+  <xs:include schemaLocation="global.xsd"/>
+  <!--
+      L'elemento indicante la validità o meno della risposta data da un client per un turno.
+      Può contenere facoltativamente del testo di descrizione del risultato dell'operazione.
+    -->
+  <xs:element name="submitAnswerResult">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="para" type="TBlockInline" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="status" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="right"/>
+            <xs:enumeration value="wrong"/>
+            <xs:enumeration value="win"/>
+            <xs:enumeration value="wrongPass"/>
+            <xs:enumeration value="notExist"/>
+            <xs:enumeration value="notSubscribed"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <!-- 
+           Definisce se la risposta è esatta ('right'), sbagliata ('wrong'), se il client ha vinto la caccia al tesoro ('win') 
+           o se si è presentato un problema:
+           - 'wrongPass' -> la password specificata non è associata all'utente
+           - 'notExist' -> la caccia al tesoro specificata non esiste
+           - 'notSubscribed' -> non si è iscritti alla caccia specificata
+	-->
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

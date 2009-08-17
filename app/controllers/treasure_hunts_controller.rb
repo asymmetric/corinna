@@ -215,7 +215,12 @@ class TreasureHuntsController < ApplicationController
 
       begin
         response = Nokogiri::Slop(@hunt.answer(answer, answer_type, @current_user.id, @current_user.password))
-        flash[:notice] = "#{response.root['status'].capitalize}!"
+        flash[:notice] = case response.root['status']
+                         when "wrong" then "This is not the correct answer, try again!"
+                         when "right" then "You got it right!"
+                         when "win" then "Congratulations! You won the Treasure Hunt!"
+                         when "lose" then "You lose!"
+                         end
         flash[:info] = prettyprint_blockinline(response.root.to_xml, '.').strip[0..200].gsub(/<[^>]*$/,'...').gsub(/<\/?img.*?>/,'').gsub(/<\/?p.*?>/,'')
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message

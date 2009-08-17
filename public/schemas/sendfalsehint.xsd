@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://vitali.web.cs.unbo.it/thunt"
+	   xmlns:thunt="http://vitali.web.cs.unbo.it/thunt" targetNamespace="http://vitali.web.cs.unbo.it/thunt" elementFormDefault="qualified">
+  <xs:include schemaLocation="global.xsd"/>
+  <xs:element name="sendFalseHint">
+    <xs:complexType>
+      <xs:sequence>
+		<xs:element name="para" type="TBlockInline" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string" use="required"/>
+      <xs:attribute name="pwd" type="xs:string" use="required"/>
+      <xs:attribute name="thunt" type="xs:string" use="required"/>
+      <xs:attribute name="turn" type="xs:string" use="required"/>
+      <!-- Id dell'utente o del gruppo che vuole mandare un falso indizio -->
+      <!-- Password dell'utente o del gruppo che vuole mandare un falso indizio -->
+      <!-- Id della caccia al tesoro -->
+      <!-- Id del turno -->
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

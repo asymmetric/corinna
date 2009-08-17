@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:thunt="http://vitali.web.cs.unbo.it/thunt" targetNamespace="http://vitali.web.cs.unbo.it/thunt" elementFormDefault="qualified">
+  <!-- L'elemento utilizzato per indicare gli status attuali degli altri client per una determinata caccia al tesoro. -->
+  <xs:element name="getStatusResult">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="thunt:status" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="status" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="accepted"/>
+            <xs:enumeration value="wrongPass"/>
+            <xs:enumeration value="notExist"/>
+            <xs:enumeration value="notSubscribed"/>
+            <xs:enumeration value="noTransparency"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <!-- 
+           Definisce se la richiesta è andata a buon fine ('accepted') o se si è presentato un problema:
+           - 'wrongPass' -> la password specificata non è associata all'utente
+           - 'notExist' -> la caccia al tesoro specificata non esiste
+           - 'notSubscribed' -> non si è iscritti alla caccia specificata
+           - 'noTransparency' -> la caccia al tesoro non è trasparente
+	-->
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="status">
+    <xs:complexType>
+      <xs:attribute name="id" type="xs:string" use="required"/>
+      <xs:attribute name="turnNumber" type="xs:integer" use="required"/>
+      <xs:attribute name="turnId" type="xs:string" use="required"/>
+      <xs:attribute name="turnName" type="xs:string" use="required"/>
+      <xs:attribute name="hintNumber" type="xs:integer" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
