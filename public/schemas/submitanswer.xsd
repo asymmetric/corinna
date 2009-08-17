@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:thunt="http://vitali.web.cs.unbo.it/thunt"
+	   xmlns="http://vitali.web.cs.unbo.it/thunt" targetNamespace="http://vitali.web.cs.unbo.it/thunt" elementFormDefault="qualified">
+  <xs:include schemaLocation="global.xsd"/>
+  <xs:element name="submitAnswer">
+    <xs:complexType>
+      <xs:choice>
+	<xs:element name="URI" type="xs:anyURI"/>
+	<xs:element name="geoloc" type="Tlocation"/>
+	<xs:element name="picture" type="Tpicture"/>
+	<xs:element name="video" type="Tvideo"/>
+	<xs:element name="string" type="xs:string"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string" use="required"/>
+      <xs:attribute name="pwd" type="xs:string" use="required"/>
+      <xs:attribute name="thunt" type="xs:string" use="required"/>
+      <!-- Id dell'utente o del gruppo che vuole ricevere l'indizio attuale -->
+      <!-- Password dell'utente o del gruppo che vuole ricevere l'indizio attuale -->
+      <!-- Id della caccia al tesoro di cui si vuole l'indizio -->
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

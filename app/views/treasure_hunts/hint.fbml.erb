@@ -1,13 +1,18 @@
-<h1><%= @hunt.title %></h1>
 <div class="ubersearch">
   <div class="clearfix">
     <div class="result clearfix">
+      <div class="info">
+	<dl class="clearfix">
+	  <dt>Hunt:</dt><br />
+	  <dd class="result_name fn" id="show-title"><%=h @hunt.title %></dd>
+	</dl>
+	<%= render :partial => "share_button" %>
+      </div>
       <ul class="actionspro">
 	<li class="actionspro_li"><%= link_to 'Answer', { :action => :answer }, :class => "actionspro_a" %></li>
         <li class="actionspro_li"><%= link_to 'Send fake hint', { :action => :fakehint }, :class => "actionspro_a" %></li>
       </ul>
       <div class="info">
-	<%= render :partial => "share_button" %>
 	<dl class="clearfix">
 	  <dt>Hint:</dt><br />
 	  <dd id="show-desc"><%= prettyprint_blockinline @hint, '.' %></dd>

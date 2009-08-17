@@ -93,7 +93,7 @@ module ActiveTreasureHunt
 
     def fakehint(hint, turn, id, pwd)
       xml = self.class.fakehint_builder.call(hint, turn, id, pwd, self.id)
-      validate_fakehint xml
+      validate_with_schema "sendfalsehint", xml
       connection.post(build_path(self.class.fakehint_name), "xml=#{xml}", self.class.headers).tap do |response|
         validate_response response.body
       end
@@ -131,6 +131,7 @@ module ActiveTreasureHunt
 
     def answer answer_xml, type, id, pwd
       xml = self.class.answer_builder.call(answer_xml, type, id, pwd, self.id)
+      validate_with_schema "submitanswer", xml
       connection.post(build_path(self.class.answer_name), "xml=#{xml}", self.class.headers).tap do |response|
         validate_response response.body
         load_attributes_from_response response
@@ -146,7 +147,7 @@ module ActiveTreasureHunt
     # Create (i.e., \save to the remote service) the \new resource.
     def create
       connection.post(build_path(self.class.create_name), "xml=#{self.xml}", self.class.headers).tap do |response|
-        validate_response(response)
+        validate_response(response.body)
         body = extract_body(response, self.class.create_response_tag)
         self.id = id_from_response(body)
         load_attributes_from_response(response)
@@ -161,10 +162,6 @@ module ActiveTreasureHunt
       self.class.format.decode(response.body)
     end
 
-    def validate_fakehint body
-      validate_with_schema "sendfalsehint", body
-    end
-    
     def validate_response(body)
       validate_with_schema get_caller_name, body
       xml = Nokogiri::XML body

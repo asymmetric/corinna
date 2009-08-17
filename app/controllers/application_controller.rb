@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   # filter_parameter_logging :password
   before_filter :get_default_server
   helper_method :prettyprint_blockinline
+
   def prettyprint_blockinline(xml, xpath)
     doc = Nokogiri::XML(xml)
     para_syntax = doc.root.namespace.nil? ? "para" : "thunt:para"

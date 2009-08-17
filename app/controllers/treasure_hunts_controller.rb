@@ -87,8 +87,8 @@ class TreasureHuntsController < ApplicationController
           flash[:notice] = "Fake hint successfully sent!"
           format.html { redirect_to [@server, @hunt] }
           format.fbml { redirect_to [@server, @hunt] }
-        rescue ActiveTreasureHunt::XMLError => e
-          flash[:error] = e.message
+        rescue Nokogiri::XML::SyntaxError => e
+          flash[:error] = "This is not a valid fake hint!"
           format.html
           format.fbml
         end
@@ -212,24 +212,24 @@ class TreasureHuntsController < ApplicationController
       else
         answer = params[:answer]
       end
-
-      begin
-        response = Nokogiri::Slop(@hunt.answer(answer, answer_type, @current_user.id, @current_user.password))
-        flash[:notice] = case response.root['status']
-                         when "wrong" then "This is not the correct answer, try again!"
-                         when "right" then "You got it right!"
-                         when "win" then "Congratulations! You won the Treasure Hunt!"
-                         when "lose" then "You lose!"
-                         end
-        flash[:info] = prettyprint_blockinline(response.root.to_xml, '.').strip[0..200].gsub(/<[^>]*$/,'...').gsub(/<\/?img.*?>/,'').gsub(/<\/?p.*?>/,'')
-      rescue ActiveTreasureHunt::XMLError => e
-        flash[:error] = e.message
-      end
-
-      # shows response from the server
       respond_to do |format|
-        format.html { redirect_to :action => :hint }
-        format.fbml { redirect_to :action => :hint }
+
+        begin
+          response = Nokogiri::Slop(@hunt.answer(answer, answer_type, @current_user.id, @current_user.password))
+          flash[:notice] = case response.root['status']
+                           when "wrong" then "This is not the correct answer, try again!"
+                           when "right" then "You got it right!"
+                           when "win" then "Congratulations! You won the Treasure Hunt!"
+                           when "lose" then "You lose!"
+                           end
+          flash[:info] = prettyprint_blockinline(response.root.to_xml, '.').strip[0..200].gsub(/<[^>]*$/,'...').gsub(/<\/?img.*?>/,'').gsub(/<\/?p.*?>/,'')
+          format.html { redirect_to :action => :hint }
+          format.fbml { redirect_to :action => :hint }
+        rescue Nokogiri::XML::SyntaxError => e
+          flash[:error] = "This is not a valid answer!"
+          format.html
+          format.fbml
+        end
       end
     end
   end
