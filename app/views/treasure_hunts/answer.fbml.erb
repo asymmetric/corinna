@@ -81,7 +81,7 @@ function show(div, from){
             </div>
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
-                <% form_tag :action => :answer, :answer_type => "video" do %>
+                <% form_tag :action => :answer, :type => "video" do %>
                 <%= label_tag :answer, 'Insert video URL:' %>
                 <%= text_field_tag :answer, nil, :class => :inputtext %>
                 <%= submit_tag 'Submit', :class => :inputsubmit %>
@@ -103,7 +103,7 @@ function show(div, from){
             </div>
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
-                <% form_tag :action => :answer, :id => @hunt.id, :answer_type => "geoloc", :class => "clearfix" do %>
+                <% form_tag :action => :answer, :type => "geoloc" do %>
                 <%= label_tag 'geoloc_lat', 'Latitude:' %>
                 <%= text_field_tag :geoloc_lat, nil, {:maxlength => 8, :class => "inputtext" } %>
                 <%= label_tag 'geoloc_lat', 'Longitude:' %>
@@ -131,9 +131,9 @@ function show(div, from){
             </div>
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
-                <% form_tag :action => :answer, :id => @hunt.id,:answer_type => "URI", :class => "clearfix" do %>
-                <%= label_tag 'uri', 'Link url:' %>
-                <%= text_field_tag :uri , nil, {:class => "inputtext" } %>
+                <% form_tag :action => :answer, :type => "URI" do %>
+                <%= label_tag :answer, 'Link url:' %>
+                <%= text_field_tag :answer , nil, { :class => "inputtext" } %>
                 <%= submit_tag 'Submit', :class => "inputsubmit" %>
                 <% end %>
               </div>
@@ -152,7 +152,7 @@ function show(div, from){
             </div>
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
-                <% form_tag :action => :answer, :id => @hunt.id, :answer_type => "string",:class => "clearfix" do %>
+                <% form_tag :action => :answer, :type => "string" do %>
                 <%= text_area_tag :answer, nil, :size => "55x10" %>
                 <%= submit_tag 'Submit', :class => "inputsubmit" %>
                 <% end %>
@@ -174,7 +174,7 @@ function show(div, from){
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
                 <div>
-                  <% form_tag :action => :answer, :id => @hunt.id, :answer_type => "picture", :class => "clearfix" do %>
+                  <% form_tag :action => :answer, :type => "picture" do %>
                   <%= label_tag :answer, 'Picture url:' %>
                   <%= text_field_tag :answer, nil, :class => :inputtext %>
                   <%= submit_tag 'Submit', :class => :inputsubmit %>

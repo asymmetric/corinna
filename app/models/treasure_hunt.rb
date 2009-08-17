@@ -24,7 +24,7 @@ class TreasureHunt < ActiveTreasureHunt::Base
     xml = Builder::XmlMarkup.new
     xml.instruct!
     xml.thunt tag, :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt", :turn => turn, :id => id, :pwd => password, :thunt => hunt do
-        xml << fake_hint
+      xml << fake_hint
     end
   end
 
@@ -44,22 +44,22 @@ class TreasureHunt < ActiveTreasureHunt::Base
     xml = Builder::XmlMarkup.new
     xml.instruct!
     xml.thunt tag, :thunt => hunt, :id => id, :pwd => password,
-      :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt" do
-        case type
-        when :string, :URI
-          xml.tag!("thunt:#{type}") { xml.text! answer }
-        when :geoloc
-          raise Exception unless answer.is_a? Hash # TODO quale eccezione?
-          xml.thunt type, :planet => (answer[:planet] || "Earth" ), :lat => answer[:lat], :long => answer[:long]
-        when :picture
-          raise Exception unless answer.is_a? Hash
-          xml.thunt type, :type => (answer[:service] || "flickr"), :usr => answer[:usr], :id => answer[:id]
-        when :video
-          raise Exception unless answer.is_a? Hash
-          xml.thunt type, :type => answer[:service], :id => answer[:id]
-        end
+    :"xmlns:thunt" => "http://vitali.web.cs.unbo.it/thunt" do
+      case type
+      when :string, :URI
+        xml.tag!("thunt:#{type}") { xml.text! answer }
+      when :geoloc
+        raise Exception unless answer.is_a? Hash # TODO quale eccezione?
+        xml.thunt type, :planet => (answer[:planet] || "Earth" ), :lat => answer[:lat], :long => answer[:long]
+      when :picture
+        raise Exception unless answer.is_a? Hash
+        xml.thunt type, :type => (answer[:service] || "flickr"), :usr => answer[:usr], :id => answer[:id]
+      when :video
+        raise Exception unless answer.is_a? Hash
+        xml.thunt type, :type => answer[:service], :id => answer[:id]
       end
-      #xml.thunt type ( xml.text! answer )
+    end
+    #xml.thunt type ( xml.text! answer )
   end
 
 

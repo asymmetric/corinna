@@ -189,7 +189,7 @@ class TreasureHuntsController < ApplicationController
 
     elsif request.post?
       @hunt = TreasureHunt.find params[:id]
-      answer_type = params[:answer_type]
+      answer_type = params[:type]
       answer = {}
       case answer_type
       when "geoloc"
