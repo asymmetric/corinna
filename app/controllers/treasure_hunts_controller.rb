@@ -197,13 +197,14 @@ class TreasureHuntsController < ApplicationController
         answer[:long] = params[:geoloc_long]
         answer[:planet] = params[:geoloc_planet]
       when "video"
-        answer[:id] = params[:answer].gsub(/.*=([\w]*?)$/,'\1')
-        answer[:service] = case params[:answer]
-                           when /google/
-                             :googlevideo
-                           when /youtube/
-                             :youtube
-                           end
+        case params[:answer]
+        when /google/
+          answer[:id] = params[:answer].gsub(/.*\?docid=(.*)\&?.*/,'\1')
+          answer[:service] = :googlevideo
+        when /youtube/
+          answer[:id] = params[:answer].gsub(/.*\?v=([\w]*)\&?.*/,'\1')
+          answer[:service] = :youtube
+        end
       when "picture"
         answer[:service] = "flickr"
         answer[:usr] = params[:answer].gsub(/.*?(\w*?)\/(\w*?)\/?$/,'\1')
