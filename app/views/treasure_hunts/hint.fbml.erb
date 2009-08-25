@@ -1,33 +1,74 @@
+<script type="text/javascript">
+    <!--
+function load(what, effect) {
+    var ajax = new Ajax();
+    var element = document.getElementById(what);
+    var element_wait = document.getElementById(what + '_wait');
+    Animation(element_wait).to('height', 'auto').to('opacity', 1).show().go();
+    ajax.responseType = Ajax.FBML;
+    ajax.ondone = function(data) {
+        element.setInnerFBML(data);
+        switch (effect) {
+        case 'highlight' : Animation(element).to('background', '#ffffff').from('background', '#fff9d7').go(); break;
+        case 'reveal' : 
+            Animation(element).duration(1000).checkpoint().to('height', 'auto').from('0px').to('width', 'auto').from('0px').to('opacity', 1).from(0).blind().show().go(); break;
+        }
+        Animation(element_wait).to('height', '0px').to('opacity', 0).hide().go();
+    }
+    ajax.onerror = function(data) {
+        document.getElementById(what).setInnerFBML(data);
+    }
+    var queryParams = { 'server_id' : "<%= @server.id %>", 'id' : "<%= @hunt.id %>" };
+    ajax.post('http://biascica.pipps.net:9999/frames/' + what, queryParams);
+}
+function reload(what, effect) {
+    setTimeout(function() {reload(what, effect)}, 30000);
+    load(what, effect);
+}
+load('hint', 'reveal');
+reload('hint', 'none');
+<% unless @nostatus %>
+load('status', 'reveal');
+reload('status', 'none');
+<% end %>
+// -->
+</script>
+
 <div class="ubersearch">
   <div class="clearfix">
+    <!-- <div class="result clearfix"> -->
+    <!--   <div class="info"> -->
+    <!--     <dl class="clearfix"> -->
+    <!--       <dt>Hunt:</dt><br /> -->
+    <!--       <dd class="result_name fn" id="show-title"><%=h @hunt.title %></dd> -->
+    <!--     </dl> -->
+    <!--     <%= render :partial => "share_button" %> -->
+    <!--   </div> -->
+    <!--   <ul class="actionspro"> -->
+    <!--     <li class="actionspro_li"><%= link_to 'Answer', { :action => :answer }, :class => "actionspro_a" %></li> -->
+    <!--     <li class="actionspro_li"><%= link_to 'Send fake hint', { :action => :fakehint }, :class => "actionspro_a" %></li> -->
+    <!--   </ul> -->
+    <!-- </div> -->
     <div class="result clearfix">
-      <div class="info">
-        <dl class="clearfix">
-          <dt>Hunt:</dt><br />
-          <dd class="result_name fn" id="show-title"><%=h @hunt.title %></dd>
-        </dl>
-        <%= render :partial => "share_button" %>
-      </div>
       <ul class="actionspro">
+        <h2 class="actionspro_a"><%=h @hunt.title %></h2>
         <li class="actionspro_li"><%= link_to 'Answer', { :action => :answer }, :class => "actionspro_a" %></li>
         <li class="actionspro_li"><%= link_to 'Send fake hint', { :action => :fakehint }, :class => "actionspro_a" %></li>
       </ul>
-    </div>
-    <div class="result clearfix">
       <div class="info">
         <dl class="clearfix">
           <dt>Hint:</dt><br />
-          <dd id="show-desc"><%= prettyprint_blockinline @hint, '.' %></dd>
+          <img id="hint_wait" src="http://static.ak.fbcdn.net/rsrc.php/z57QP/hash/6nr0un50.gif" />
+          <dd id="show-desc" id="hint" style="display:none"></dd>
         </dl>
       </div>
     </div>
     <% unless @nostatus %>
     <dt>What are others players doing?</dt>
+    <img id="status_wait" src="http://static.ak.fbcdn.net/rsrc.php/z57QP/hash/6nr0un50.gif" />
     <div class="ubersearch">
       <div class="clearfix">
-        <div class="result clearfix">
-          <%= render(:partial => "status_item", :collection => @status) %>
-        </div>
+        <div class="result clearfix" id="status" style="display:none"></div>
       </div>
     </div>
     <% end %>

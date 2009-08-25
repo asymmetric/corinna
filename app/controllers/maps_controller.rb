@@ -1,5 +1,5 @@
 class MapsController < ApplicationController
-  skip_before_filter :verify_authenticity_token
+  skip_before_filter :verify_authenticity_token, :ensure_application_is_installed_by_facebook_user, :get_current_facebook_user
   def index
     @map = GMap.new("map_div")
     @map.control_init(:large_map => true,:map_type => true)

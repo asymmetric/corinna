@@ -1,10 +1,9 @@
-<% user = Facebooker::User.new(status_item['id']) -%>
 <div class="info">
   <table>
     <td>
       <dl class="clearfix">
-        <dt><%=fb_profile_pic(user, :size => :square)%></dd>
-        <dt> <%=link_to user.name , user.profile_url %></dd>
+        <dt><fb:profile-pic uid="<%= status_item['id'] %>" size="square" linked="true" /></dd>
+        <dt><%= link_to "<fb:name uid=\"#{status_item['id']}\" />", "http://www.facebook.com/profile.php?id=#{status_item['id']}" %></dd>
       </dl>
     </td>
     <td>
