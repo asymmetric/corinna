@@ -112,7 +112,12 @@ class TreasureHuntsController < ApplicationController
        elsif request.post?
          begin
            @hunt = TreasureHunt.find params[:id]
-           @turn = params[:turn]
+           @turn = case params[:turn_radio]
+                   when "dropdown"
+                     params[:turn_list]
+                   when "inputtext"
+                     params[:turn_custom]
+                   end
            @fake_hint = params[:fakehint]
 
            @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password

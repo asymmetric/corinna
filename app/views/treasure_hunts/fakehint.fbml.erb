@@ -3,12 +3,15 @@
 
 <div id="hint">
 <% form_tag :action => :fakehint, :id => @hunt.id do %>
-  <!-- <%= label_tag 'fakehint', 'Fake hint' %> -->
   <%= text_area_tag :fakehint, nil, :size => "55x20" %>
   <p />
-  <%= label_tag 'turn', 'Turn' %>
-  <%= select_tag :turn, options_for_select( @turns ) %>
-  <%= text_field_tag :turn, nil, :class => :inputtext %>
+  <%= radio_button_tag 'turn_radio', 'dropdown', true %>
+  <%= label_tag 'turn_radio_dropdown', 'Select a turn' %>
+  <%= select_tag :turn_list, options_for_select( @turns ) %>
+  <br />
+  <%= radio_button_tag 'turn_radio', 'inputtext' %>
+  <%= label_tag 'turn_radio_inputtext', 'Select a custom turn' %>
+  <%= text_field_tag :turn_custom, nil, :class => :inputtext %>
   <%= submit_tag 'Submit', :class => :inputsubmit %>
 <% end %>
 </div>
