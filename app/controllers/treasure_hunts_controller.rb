@@ -69,29 +69,67 @@ class TreasureHuntsController < ApplicationController
     end
   end
 
+  def hint
+    @hunt = TreasureHunt.find params[:id]
+
+    respond_to do |format|
+      begin
+        @hint = @hunt.gethint @current_user.id, @current_user.password
+        begin
+          resp = @hunt.status @current_user.id, @current_user.password
+          xml = Nokogiri::XML resp
+          @status = xml.root.xpath 'thunt:status'
+        rescue ActiveTreasureHunt::XMLError => e
+          @nostatus = e.message
+        end
+        format.html
+        format.fbml
+      rescue ActiveTreasureHunt::XMLError => e
+        flash[:error] = e.message
+        format.html { redirect_to [@server, @hunt] }
+        format.fbml { redirect_to [@server, @hunt] }
+      end
+    end
+  end
+
   def fakehint
     respond_to do |format|
       if request.get?
         @hunt = TreasureHunt.find params[:id]
 
+        begin
+          resp = @hunt.status @current_user.id, @current_user.password
+          xml = Nokogiri::XML resp
+          @status = xml.root.xpath 'thunt:status'
+          @turns = xml.root.xpath('thunt:status/@turnNumber').to_a
+          @turn_names = xml.root.xpath('thunt:status/@turnName')
+        rescue ActiveTreasureHunt::XMLError => e
+          @status = e
+        end
+
         format.html
         format.fbml
-      elsif request.post?
-        begin
-          @hunt = TreasureHunt.find params[:id]
-          @turn = params[:turn]
-          @fake_hint = params[:fakehint]
+       elsif request.post?
+         begin
+           @hunt = TreasureHunt.find params[:id]
+           @turn = case params[:turn_radio]
+                   when "dropdown"
+                     params[:turn_list]
+                   when "inputtext"
+                     params[:turn_custom]
+                   end
+           @fake_hint = params[:fakehint]
 
-          @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
-          flash[:notice] = "Fake hint successfully sent!"
-          format.html { redirect_to [@server, @hunt] }
-          format.fbml { redirect_to [@server, @hunt] }
-        rescue Nokogiri::XML::SyntaxError => e
-          flash[:error] = "This is not a valid fake hint!"
-          format.html
-          format.fbml
-        end
-      end
+           @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
+           flash[:notice] = "Fake hint successfully sent!"
+           format.html { redirect_to [@server, @hunt] }
+           format.fbml { redirect_to [@server, @hunt] }
+         rescue ActiveTreasureHunt::XMLError => e
+           flash[:error] = e.message
+           format.html { redirect_to [@server, @hunt ] }
+           format.fbml { redirect_to :action => "hint" }
+         end
+       end
     end
   end
 
@@ -117,29 +155,6 @@ class TreasureHuntsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to :action => :hint }
       format.fbml { redirect_to :action => :hint }
-    end
-  end
-
-  def hint
-    @hunt = TreasureHunt.find params[:id]
-
-    respond_to do |format|
-      begin
-        @hint = @hunt.gethint @current_user.id, @current_user.password
-        begin
-          resp = @hunt.status @current_user.id, @current_user.password
-          xml = Nokogiri::XML resp
-          @status = xml.root.xpath 'thunt:status'
-        rescue ActiveTreasureHunt::XMLError => e
-          @nostatus = e.message
-        end
-        format.html
-        format.fbml
-      rescue ActiveTreasureHunt::XMLError => e
-        flash[:error] = e.message
-        format.html { redirect_to [@server, @hunt] }
-        format.fbml { redirect_to [@server, @hunt] }
-      end
     end
   end
 

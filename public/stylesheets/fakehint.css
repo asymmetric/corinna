@@ -1,0 +1,11 @@
+#hint{
+  float:left;
+}
+
+#status{
+  float:right;
+}
+
+#back{
+  clear:both;
+}
