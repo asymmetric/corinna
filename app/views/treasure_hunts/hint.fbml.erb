@@ -10,8 +10,7 @@ function load(what, effect) {
         element.setInnerFBML(data);
         switch (effect) {
         case 'highlight' : Animation(element).to('background', '#ffffff').from('background', '#fff9d7').go(); break;
-        case 'reveal' : 
-            Animation(element).duration(1000).checkpoint().to('height', 'auto').from('0px').to('width', 'auto').from('0px').to('opacity', 1).from(0).blind().show().go(); break;
+        case 'reveal' : Animation(element).duration(1000).checkpoint().to('height', 'auto').from('0px').to('width', 'auto').from('0px').to('opacity', 1).from(0).blind().show().go(); break;
         }
         Animation(element_wait).to('height', '0px').to('opacity', 0).hide().go();
     }
@@ -22,11 +21,24 @@ function load(what, effect) {
     ajax.post('http://corinna.bucket.mine.nu/frames/' + what, queryParams);
 }
 function reload(what, effect) {
-    setTimeout(function() {reload(what, effect)}, 30000);
+    var timerId = setTimeout(function() {reload(what, effect)}, 30000);
     load(what, effect);
+    return timerId;
+}
+var refreshTimerId = 0;
+function autoRefreshHandler() {
+    var button = document.getElementById('autoRefreshButton')
+    var buttonSelected = document.getElementById('autoRefreshButtonSelected')
+    clearTimeout(refreshTimerId);
+    if (button) {
+        refreshTimerId = reload('hint','none');
+        button.setId('autoRefreshButtonSelected');
+    }
+    if (buttonSelected) {
+        buttonSelected.setId('autoRefreshButton');
+    }
 }
 load('hint', 'reveal');
-reload('hint', 'none');
 <% unless @nostatus %>
 load('status', 'reveal');
 reload('status', 'none');
@@ -36,24 +48,12 @@ reload('status', 'none');
 
 <div class="ubersearch">
   <div class="clearfix">
-    <!-- <div class="result clearfix"> -->
-    <!--   <div class="info"> -->
-    <!--     <dl class="clearfix"> -->
-    <!--       <dt>Hunt:</dt><br /> -->
-    <!--       <dd class="result_name fn" id="show-title"><%=h @hunt.title %></dd> -->
-    <!--     </dl> -->
-    <!--     <%= render :partial => "share_button" %> -->
-    <!--   </div> -->
-    <!--   <ul class="actionspro"> -->
-    <!--     <li class="actionspro_li"><%= link_to 'Answer', { :action => :answer }, :class => "actionspro_a" %></li> -->
-    <!--     <li class="actionspro_li"><%= link_to 'Send fake hint', { :action => :fakehint }, :class => "actionspro_a" %></li> -->
-    <!--   </ul> -->
-    <!-- </div> -->
     <div class="result clearfix">
       <ul class="actionspro">
         <h2 class="actionspro_a"><%=h @hunt.title %></h2>
         <li class="actionspro_li"><%= link_to 'Answer', { :action => :answer }, :class => "actionspro_a" %></li>
         <li class="actionspro_li"><%= link_to 'Send fake hint', { :action => :fakehint }, :class => "actionspro_a" %></li>
+        <li class="actionspro_li"><a href="#" class="actionspro_a" id="autoRefreshButton" onclick="autoRefreshHandler(); return false;">Refresh hint automatically</a></li>
       </ul>
       <div class="info">
         <dl class="clearfix">
