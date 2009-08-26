@@ -7,7 +7,6 @@ class TreasureHuntsController < ApplicationController
     @hunts = TreasureHunt.find(:all)
 
     respond_to do |format|
-      format.html
       format.fbml
     end
   end
@@ -17,7 +16,6 @@ class TreasureHuntsController < ApplicationController
     @hunt = TreasureHunt.new(:xml => "")
 
     respond_to do |format|
-      format.html
       format.fbml
     end
   end
@@ -41,12 +39,10 @@ class TreasureHuntsController < ApplicationController
         user_serv.thunts << { :id => @hunt.id, :password => hunt_pwd }
         @current_user.save
         flash[:notice] = 'Treasure Hunt successfully created!'
-        format.html { redirect_to [@server, @hunt] }
         format.fbml { redirect_to [@server, @hunt] }
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message
         @hunt.xml = ""
-        format.html { render :action => :new }
         format.fbml { render :action => :new }
       end
     end
@@ -59,11 +55,9 @@ class TreasureHuntsController < ApplicationController
       begin
         #TreasureHunt.set_site = Server.find(params[:server]).url
         @hunt = TreasureHunt.find(params[:id])
-        format.html
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message
-        format.html { redirect_to :controller => :list }
         format.fbml { redirect_to :controller => :list }
       end
     end
@@ -82,11 +76,9 @@ class TreasureHuntsController < ApplicationController
         rescue ActiveTreasureHunt::XMLError => e
           @nostatus = e.message
         end
-        format.html
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message
-        format.html { redirect_to [@server, @hunt] }
         format.fbml { redirect_to [@server, @hunt] }
       end
     end
@@ -107,7 +99,6 @@ class TreasureHuntsController < ApplicationController
           @status = e
         end
 
-        format.html
         format.fbml
        elsif request.post?
          begin
@@ -122,11 +113,9 @@ class TreasureHuntsController < ApplicationController
 
            @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
            flash[:notice] = "Fake hint successfully sent!"
-           format.html { redirect_to [@server, @hunt] }
            format.fbml { redirect_to [@server, @hunt] }
          rescue ActiveTreasureHunt::XMLError => e
            flash[:error] = e.message
-           format.html { redirect_to [@server, @hunt ] }
            format.fbml { redirect_to :action => "hint" }
          end
        end
@@ -153,7 +142,6 @@ class TreasureHuntsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to :action => :hint }
       format.fbml { redirect_to :action => :hint }
     end
   end
@@ -166,11 +154,9 @@ class TreasureHuntsController < ApplicationController
         resp = hunt.status @current_user.id, @current_user.password
         xml = Nokogiri::XML resp
         @status = xml.root.xpath 'thunt:status'
-        format.html
         format.fbml
       rescue ActiveTreasureHunt::XMLError => e
         flash[:error] = e.message
-        format.html { redirect_to [@server, @hunt] }
         format.fbml { redirect_to [@server, @hunt] }
       end
     end
@@ -187,7 +173,6 @@ class TreasureHuntsController < ApplicationController
       flash[:error] = e.message
     end
     respond_to do |format|
-      format.html { redirect_to [@server, @hunt] }
       format.fbml { redirect_to [@server, @hunt] }
     end
   end
@@ -198,7 +183,6 @@ class TreasureHuntsController < ApplicationController
 
       # shows form to input the answer
       respond_to do |format|
-        format.html
         format.fbml
       end
 
@@ -238,11 +222,9 @@ class TreasureHuntsController < ApplicationController
                            when "lose" then "You lose!"
                            end
           flash[:info] = prettyprint_blockinline(response.root.to_xml, '.').strip[0..200].gsub(/<[^>]*$/,'...').gsub(/(<\/?img)(.*?>)/,'\1 style="width:auto; height:15em;" \2').gsub(/<\/?p.*?>/,'')
-          format.html { redirect_to :action => :hint }
           format.fbml { redirect_to :action => :hint }
         rescue Nokogiri::XML::SyntaxError => e
           flash[:error] = "This is not a valid answer!"
-          format.html
           format.fbml
         end
       end
@@ -262,7 +244,6 @@ class TreasureHuntsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to :controller => :list }
       format.fbml { redirect_to :controller => :list }
     end
   end
@@ -271,7 +252,6 @@ class TreasureHuntsController < ApplicationController
     @hunt = TreasureHunt.find params[:id]
 
     respond_to do |format|
-      format.html
       format.fbml
     end
   end

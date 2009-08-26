@@ -5,7 +5,6 @@ class ServersController < ApplicationController
     @servers = Server.find(:all)
 
     respond_to do |format|
-      format.html
       format.fbml
     end
   end
@@ -14,7 +13,6 @@ class ServersController < ApplicationController
     @server = Server.new(:title => "", :url => "")
 
     respond_to do |format|
-      format.html
       format.fbml
     end
   end
@@ -29,10 +27,8 @@ class ServersController < ApplicationController
           user.save
         end
         flash[:notice] = 'Server was successfully created.'
-        format.html { redirect_to @server }
         format.fbml { redirect_to @server }
       else
-        format.html { render :action => :new }
         format.fbml { render :action => :new }
       end
     end
@@ -46,7 +42,6 @@ class ServersController < ApplicationController
     @server = Server.find(params[:id])
 
     respond_to do |format|
-      format.html
       format.fbml
     end    
   end
@@ -57,10 +52,8 @@ class ServersController < ApplicationController
     respond_to do |format|
       if @server != @default_server and @current_user.is_site_admin? and @server.update_attributes(params[:server])
         flash[:notice] = 'Server was successfully updated.'
-        format.html { redirect_to @server }
         format.fbml { redirect_to @server }
       else
-        format.html { render :action => :edit }
         format.fbml { render :action => :edit }
       end
     end
@@ -71,7 +64,6 @@ class ServersController < ApplicationController
     @server.destroy unless @default_server == @server or (not @current_user.is_site_admin?)
 
     respond_to do |format|
-      format.html { redirect_to servers_url }
       format.fbml { redirect_to servers_url }
     end
   end

@@ -2,7 +2,6 @@
   <strong><%= pluralize @hunts_n, "treasure hunt" %> found</strong>
   <% if @hunts_n > 0 %>
     <% for server in @servers %>
-      <!--<strong><%= pluralize server[:hunts].size, "treasure hunt" %> found on server <%= link_to server[:server].title, server_treasure_hunts_path(server[:server]) %></strong>-->
       <div class="clearfix">
 	<% if server[:hunts].size > 0 %>
 	  <% for hunt in server[:hunts] %>

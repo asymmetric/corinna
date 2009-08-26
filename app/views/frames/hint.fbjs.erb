@@ -1,1 +1,1 @@
-<%= prettyprint_blockinline @hint, '.' %>
+<%= prettyprint_blockinline(@hint, '.').gsub(/(<\/?img)(.*?>)/,'\1 style="width:610px; height:auto;" \2') %>

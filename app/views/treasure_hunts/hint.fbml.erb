@@ -53,7 +53,7 @@ setTimeout(function() {reload('status', 'none')}, 30000);
     <div class="result clearfix">
       <ul class="actionspro">
         <h2 class="actionspro_a"><%=h @hunt.title %></h2>
-        <li class="actionspro_li"><%= link_to 'Answer', { :action => :answer }, :class => "actionspro_a" %></li>
+        <li class="actionspro_li"><%= link_to 'Answer!', { :action => :answer }, :class => "actionspro_a" %></li>
         <li class="actionspro_li"><%= link_to 'Send fake hint', { :action => :fakehint }, :class => "actionspro_a" %></li>
         <li class="actionspro_li"><a href="#" class="actionspro_a" id="autoRefreshButton" onclick="autoRefreshHandler(); return false;">Refresh hint automatically</a></li>
       </ul>
