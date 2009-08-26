@@ -20,7 +20,7 @@
   </xsl:template>
   <xsl:template match="location">
     <p>
-      <fb:iframe width="650" height="487" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://corinna.bucket.mine.nu/maps?lat={@lat}&amp;lng={@long}&amp;z=16"></fb:iframe>
+      <fb:iframe width="610" height="487" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://corinna.bucket.mine.nu/maps?lat={@lat}&amp;lng={@long}&amp;z=16"></fb:iframe>
     </p>
     <xsl:apply-templates />
   </xsl:template>

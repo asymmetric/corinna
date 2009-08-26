@@ -42,11 +42,11 @@
   <xs:complexType name="Tpicture">
     <xs:attribute name="type" type="xs:string" default="flickr"/>
     <xs:attribute name="usr" type="xs:string" use="required"/>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
   <xs:complexType name="Tvideo">
     <xs:attribute name="type" type="TvideoType" use="required"/>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
   <xs:simpleType name="TvideoType">
     <xs:restriction base="xs:string">

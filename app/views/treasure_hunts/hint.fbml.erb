@@ -33,9 +33,11 @@ function autoRefreshHandler() {
     if (button) {
         refreshTimerId = reload('hint','none');
         button.setId('autoRefreshButtonSelected');
+        button.setTextValue('Refreshing hint...');
     }
     if (buttonSelected) {
         buttonSelected.setId('autoRefreshButton');
+        buttonSelected.setTextValue('Refresh hint automatically');
     }
 }
 load('hint', 'reveal');
