@@ -4,7 +4,7 @@
 	<li class="actionspro_li"><%= link_to 'Invite friends', { :action => :invite }, :class => "actionspro_a" %></li>
 	<% if @current_user and @current_user.is_admin? @hunt.id, @server.id%>
 	<li class="actionspro_li"><%= link_to "Start", { :action => :start, :id => @hunt.id }, :class => "actionspro_a", :id => 'admin' %></li>
-	<li class="actionspro_li"><%= link_to 'Delete', { :id => @hunt },
+	<li class="actionspro_li"><%= link_to 'Delete', [@server, @hunt],
                                   :confirm => 'Are you sure do you want to delete this treasure hunt?',
                                   :method => :delete, :class => 'actionspro_a', :id => 'admin' %></li>
 	<% end %>

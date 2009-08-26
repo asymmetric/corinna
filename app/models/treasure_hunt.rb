@@ -1,7 +1,5 @@
 class TreasureHunt < ActiveTreasureHunt::Base
-  #def self.set_site= site
-  #  self.site = site
-  #end
+  self.timeout = 2
   self.headers = { "Accept" => "text/xml", "Content-Type" => "application/x-www-form-urlencoded" }
   self.default_namespace = { 'thunt' => 'http://vitali.web.cs.unbo.it/thunt' }
   self.default_request_builder = lambda do |tag, id, password, hunt|

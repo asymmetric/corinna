@@ -106,12 +106,12 @@ function show(div, from){
                 <% form_tag :action => :answer, :type => "geoloc" do %>
                 <%= label_tag 'geoloc_lat', 'Latitude:' %>
                 <%= text_field_tag :geoloc_lat, nil, {:maxlength => 8, :class => "inputtext" } %>
+                <br />
                 <%= label_tag 'geoloc_lat', 'Longitude:' %>
                 <%= text_field_tag :geoloc_long, nil, { :maxlength => 8, :class => "inputtext" } %>
                 <br/>
                 <%= label_tag 'geoloc_lat', 'Planet (optional):' %>
                 <%= text_field_tag :geolog_planet, nil, { :maxlength => 8, :class => "inputtext" } %>
-                <br/>
                 <%= submit_tag 'Submit', :class => "inputsubmit" %>
                 <% end %>
               </div>

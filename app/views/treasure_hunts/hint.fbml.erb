@@ -15,7 +15,7 @@ function load(what, effect) {
         Animation(element_wait).to('height', '0px').to('opacity', 0).hide().go();
     }
     ajax.onerror = function(data) {
-        document.getElementById(what).setInnerFBML(data);
+        document.getElementById(what).setInnerFBML('An error occured');
     }
     var queryParams = { 'server_id' : "<%= @server.id %>", 'id' : "<%= @hunt.id %>" };
     ajax.post('http://corinna.bucket.mine.nu/frames/' + what, queryParams);
@@ -41,7 +41,7 @@ function autoRefreshHandler() {
 load('hint', 'reveal');
 <% unless @nostatus %>
 load('status', 'reveal');
-reload('status', 'none');
+setTimeout(function() {reload('status', 'none')}, 30000);
 <% end %>
 // -->
 </script>
