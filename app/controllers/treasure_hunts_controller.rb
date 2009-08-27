@@ -1,5 +1,6 @@
 class TreasureHuntsController < ApplicationController
   before_filter :get_server
+  skip_before_filter :verify_authenticity_token, :only => :answer
   layout "list"
 
   # GET /treasure_hunts
