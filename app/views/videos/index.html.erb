@@ -1,0 +1,59 @@
+<!--
+copyright (c) 2009 Google inc.
+ 
+You are free to copy and use this sample.
+License can be found here: http://code.google.com/apis/ajaxsearch/faq/#license
+-->
+ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Google AJAX Search API Sample</title>
+    <script src="http://www.google.com/jsapi?key=ABQIAAAA1XbMiDxx_BTCY2_FkPh06RRaGTYH6UMl8mADNa0YKuWNNa8VNxQEerTAUcfkyrr6OwBovxn7TDAH5Q" type="text/javascript"></script>
+    <script type="text/javascript">
+      /*
+* The Hello World of the AJAX Search API
+*/
+ 
+google.load('search', '1');
+    
+function handler(result){
+    
+    field = document.getElementById("answer");
+    field.value = result.url;
+    
+}
+function OnLoad() {
+    // Create a search control
+    var searchControl = new google.search.SearchControl();
+ 
+    // Add in a full set of searchers
+// var localSearch = new google.search.LocalSearch();
+// searchControl.addSearcher(localSearch);
+    video_search = new google.search.VideoSearch();
+    searchControl.addSearcher(video_search);
+ 
+    // Set the Local Search center point
+// localSearch.setCenterPoint("New York, NY");
+    searchControl.setOnKeepCallback(this,handler,"Choose");
+    // tell the searcher to draw itself and tell it where to attach
+    searchControl.draw(document.getElementById("content"));
+ 
+    // execute an inital search
+// searchControl.execute("VW GTI");
+}
+ 
+google.setOnLoadCallback(OnLoad);
+ 
+    </script>
+  </head>
+  <body style="font-family: Arial;border: 0 none;">
+    <div id="content">Loading...</div>
+    <form action="http://apps.facebook.com/corinna_test_tetra/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer" method="post" target="_top">
+     <input type="hidden" id="answer"/>
+     <input type="hidden" name="type" value="video">
+     <input type="submit"></input>
+    </form>
+  </body>
+</html>
