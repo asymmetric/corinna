@@ -10,6 +10,9 @@
   background-color: #3b5998;
   color: #ffffff;
 }
+/*div#content, div.dev_app_infos_shadow {
+    width: auto;
+}TODO full width in answer*/
 #share {
   margin-top: 15px;
   margin-bottom: 15px;

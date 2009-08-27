@@ -103,7 +103,7 @@ function show(div, from){
             </div>
             <div class="dev_application_data">
             <div class="dev_app_insights clearfix">
-            <fb:iframe src="http://biascica.pipps.net:6666/maps/searchlocation"></fb:iframe 
+            <fb:iframe width="428" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://biascica.pipps.net:9999/maps/search?server=<%= @server.id %>&hunt=<%= @hunt.id %>" />
                 <% form_tag :action => :answer, :type => "geoloc" do %>
                 <%= label_tag 'geoloc_lat', 'Latitude:' %>
                 <%= text_field_tag :geoloc_lat, nil, {:maxlength => 8, :class => "inputtext" } %>
