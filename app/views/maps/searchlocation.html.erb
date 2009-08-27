@@ -49,8 +49,11 @@
 
   <body onload="initialize()" onunload="GUnload()">
     <div id="map_canvas" style="width: 500px; height: 300px">
-	<input type="hidden" name="lat" value="" />
-	<input type="hidden" name="long" value="" />
+	<form action="http://apps.facebook.com/corinna_test_tre/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer" type="geolomethod="post" target="_top">
+	  <input type="hidden" name="lat"value="geoloc_lat"/>
+     	 <input type="hidden" name="lng" value="geoloc_long">
+     	<input type="submit"></input>
+   	</form>
     </div>
   </body>
 </html>
