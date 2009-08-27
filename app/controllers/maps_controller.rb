@@ -17,4 +17,13 @@ class MapsController < ApplicationController
       format.html
     end
   end
+
+  def searchlocation 
+	 server_id = params[:server] 
+  7   hunt_id = params[:hunt] 
+  8   respond_to do |format| 
+  9   format.html 
+ 10   end 
+  end
+
 end
