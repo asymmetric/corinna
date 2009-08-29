@@ -27,12 +27,13 @@ function handler(result){
 function OnLoad() {
     // Create a search control
     var searchControl = new google.search.SearchControl();
- 
+    var options = new google.search.SearcherOptions();
+     options.setExpandMode(google.search.SearchControl.EXPAND_MODE_OPEN);
     // Add in a full set of searchers
 // var localSearch = new google.search.LocalSearch();
 // searchControl.addSearcher(localSearch);
     video_search = new google.search.VideoSearch();
-    searchControl.addSearcher(video_search);
+    searchControl.addSearcher(video_search,options);
  
     // Set the Local Search center point
 // localSearch.setCenterPoint("New York, NY");
@@ -50,9 +51,8 @@ google.setOnLoadCallback(OnLoad);
   </head>
   <body style="font-family: Arial;border: 0 none;">
     <div id="content">Loading...</div>
-    <form action="http://apps.facebook.com/corinna_test_tetra/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer" method="post" target="_top">
-     <input type="hidden" id="answer"/>
-     <input type="hidden" name="type" value="video">
+    <form action="http://apps.facebook.com/corinna_test_tetra/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer?type=video" method="post" target="_top">
+     <input type="hidden" id="answer" name="answer"/>
      <input type="submit"></input>
     </form>
   </body>

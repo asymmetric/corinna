@@ -188,6 +188,7 @@ class TreasureHuntsController < ApplicationController
       end
 
     elsif request.post?
+      debugger
       @hunt = TreasureHunt.find params[:id]
       answer_type = params[:type]
       answer = {}
@@ -197,12 +198,14 @@ class TreasureHuntsController < ApplicationController
         answer[:long] = params[:geoloc_long]
         answer[:planet] = params[:geoloc_planet]
       when "video"
-        case params[:answer]
+        url = params[:answer].gsub('http://www.google.com/url?q=','')
+ 
+        case  url 
         when /google/
-          answer[:id] = params[:answer].gsub(/.*\?docid=(.*)\&?.*/,'\1')
+          answer[:id] = url.gsub(/.*\?docid=(.*)\&?.*/,'\1')
           answer[:service] = :googlevideo
         when /youtube/
-          answer[:id] = params[:answer].gsub(/.*\?v=([\w]*)\&?.*/,'\1')
+          answer[:id] = url.gsub(/.*\?v=([\w]*)\&?.*/,'\1')
           answer[:service] = :youtube
         end
       when "picture"

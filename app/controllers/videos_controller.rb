@@ -4,7 +4,6 @@ class VideosController < ApplicationController
  def index
   @server_id = params[:server_id]
   @hunt_id = params[:hunt_id]
-  debugger
   respond_to do |format|
   format.html
   end

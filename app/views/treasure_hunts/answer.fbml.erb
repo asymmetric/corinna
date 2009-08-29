@@ -70,22 +70,19 @@ function show(div, from){
         <div class="dev_app_infos" id="dev_app_infos">
           <div class="dev_application app_show" id="video_info">
             <div class="dev_application_header clearfix">
-              <a href="http://www.youtube.com" target="_blank"><img src="http://www.youtube.com/img/YouTube_logo.png" /></a><a href="http://video.google.com" target="_blank"><img src="http://video.google.com/common/google_logo.gif" /></a>
               <h3>Video</h3>
               <div id="app_submit">
                 <div class="dev_app_submit">
-                <fb:iframe src="http://localhost:3000/videos/index?server_id=<%=@server.id%>&hunt_id=<%=@hunt.id%>"></fb:iframe>
+                
+              <a href="http://www.youtube.com" target="_blank"><img src="http://www.youtube.com/img/YouTube_logo.png" /></a><a href="http://video.google.com" target="_blank"><img src="http://video.google.com/common/google_logo.gif" /></a>
                 </div>
               </div>
             </div>
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
-                <% form_tag :action => :answer, :type => "video" do %>
-                <%= label_tag :answer, 'Insert video URL:' %>
-                <%= text_field_tag :answer, nil, :class => :inputtext %>
-                <%= submit_tag 'Submit', :class => :inputsubmit %>
-                <% end %>
-              </div>
+                
+                <fb:iframe width="430" height="400" scrolling=yes frameborder=no src="http://localhost:3000/videos/index?server_id=<%=@server.id%>&hunt_id=<%=@hunt.id%>"></fb:iframe>
+             </div>
             </div>
             <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %> | <a href="www.facebook.com/">Action2</a></div>
           </div>
