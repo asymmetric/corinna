@@ -171,11 +171,7 @@ function show(div, from){
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
                 <div>
-                  <% form_tag :action => :answer, :type => "picture" do %>
-                  <%= label_tag :answer, 'Picture url:' %>
-                  <%= text_field_tag :answer, nil, :class => :inputtext %>
-                  <%= submit_tag 'Submit', :class => :inputsubmit %>
-                  <% end %>
+                  <fb:iframe width="428" height="400" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0"  src="http://localhost:3000/flickr/index?server=<%=@server.id%>&hunt=<%=@hunt.id%>"></fb:iframe>
                 </div>
               </div>
             </div>

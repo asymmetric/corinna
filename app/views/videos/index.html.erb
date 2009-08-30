@@ -21,8 +21,7 @@ google.load('search', '1');
 function handler(result){
     
     field = document.getElementById("answer");
-    field.value = result.url;
-    
+    field.value = decodeURI(result.url);
 }
 function OnLoad() {
     // Create a search control
@@ -51,7 +50,7 @@ google.setOnLoadCallback(OnLoad);
   </head>
   <body style="font-family: Arial;border: 0 none;">
     <div id="content">Loading...</div>
-    <form action="http://apps.facebook.com/corinna_test_tetra/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer?type=video" method="post" target="_top">
+    <form name="myform" action="http://apps.facebook.com/corinna_test_tetra/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer?type=video" method="post" target="_top">
      <input type="hidden" id="answer" name="answer"/>
      <input type="submit"></input>
     </form>

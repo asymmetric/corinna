@@ -199,13 +199,14 @@ class TreasureHuntsController < ApplicationController
         answer[:planet] = params[:geoloc_planet]
       when "video"
         url = params[:answer].gsub('http://www.google.com/url?q=','')
- 
-        case  url 
+        debugger
+       url_decode = CGI::unescape(url)
+        case  url_decode
         when /google/
-          answer[:id] = url.gsub(/.*\?docid=(.*)\&?.*/,'\1')
+          answer[:id] = url_decode.gsub(/.*\?docid=(.*)\&?.*/,'\1')
           answer[:service] = :googlevideo
         when /youtube/
-          answer[:id] = url.gsub(/.*\?v=([\w]*)\&?.*/,'\1')
+          answer[:id] = url_decode.gsub(/.*\?v=([\w]*)\&?.*/,'\1')
           answer[:service] = :youtube
         end
       when "picture"

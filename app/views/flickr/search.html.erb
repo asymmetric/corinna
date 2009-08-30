@@ -1,0 +1,41 @@
+<html>
+ <head>
+  <script type="text/javascript">
+   
+   function show(src){
+        var w = 400;
+        var h = 250;
+        var l = Math.floor((screen.width-w)/2);
+        var t = Math.floor((screen.height-h)/2);
+      window.open(src,"","width=" + w + ",height=" + h + ",top=" + t + ",left=" + l);
+  }
+  </script>
+</head>
+ <body>
+   <form action="http://apps.facebook.com/corinna_test_tetra/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer?type=picture" method="post" target="_top">
+   <div style="position:fixed;left:30%;">
+   <input type="submit" value="Send the answer"/>
+   </div> 
+    <table border=0>
+     <% @photos.each do | photo | %>
+     <tr>
+      <% info = flickr.photos.getInfo(:photo_id => photo.id ) %>
+      <td><a href="javascript:show('http://farm<%=info.farm%>.static.flickr.com/<%=info.server%>/<%=info.id%>_<%=info.secret%>.jpg')">
+           <img src="http://farm<%=info.farm%>.static.flickr.com/<%=info.server%>/<%=info.id%>_<%=info.secret%>.jpg" width="75" height="75"></img></td>
+          </a>
+      <td>
+       <div>
+        <h3><%=info.title%></h3>
+       </div>
+      </td>
+      <td><input type="radio" name="answer" value="<%=info.urls.first._content%>">
+             Select
+         </input></td> 
+     </tr>
+     <%end%>
+  </table>
+
+</form>
+
+ </body>
+</html>
