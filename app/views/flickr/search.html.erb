@@ -13,8 +13,6 @@
 </head>
  <body>
    <form action="http://apps.facebook.com/corinna_test_tetra/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer?type=picture" method="post" target="_top">
-   <div style="position:fixed;left:30%;">
-   <input type="submit" value="Send the answer"/>
    </div> 
     <table border=0>
      <% @photos.each do | photo | %>
@@ -35,7 +33,8 @@
      <%end%>
   </table>
 
-</form>
+   <input type="submit" value="Send the answer"/>  <%=link_to "Effettua un'altra ricerca" , :action => :index%>
+  </form>
 
  </body>
 </html>
