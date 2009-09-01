@@ -25,7 +25,7 @@ class TreasureHuntsController < ApplicationController
   def create
     hunt_pwd = ActiveSupport::SecureRandom.hex
     xml = Nokogiri::XML(params[:treasure_hunt]['xml'])
-    if xml.root and xml.root['idOrganizer'] and xml.root['pwdOrganizer']
+    if xml.root
       xml.root['idOrganizer'] = @current_facebook_user.to_s
       xml.root['pwdOrganizer'] = hunt_pwd
       xml.encoding = 'UTF-8'
@@ -54,7 +54,6 @@ class TreasureHuntsController < ApplicationController
   def show
     respond_to do |format|
       begin
-        #TreasureHunt.set_site = Server.find(params[:server]).url
         @hunt = TreasureHunt.find(params[:id])
         format.fbml
       rescue Exception => e
@@ -79,7 +78,11 @@ class TreasureHuntsController < ApplicationController
         end
         format.fbml
       rescue Exception => e
-        flash[:error] = e.message unless flash[:info] or flash[:notice]
+        unless (flash[:info] or flash[:notice])
+          flash[:error] = e.message
+        else
+          flash.keep
+        end
         format.fbml { redirect_to [@server, @hunt] }
       end
     end
