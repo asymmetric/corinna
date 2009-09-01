@@ -1,5 +1,6 @@
 class TreasureHuntsController < ApplicationController
   before_filter :get_server
+  skip_before_filter :verify_authenticity_token, :only => :answer
   layout "list"
 
   # GET /treasure_hunts
@@ -187,6 +188,7 @@ class TreasureHuntsController < ApplicationController
       end
 
     elsif request.post?
+      debugger
       @hunt = TreasureHunt.find params[:id]
       answer_type = params[:type]
       answer = {}
@@ -196,12 +198,15 @@ class TreasureHuntsController < ApplicationController
         answer[:long] = params[:geoloc_long]
         answer[:planet] = params[:geoloc_planet]
       when "video"
-        case params[:answer]
+        url = params[:answer].gsub('http://www.google.com/url?q=','')
+        debugger
+       url_decode = CGI::unescape(url)
+        case  url_decode
         when /google/
-          answer[:id] = params[:answer].gsub(/.*\?docid=(.*)\&?.*/,'\1')
+          answer[:id] = url_decode.gsub(/.*\?docid=(.*)\&?.*/,'\1')
           answer[:service] = :googlevideo
         when /youtube/
-          answer[:id] = params[:answer].gsub(/.*\?v=([\w]*)\&?.*/,'\1')
+          answer[:id] = url_decode.gsub(/.*\?v=([\w]*)\&?.*/,'\1')
           answer[:service] = :youtube
         end
       when "picture"

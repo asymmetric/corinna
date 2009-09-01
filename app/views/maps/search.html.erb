@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Google Maps JavaScript API Example: Tile Detector</title>
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAARy021EwSZg1_jI6Kebhw0RSbtnOQlPQji-M138VquVtzff8pnhS56pOUAWV2qlw-VbknqBb-2BS4_g"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+      function initialize() {
+
+          if (GBrowserIsCompatible()) {
+              var mapOptions = {
+                  googleBarOptions : {
+                      style : "new",
+                      showResultList :GMap2.DEFAULT_RESULT_LIST,
+                  }
+              }
+              var map = new GMap2(document.getElementById("map_canvas"), mapOptions);
+              map.setCenter(new GLatLng(37.88, -122.442626), 10);
+              map.setUIToDefault();
+              map.enableGoogleBar();
+              GEvent.addListener(map,"click", function(overlay,latlng) {
+                  if (overlay) {
+                      // ignore if we click on the info window
+                      return;
+                  }
+                  var tileCoordinate = new GPoint();
+                  var tilePoint = new GPoint();
+                  var currentProjection = G_NORMAL_MAP.getProjection();
+                  tilePoint = currentProjection.fromLatLngToPixel(latlng, map.getZoom());
+                  tileCoordinate.x = Math.floor(tilePoint.x / 256);
+                  tileCoordinate.y = Math.floor(tilePoint.y / 256);
+                  var myHtml = "Latitude: " + latlng.lat() + "<br/>Longitude: " + latlng.lng() + '<form action="http://apps.facebook.com/corinna_test_due/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer?type=geoloc" method="post" target="_top"><input type="hidden" name="geoloc_lat" value="'+ latlng.lat() +'" /><input type="hidden" name="geoloc_long" value="'+ latlng.lng() +'" /><input type="submit" value="Submit" /></form>';
+                  map.openInfoWindow(latlng, myHtml);
+              });
+
+
+          }
+      }
+
+
+
+    </script>
+  </head>
+
+  <body onload="initialize()" onunload="GUnload()" style="margin:0;">
+    <div id="map_canvas" style="width: 428px; height: 400px;"></div>
+  </body>
+</html>

@@ -17,4 +17,12 @@ class MapsController < ApplicationController
       format.html
     end
   end
+
+  def search
+    @server_id = params[:server]
+    @hunt_id = params[:hunt]
+    respond_to do |format|
+      format.html
+    end
+  end
 end
