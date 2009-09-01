@@ -8,7 +8,7 @@ class FramesController < ApplicationController
       respond_to do |format|
         format.fbjs
       end
-    rescue ActiveTreasureHunt::XMLError => e
+    rescue Exception => e
       respond_to do |format|
         format.fbjs { render :text => "<fb:error message=\"#{e.message}\" />" }
       end
@@ -23,7 +23,7 @@ class FramesController < ApplicationController
       respond_to do |format|
         format.fbjs
       end
-    rescue ActiveTreasureHunt::XMLError => e
+    rescue Exception => e
       respond_to do |format|
         format.fbjs { render :text => "<strong>#{e.message}</strong>" }
       end

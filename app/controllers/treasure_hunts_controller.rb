@@ -40,7 +40,7 @@ class TreasureHuntsController < ApplicationController
         @current_user.save
         flash[:notice] = 'Treasure Hunt successfully created!'
         format.fbml { redirect_to [@server, @hunt] }
-      rescue ActiveTreasureHunt::XMLError => e
+      rescue Exception => e
         flash[:error] = e.message
         @hunt.xml = ""
         format.fbml { render :action => :new }
@@ -56,7 +56,7 @@ class TreasureHuntsController < ApplicationController
         #TreasureHunt.set_site = Server.find(params[:server]).url
         @hunt = TreasureHunt.find(params[:id])
         format.fbml
-      rescue ActiveTreasureHunt::XMLError => e
+      rescue Exception => e
         flash[:error] = e.message
         format.fbml { redirect_to :controller => :list }
       end
@@ -73,11 +73,11 @@ class TreasureHuntsController < ApplicationController
           resp = @hunt.status @current_user.id, @current_user.password
           xml = Nokogiri::XML resp
           @status = xml.root.xpath 'thunt:status'
-        rescue ActiveTreasureHunt::XMLError => e
+        rescue Exception => e
           @nostatus = e.message
         end
         format.fbml
-      rescue ActiveTreasureHunt::XMLError => e
+      rescue Exception => e
         flash[:error] = e.message
         format.fbml { redirect_to [@server, @hunt] }
       end
@@ -95,7 +95,7 @@ class TreasureHuntsController < ApplicationController
           @status = xml.root.xpath 'thunt:status'
           @turns = xml.root.xpath('thunt:status/@turnNumber').to_a.uniq
           @turn_names = xml.root.xpath('thunt:status/@turnName').to_a.uniq
-        rescue ActiveTreasureHunt::XMLError => e
+        rescue Exception => e
           @status = e
         end
 
@@ -114,7 +114,7 @@ class TreasureHuntsController < ApplicationController
            @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
            flash[:notice] = "Fake hint successfully sent!"
            format.fbml { redirect_to [@server, @hunt] }
-         rescue ActiveTreasureHunt::XMLError => e
+         rescue Exception  => e
            flash[:error] = e.message
            format.fbml { redirect_to :action => "hint" }
          end
@@ -155,7 +155,7 @@ class TreasureHuntsController < ApplicationController
         xml = Nokogiri::XML resp
         @status = xml.root.xpath 'thunt:status'
         format.fbml
-      rescue ActiveTreasureHunt::XMLError => e
+      rescue Exception => e
         flash[:error] = e.message
         format.fbml { redirect_to [@server, @hunt] }
       end
@@ -169,7 +169,7 @@ class TreasureHuntsController < ApplicationController
       hunt_pwd = @current_user.hunt_password @hunt.id, @server.id
       @hint = @hunt.start @current_user.id, hunt_pwd
       flash[:notice] = "Treasure Hunt successfully started!"
-    rescue ActiveTreasureHunt::XMLError => e
+    rescue Exception => e
       flash[:error] = e.message
     end
     respond_to do |format|
@@ -214,7 +214,12 @@ class TreasureHuntsController < ApplicationController
       respond_to do |format|
 
         begin
-          response = Nokogiri::Slop(@hunt.answer(answer, answer_type, @current_user.id, @current_user.password))
+          begin
+            response = Nokogiri::Slop(@hunt.answer(answer, answer_type, @current_user.id, @current_user.password))
+          rescue Exception => e
+            flash[:error] = e.message
+            format.fbml
+          end
           flash[:notice] = case response.root['status']
                            when "wrong" then "This is not the correct answer, try again!"
                            when "right" then "You got it right!"
@@ -239,7 +244,7 @@ class TreasureHuntsController < ApplicationController
       @current_user.find_server(@server.id).thunts.delete_if { |x| x.id == @hunt.id }
       @current_user.save
       flash[:notice] = "Treasure Hunt successfully destroyed!"
-    rescue ActiveTreasureHunt::XMLError => e
+    rescue Exception => e
       flash[:error] = e.message
     end
 
