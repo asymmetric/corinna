@@ -70,51 +70,40 @@ function show(div, from){
         <div class="dev_app_infos" id="dev_app_infos">
           <div class="dev_application app_show" id="video_info">
             <div class="dev_application_header clearfix">
-                 <a href="http://www.youtube.com" target="_blank"><img src="http://www.youtube.com/img/YouTube_logo.png" /></a>
-               <h3>Video</h3>
-             <div id="app_submit">
+              <a href="http://www.youtube.com" target="_blank"><img src="http://www.youtube.com/img/YouTube_logo.png" /></a>
+              <h3>Video</h3>
+              <div id="app_submit">
                 <div class="dev_app_submit">
-                  <h6>Search for the correct video on Youtube and GoogleVideo</h6>
-                  <p>search for the video and choose it</p>
+                  <h6>Do you think it's a video, uh?</h6>
+                  <p>search, choose the video you think it's right and then click the Submit button</p>
                 </div>
               </div>
             </div>
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
-                
-                <fb:iframe width="430" height="400" scrolling=yes frameborder=no src="http://localhost:3000/videos/index?server_id=<%=@server.id%>&hunt_id=<%=@hunt.id%>"></fb:iframe>
-             </div>
+
+                <fb:iframe width="430" height="400" scrolling=yes frameborder=no src="http://corinna.bucket.mine.nu/videos/index?server_id=<%=@server.id%>&hunt_id=<%=@hunt.id%>"></fb:iframe>
+              </div>
             </div>
-            <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %> | <a href="www.facebook.com/">Action2</a></div>
+            <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %></div>
           </div>
           <div class="dev_application app_show" id="geoloc_info" style="display:none">
             <div class="dev_application_header clearfix">
-               <a href="http://maps.google.com" target="_blank"><img src="http://maps.google.com/intl/en_us/images/maps_logo_small.png" /></a>
-             <h3>Location</h3>
+              <a href="http://maps.google.com" target="_blank"><img src="http://maps.google.com/intl/en_us/images/maps_logo_small.png" /></a>
+              <h3>Location</h3>
               <div id="app_submit">
                 <div class="dev_app_submit">
-                  <h6>Search a location on the map and paste it's coordinates right there!</h6>
-                  <p>click on the above link to open a new window/tab with Google Maps, search for the location and paste it's coordinates in the text fields below</p>
+                  <h6>Do you think it's a location, uh?</h6>
+                  <p>click on the correct location on the map and then click the Submit button</p>
                 </div>
               </div>
             </div>
             <div class="dev_application_data">
-            <div class="dev_app_insights clearfix">
-            <fb:iframe width="428" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://biascica.pipps.net:9999/maps/search?server=<%= @server.id %>&hunt=<%= @hunt.id %>" />
-                <% form_tag :action => :answer, :type => "geoloc" do %>
-                <%= label_tag 'geoloc_lat', 'Latitude:' %>
-                <%= text_field_tag :geoloc_lat, nil, {:maxlength => 8, :class => "inputtext" } %>
-                <br />
-                <%= label_tag 'geoloc_lat', 'Longitude:' %>
-                <%= text_field_tag :geoloc_long, nil, { :maxlength => 8, :class => "inputtext" } %>
-                <br/>
-                <%= label_tag 'geoloc_lat', 'Planet (optional):' %>
-                <%= text_field_tag :geoloc_planet, nil, { :maxlength => 8, :class => "inputtext" } %>
-                <%= submit_tag 'Submit', :class => "inputsubmit" %>
-                <% end %>
+              <div class="dev_app_insights clearfix">
+                <fb:iframe width="428" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://corinna.bucket.mine.nu/maps/search?server=<%= @server.id %>&hunt=<%= @hunt.id %>" />
               </div>
             </div>
-            <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %> | <a href="www.facebook.com/">Action2</a></div>
+            <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %></div>
           </div>
           <div class="dev_application app_show" id="url_info" style="display:none">
             <div class="dev_application_header clearfix">
@@ -122,7 +111,7 @@ function show(div, from){
               <h3>Link</h3>
               <div id="app_submit">
                 <div class="dev_app_submit">
-                  <h6>Search for the correct link on Google and paste it right there!</h6>
+                  <h6>Do you think it's a link, uh?</h6>
                   <p>click on the above link to open a new window/tab with Google, search for the link and paste it in the text field below</p>
                 </div>
               </div>
@@ -136,15 +125,15 @@ function show(div, from){
                 <% end %>
               </div>
             </div>
-            <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %> | <a href="www.facebook.com/">Action2</a></div>
+            <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %>></div>
           </div>
           <div class="dev_application app_show" id="string_info" style="display:none">
             <div class="dev_application_header clearfix">
               <h3>Text</h3>
               <div id="app_submit">
                 <div class="dev_app_submit">
-                  <h6>Write the answer right there!</h6>
-                  <p>yes, right there!</p>
+                  <h6>Do you think it's text, uh?</h6>
+                  <p>so, just write it!</p>
                 </div>
               </div>
             </div>
@@ -164,15 +153,15 @@ function show(div, from){
               <h3>Picture</h3>
               <div id="app_submit">
                 <div class="dev_app_submit">
-                  <h6>Search for the correct picture on Flickr</h6>
-                  <p>click on the above link to open a new window/tab with Flick, search for the image and select it</p>
+                  <h6>Do you think it's a picture, uh?</h6>
+                  <p>search, click on the select button near the image and then click the Submit button</p>
                 </div>
               </div>
             </div>
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
                 <div>
-                  <fb:iframe width="428" height="400" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0"  src="http://localhost:3000/flickr/index?server=<%=@server.id%>&hunt=<%=@hunt.id%>"></fb:iframe>
+                  <fb:iframe width="428" height="400" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0"  src="http://corinna.bucket.mine.nu/flickr/index?server=<%=@server.id%>&hunt=<%=@hunt.id%>"></fb:iframe>
                 </div>
               </div>
             </div>
@@ -183,3 +172,4 @@ function show(div, from){
     </div>
   </div>
 </div>
+

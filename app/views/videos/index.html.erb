@@ -30,21 +30,14 @@ function OnLoad() {
     // Create a search control
     var searchControl = new google.search.SearchControl();
     var options = new google.search.SearcherOptions();
-     options.setExpandMode(google.search.SearchControl.EXPAND_MODE_OPEN);
-    // Add in a full set of searchers
-// var localSearch = new google.search.LocalSearch();
-// searchControl.addSearcher(localSearch);
+    options.setExpandMode(google.search.SearchControl.EXPAND_MODE_OPEN);
+
     video_search = new google.search.VideoSearch();
     searchControl.addSearcher(video_search,options);
  
-    // Set the Local Search center point
-// localSearch.setCenterPoint("New York, NY");
     searchControl.setOnKeepCallback(this,handler,"Choose this video");
     // tell the searcher to draw itself and tell it where to attach
     searchControl.draw(document.getElementById("content"));
- 
-    // execute an inital search
-// searchControl.execute("VW GTI");
 }
  
 google.setOnLoadCallback(OnLoad);
@@ -63,9 +56,9 @@ function nameempty()
   </head>
   <body style="font-family: Arial;border: 0 none;">
     <div id="content">Loading...</div>
-    <form id="myform" name="myform" action="http://apps.facebook.com/corinna_test_tetra/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer?type=video" method="post" target="_top"  onSubmit="return nameempty();" >
+    <form id="myform" name="myform" action="http://apps.facebook.com/corinna/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer?type=video" method="post" target="_top"  onSubmit="return nameempty();" >
      <input type="hidden" id="answer" name="answer"/>
-     <input id="submit" type="submit" value="Search"></input>
+     <input id="submit" type="submit" value="Submit!"></input>
     </form>
   </body>
 </html>

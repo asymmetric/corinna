@@ -101,25 +101,25 @@ class TreasureHuntsController < ApplicationController
         end
 
         format.fbml
-       elsif request.post?
-         begin
-           @hunt = TreasureHunt.find params[:id]
-           @turn = case params[:turn_radio]
-                   when "dropdown"
-                     params[:turn_list]
-                   when "inputtext"
-                     params[:turn_custom]
-                   end
-           @fake_hint = params[:fakehint]
+      elsif request.post?
+        begin
+          @hunt = TreasureHunt.find params[:id]
+          @turn = case params[:turn_radio]
+                  when "dropdown"
+                    params[:turn_list]
+                  when "inputtext"
+                    params[:turn_custom]
+                  end
+          @fake_hint = params[:fakehint]
 
-           @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
-           flash[:notice] = "Fake hint successfully sent!"
-           format.fbml { redirect_to [@server, @hunt] }
-         rescue Exception  => e
-           flash[:error] = e.message
-           format.fbml { redirect_to :action => "hint" }
-         end
-       end
+          @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
+          flash[:notice] = "Fake hint successfully sent!"
+          format.fbml { redirect_to [@server, @hunt] }
+        rescue Exception  => e
+          flash[:error] = e.message
+          format.fbml { redirect_to :action => "hint" }
+        end
+      end
     end
   end
 
@@ -188,7 +188,6 @@ class TreasureHuntsController < ApplicationController
       end
 
     elsif request.post?
-      debugger
       @hunt = TreasureHunt.find params[:id]
       answer_type = params[:type]
       answer = {}
@@ -199,8 +198,7 @@ class TreasureHuntsController < ApplicationController
         answer[:planet] = params[:geoloc_planet]
       when "video"
         url = params[:answer].gsub('http://www.google.com/url?q=','')
-        debugger
-       url_decode = CGI::unescape(url)
+        url_decode = CGI::unescape(url)
         case  url_decode
         when /google/
           answer[:id] = url_decode.gsub(/.*\?docid=(.*)\&?.*/,'\1')
