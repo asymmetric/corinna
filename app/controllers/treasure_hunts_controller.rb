@@ -79,7 +79,7 @@ class TreasureHuntsController < ApplicationController
         end
         format.fbml
       rescue Exception => e
-        flash[:error] = e.message unless flash[:info]
+        flash[:error] = e.message unless flash[:info] or flash[:notice]
         format.fbml { redirect_to [@server, @hunt] }
       end
     end
