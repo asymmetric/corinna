@@ -216,23 +216,26 @@ class TreasureHuntsController < ApplicationController
       respond_to do |format|
 
         begin
-          begin
-            response = Nokogiri::Slop(@hunt.answer(answer, answer_type, @current_user.id, @current_user.password))
-          rescue Exception => e
-            flash[:error] = e.message
-            format.fbml
-          end
+          response = Nokogiri::Slop @hunt.answer(answer, answer_type, @current_user.id, @current_user.password)
           flash[:notice] = case response.root['status']
                            when "wrong" then "This is not the correct answer, try again!"
                            when "right" then "You got it right!"
-                           when "win" then "Congratulations! You won the Treasure Hunt!"
-                           when "lose" then "You lose!"
+                           when "win"
+                             redir_loc = :show
+                             "Congratulations! You won the Treasure Hunt!"
+                           when "lose"
+                             redir_loc = :show
+                             "You lose!"
                            end
+          redir_loc ||= :hint
           flash[:info] = prettyprint_blockinline(response.root.to_xml, '.').gsub(/<[^>]*$/,'...').gsub(/(<\/?img)(.*?>)/,'\1 style="width:auto; height:15em;" \2').gsub(/<\/?p.*?>/,'')
-          format.fbml { redirect_to :action => :hint }
+          format.fbml { redirect_to :action => redir_loc }
         rescue Nokogiri::XML::SyntaxError => e
           flash[:error] = "This is not a valid answer!"
           format.fbml
+        rescue Exception => e
+          flash[:error] = e.message
+          format.fbml { redirect_to :action => :show }
         end
       end
     end

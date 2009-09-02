@@ -34,7 +34,7 @@ module ActiveTreasureHunt
   end
   class NotExist < XMLError
     def to_s
-      "Treasure Hunt does not exist"
+      "This Treasure Hunt does not exist or it has ended"
     end
   end
   class AlreadyStarted < XMLError
