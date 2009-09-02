@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thunt xmlns="http://vitali.web.cs.unbo.it/thunt"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://vitali.web.cs.unbo.it/thunt" idOrganizer="" pwdOrganizer="">
+    <title>Boris</title>
+    <description>
+        <para>La migliore serie televisiva italiana!<image type="block" src="http://www.foxtv.it/resources/Image/16/8urr2sfpk_fox_boris2_VISORE_LANCI_WIDE.jpg"/></para>
+        <para><article id="Boris_(serie_televisiva)" lang="it"/></para>
+        <para><video type="youtube" id="65vj-dCqLq8"/></para>
+    </description>
+    <global>
+        <maxNumOfTeams n="10"/>
+        <blackList></blackList>
+        <whiteList></whiteList>
+        <teamVisibility completedTurns="true" currentTurnTitle="true" HasFinished="true" numOfHintsThisTurnSoFar="true"/>
+        <defaultTimeout>PT0S</defaultTimeout>
+        <maxAllowedFakeHintsPerTurn n="1"/>
+        <maxAllowedFakeHintsPerTeam n="3"/>
+        <numOfWinners>unbounded</numOfWinners>
+    </global>
+    <turns>
+        <turn timeout="PT14M" maxAnswers="6" forced="first">
+            <title>Non c'è bisogno di averlo visto, fidati</title>
+            <hint at="PT2M">
+                <hintContent>
+                    <para>Nella prima puntata Lopez fa un discorso a tutta la troupe. Di quale progetto sta parlando?</para>
+                </hintContent>
+                <winnerMessage>
+                    <para>La memoria non ti manca! E neanche youtube ;)</para>
+                </winnerMessage>
+                <loserMessage>
+                    <para>Sembra difficile, ma qualche strumento (<link href="http://www.youtube.com" />) potrebbe esserti utile</para>
+                </loserMessage>
+            </hint>
+            <hint at="PT10M">
+                <hintContent>
+                    <para>Lopez fa un discorso a tutta la troupe. Di quale progetto sta parlando?<video type="youtube" id="_U1FsAyO0q0"/></para>
+                </hintContent>
+                <winnerMessage>
+                    <para>Bello, eh?</para>
+                </winnerMessage>
+                <loserMessage>
+                    <para>Ricorda che la risposta è semplice testo, e riguarda il progetto di cui parla Lopez...</para>
+                </loserMessage>
+            </hint>
+            <hint at="PT2M">
+                <hintContent>
+                    <para>Stavolta <bold>non</bold> puoi sbagliare<image type="block" src="http://borisitalia.altervista.org/2s/gliocchidelcuore2.jpg"/></para>
+                </hintContent>
+                <winnerMessage>
+                    <para>Ok, sai leggere le immagini. Vediamo che sai fare adesso!</para>
+                </winnerMessage>
+                <loserMessage>
+                    <para>Per caso sei tu il <bold>BeastUK</bold> di questa foto?<image type="block" src="http://images.encyclopediadramatica.com/images/c/c6/Stupidity_mot.jpg"/></para>
+                </loserMessage>
+            </hint>
+            <answer type="string"><string force="none">gli occhi del cuore 2</string></answer>
+        </turn>
+        <turn timeout="PT12M" maxAnswers="6" forced="none">
+            <title>Il motto, filmato</title>
+            <hint at="PT2M">
+                <hintContent>
+                    <para>Il motto, filmato</para>
+                </hintContent>
+                <winnerMessage>
+                    <para>Grande!</para>
+                </winnerMessage>
+                <loserMessage>
+                    <para>Pensaci solo un altro po'</para>
+                </loserMessage>
+            </hint>
+            <hint at="PT10M">
+                <hintContent>
+                    <para>E' il primo consiglio che <image type="inline" src="http://borisitalia.altervista.org/1s/img_cast/francesco_pannofino-rene_ferretti.jpg"/> dà a <image type="inline" src="http://borisitalia.altervista.org/1s/img_guest_star/roberto_herlitzka-orlando_serpentieri.jpg"/></para>
+                </hintContent>
+                <winnerMessage>
+                    <para>Per non essere un fan sfegatato sei molto bravo!</para>
+                </winnerMessage>
+                <loserMessage>
+                    <para>Forse dovresti cercare meglio</para>
+                </loserMessage>
+            </hint>
+            <answer type="string"><video type="youtube" id="M5ClgP70T9Y"/></answer>
+        </turn>
+    </turns>
+    <conclusions>
+        <winnerMessage>
+            <para>Complimenti!</para>
+        </winnerMessage>
+        <loserMessage>
+            <para>Bah</para>
+        </loserMessage>
+    </conclusions>
+</thunt>

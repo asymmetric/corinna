@@ -21,9 +21,9 @@
   <div id="main">
     <div id="notice">
       <% if flash[:info] %>
-      <%= fb_explanation(flash[:notice], flash[:info]) %>
+        <%= fb_explanation(flash[:notice], flash[:info]) %>
       <% elsif (flash[:notice] or flash[:error]) %>
-      <%= facebook_messages %>
+        <%= facebook_messages %>
       <% end %>
     </div>
     <%= fb_add_profile_section %>
