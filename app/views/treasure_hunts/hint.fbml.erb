@@ -18,7 +18,7 @@ function load(what, effect) {
         document.getElementById(what).setInnerFBML('An error occured');
     }
     var queryParams = { 'server_id' : "<%= @server.id %>", 'id' : "<%= @hunt.id %>" };
-    ajax.post('http://corinna.bucket.mine.nu/frames/' + what, queryParams);
+    ajax.post("<%= Facebooker.facebooker_config['callback_url'] %>/frames/" + what, queryParams);
 }
 function reload(what, effect) {
     var timerId = setTimeout(function() {reload(what, effect)}, 30000);

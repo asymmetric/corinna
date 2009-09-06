@@ -81,8 +81,7 @@ function show(div, from){
             </div>
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
-
-                <fb:iframe width="430" height="400" scrolling=yes frameborder=no src="http://corinna.bucket.mine.nu/videos/index?server_id=<%=@server.id%>&hunt_id=<%=@hunt.id%>"></fb:iframe>
+                <fb:iframe src="<%= Facebooker.facebooker_config['callback_url'] + url_for(:controller => :videos, :action => :index, :canvas => false, :server_id => @server.id, :hunt_id => @hunt.id) %>" width="430" height="400" scrolling="yes" frameborder="no" />
               </div>
             </div>
             <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %></div>
@@ -100,7 +99,7 @@ function show(div, from){
             </div>
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
-                <fb:iframe width="428" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://corinna.bucket.mine.nu/maps/search?server=<%= @server.id %>&hunt=<%= @hunt.id %>" />
+                <fb:iframe src="<%= Facebooker.facebooker_config['callback_url'] + url_for(:controller => :maps, :action => :search, :canvas => false, :server => @server.id, :hunt => @hunt.id)%>" "width="430" height="400" scrolling="no" frameborder="no" marginheight="0" marginwidth="0">
               </div>
             </div>
             <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %></div>
@@ -145,7 +144,7 @@ function show(div, from){
                 <% end %>
               </div>
             </div>
-            <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %>
+            <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %></div>
           </div>
           <div class="dev_application app_show" id="picture_info" style="display:none">
             <div class="dev_application_header clearfix">
@@ -161,7 +160,7 @@ function show(div, from){
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
                 <div>
-                  <fb:iframe width="428" height="400" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0"  src="http://corinna.bucket.mine.nu/flickr/index?server=<%=@server.id%>&hunt=<%=@hunt.id%>"></fb:iframe>
+                <fb:iframe src="<%= Facebooker.facebooker_config['callback_url'] + url_for(:controller => :flickr, :action => :index, :canvas => false, :server => @server.id, :hunt => @hunt.id) %>" width="430" height="400" scrolling="yes" frameborder="no" />
                 </div>
               </div>
             </div>

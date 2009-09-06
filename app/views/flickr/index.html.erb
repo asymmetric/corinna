@@ -1,4 +1,4 @@
 <% form_tag :action => :search , :hunt => @hunt_id , :server => @server_id do %>
 <%= text_field_tag :image ,nil, { :class => "inputtext" } %>
-<%= submit_tag 'Cerca', :class => "inputsubmit" %>
+<%= submit_tag 'Search', :disable_with => "Searching..." %>
 <% end %>

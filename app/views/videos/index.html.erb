@@ -2,18 +2,38 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <title>Google AJAX Search API Sample</title>
+    <title>God only knows</title>
     <script src="http://www.google.com/jsapi?key=ABQIAAAA1XbMiDxx_BTCY2_FkPh06RRaGTYH6UMl8mADNa0YKuWNNa8VNxQEerTAUcfkyrr6OwBovxn7TDAH5Q" type="text/javascript"></script>
     <script type="text/javascript">
-google.load('search', '1');
+      google.load('search', '1');
 
 function handler(result){
-
-    field = document.getElementById("answer");
+    var field = document.getElementById("answer");
     field.value = decodeURI(result.url);
+    var choose = document.getElementById('choose');
+    choose.style.visibility = 'visible';
+    // clone the result html node
+    var node = result.html.cloneNode(true);
 
-    sumbit = document.getElementById('submit');
-    submit.setStyle('display','inline');
+    // attach it
+    var savedResults = document.getElementById("saved_results");
+    if (savedResults.childNodes[0]) {
+        savedResults.removeChild(savedResults.childNodes[0]);
+    }
+    savedResults.appendChild(node);
+    var gswatermark = document.getElementsByClassName('gs-watermark');
+    for (i=0;i<gswatermark.length;i++) {
+        gswatermark[i].style.visibility = 'hidden';
+    }
+    var curhref = location.href;
+    location.href = curhref.substr(0, curhref.lastIndexOf("#")) + '#';
+    location.href = location.href + "choose";
+}
+function hidegscmore() {
+    var gscmore = document.getElementsByClassName('gsc-trailing-more-results');
+    for (i=0;i<gscmore.length;i++) {
+        gscmore[i].style.visibility = 'hidden';
+    }
 }
 function OnLoad() {
     // Create a search control
@@ -24,30 +44,26 @@ function OnLoad() {
     video_search = new google.search.VideoSearch();
     searchControl.addSearcher(video_search,options);
 
-    searchControl.setOnKeepCallback(this,handler,"Choose this video");
+    searchControl.setOnKeepCallback(this,handler,"Choose this video!");
+    searchControl.setSearchCompleteCallback(this,hidegscmore);
     // tell the searcher to draw itself and tell it where to attach
     searchControl.draw(document.getElementById("content"));
+    var choose = document.getElementById('choose');
+    choose.style.visibility = 'hidden';
 }
 
 google.setOnLoadCallback(OnLoad);
 
     </script>
-    <script type="text/javascript" language="JavaScript">
-      function nameempty()
-{
-    if ( document.getElementById("answer").value == '' )
-    {
-        alert('No name was entered!')
-        return false;
-    }
-}
-    </script>
   </head>
-  <body style="font-family: Arial;border: 0 none;">
-    <div id="content">Loading...</div>
-    <form id="myform" name="myform" action="http://apps.facebook.com/corinna/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer?type=video" method="post" target="_top"  onSubmit="return nameempty();" >
+  <body style="font-family:Arial;border:0;">
+    <div name="choose" id="choose" style="border-bottom:1px solid #EEEEEE;"><span style="color:#676767">You chosed this video:</span>
+    <form id="myform" name="myform" action="<%= "http://apps.facebook.com#{Facebooker.facebook_path_prefix}/servers/#{@server_id}/treasure_hunts/#{@hunt_id}/answer?type=video" %>" method="post" target="_top" style="display:inline">
     <input type="hidden" id="answer" name="answer"/>
-    <input id="submit" type="submit" value="Submit!" style="position:fixed;top:0;right:0;"></input>
+    <input id="submit" type="submit" value="Submit!" />
   </form>
+  <div id="saved_results"></div>
+</div>
+<div id="content" style="padding-top:10px">Loading...</div>
 </body>
 </html>

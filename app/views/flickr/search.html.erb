@@ -1,21 +1,21 @@
-<form action="http://apps.facebook.com/corinna/servers/<%=@server_id%>/treasure_hunts/<%=@hunt_id%>/answer?type=picture" method="post" target="_top">
-</div>
-<table border=0>
-  <% @photos.each do | photo | %>
-  <tr>
-    <% info = flickr.photos.getInfo(:photo_id => photo.id ) %>
-    <td><a href="javascript:show('http://farm<%=info.farm%>.static.flickr.com/<%=info.server%>/<%=info.id%>_<%=info.secret%>.jpg')">
-    <img src="http://farm<%=info.farm%>.static.flickr.com/<%=info.server%>/<%=info.id%>_<%=info.secret%>.jpg" width="75" height="75"></img></td>
-  </a>
-  <td>
-    <div>
-      <p><%=info.title%></p>
-    </div>
-  </td>
-  <td><input type="radio" name="answer" value="<%=info.urls.first._content%>">Select</input></td>
-</tr>
-<%end%>
+<div id="fixed" >It's not the image you are searching for? <%= link_to "Search again!" , :action => :index%></div>
+<% post_to = "http://apps.facebook.com#{Facebooker.facebook_path_prefix}/servers/#{@server_id}/treasure_hunts/#{@hunt_id}/answer?type=picture" %>
+<div id="content">
+  <table border="0">
+    <% @photos.each do | photo | %>
+    <tr>
+      <% info = flickr.photos.getInfo(:photo_id => photo.id ); url = "http://farm#{info.farm}.static.flickr.com/#{info.server}/#{info.id}_#{info.secret}.jpg"%>
+      <td>
+        <a href="<%= url %>" target="_blank"><img src="<%= url %>"/></a>
+      </td>
+      <td>
+        <%= info.title %>
+        <form action="<%= post_to %>" method="post" target="_top">
+        <input type="hidden" name="answer" value="<%=info.urls.first._content%>" />
+        <input type="submit" value="Submit" class="inputsubmit"/>
+      </form>
+    </td>
+  </tr>
+  <%end%>
 </table>
-
-<input type="submit" value="Submit" class="inputsubmit"/><%=link_to "Search again" , :action => :index%>
-</form>
+</div>

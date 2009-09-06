@@ -1,17 +1,29 @@
 <html>
   <head>
-    <script type="text/javascript">
-
-      function show(src){
-          var w = 400;
-          var h = 250;
-          var l = Math.floor((screen.width-w)/2);
-          var t = Math.floor((screen.height-h)/2);
-          window.open(src,"","width=" + w + ",height=" + h + ",top=" + t + ",left=" + l);
+    <style type="text/css">
+      body, table {
+          font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+          font-size: 11px;
       }
-    </script>
-    <%= stylesheet_link_tag "http://static.ak.fbcdn.net/rsrc.php/z2H8E/lpkg/dayzc47w/it_IT/141/173310/css/cu2v5qeuvg8w4owo.pkg.css", :media => "screen" %>
-    <%= stylesheet_link_tag "http://static.ak.fbcdn.net/rsrc.php/z574Z/lpkg/5kk2yhyj/it_IT/141/173723/css/4nv8etrkutk4ksco.pkg.css", :media => "screen" %>
+      img {
+          width:120px;
+          height:auto;
+      }
+      #fixed {
+          position: fixed;
+          top: 0;
+          background-color: white;
+          height: 15px;
+          width: 100%;
+      }
+      #content {
+          border-top: 15px solid white;
+      }
+      input[type="text"] {
+          border: 1px solid #BCCDF0;
+          width: 226px;
+      }
+    </style>
   </head>
   <body>
     <%= yield :layout %>
