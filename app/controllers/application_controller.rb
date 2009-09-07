@@ -12,6 +12,14 @@ class ApplicationController < ActionController::Base
   before_filter :get_default_server, :get_current_facebook_user
   helper_method :prettyprint_blockinline
 
+  rescue_from ActiveResource::TimeoutError do |e|
+    flash[:error] = "Sorry, the server which hosts this Treasure Hunt hasn't replied within 5 seconds"
+    respond_to do |format|
+      format.fbml { redirect_to :root }
+      format.html { redirect_to :root }
+    end
+  end
+
   def prettyprint_blockinline(xml, xpath)
     doc = Nokogiri::XML(xml)
     para_syntax = doc.root.namespace.nil? ? "para" : "thunt:para"
