@@ -1,6 +1,13 @@
-<h1 class="center">New Treasure Hunt</h1>
+<div class="center">
+<h1>New Treasure Hunt</h1>
 
 <% facebook_form_for [@server, @hunt] do |f| %>
-    <%= f.text_area :xml, :rows => 20 %>
-    <%= f.buttons 'Create!' %>
+<%= f.text_area :xml, :rows => 20, :label => "By copy and paste" %>
+<%= f.buttons 'Create!' %>
 <% end %>
+<% form_for [@server, @hunt], :html => { :multipart => :true }, :url => Facebooker.facebooker_config['callback_url'] + "/servers/#{@server.id}/treasure_hunts" do |f| %>
+<%= f.label 'By upload:' %>
+<%= f.file_field :file %>
+<%= submit_tag 'Upload!', :class => :inputsubmit %>
+<% end %>
+</div>

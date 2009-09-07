@@ -1,11 +1,10 @@
 class TreasureHuntsController < ApplicationController
   before_filter :get_server
-  skip_before_filter :verify_authenticity_token, :only => :answer
+  skip_before_filter :verify_authenticity_token, :only => [:answer, :create]
   layout "list"
   # GET /treasure_hunts
   def index
     @hunts = TreasureHunt.find(:all)
-
     respond_to do |format|
       format.fbml
     end
@@ -14,7 +13,6 @@ class TreasureHuntsController < ApplicationController
   # GET /treasure_hunts/new
   def new
     @hunt = TreasureHunt.new(:xml => "")
-
     respond_to do |format|
       format.fbml
     end
@@ -23,17 +21,24 @@ class TreasureHuntsController < ApplicationController
   # POST /treasure_hunts
   def create
     hunt_pwd = ActiveSupport::SecureRandom.hex
-    xml = Nokogiri::XML(params[:treasure_hunt]['xml'])
-    if xml.root
-      xml.root['idOrganizer'] = @current_facebook_user.to_s
-      xml.root['pwdOrganizer'] = hunt_pwd
-      xml.encoding = 'UTF-8'
-    end
-
-    @hunt = TreasureHunt.new(:xml => xml.to_xml.gsub(/;/,''))
 
     respond_to do |format|
       begin
+        if params[:treasure_hunt][:xml]
+          xml = Nokogiri::XML(params[:treasure_hunt][:xml])
+        elsif params[:treasure_hunt][:file]
+          xml = Nokogiri::XML(params[:treasure_hunt][:file].read)
+        else
+          raise Exception.new('No file uploaded')
+        end
+        if xml.root
+          xml.root['idOrganizer'] = @current_facebook_user.to_s
+          xml.root['pwdOrganizer'] = hunt_pwd
+          xml.encoding = 'UTF-8'
+        end
+
+        @hunt = TreasureHunt.new(:xml => xml.to_xml.gsub(/;/,''))
+
         @hunt.save
         user_serv = @current_user.find_server @server.id
         user_serv.thunts << { :id => @hunt.id, :password => hunt_pwd }
@@ -42,8 +47,7 @@ class TreasureHuntsController < ApplicationController
         format.fbml { redirect_to [@server, @hunt] }
       rescue Exception => e
         flash[:error] = e.message
-        @hunt.xml = ""
-        format.fbml { render :action => :new }
+        format.fbml { redirect_to :action => :new }
       end
     end
 
