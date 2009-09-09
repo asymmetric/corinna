@@ -206,7 +206,7 @@ class TreasureHuntsController < ApplicationController
           answer[:id] = url_decode.gsub(/.*\?docid=(.*)\&?.*/,'\1')
           answer[:service] = :googlevideo
         when /youtube/
-          answer[:id] = url_decode.gsub(/.*\?v=([\w]*)\&?.*/,'\1')
+          answer[:id] = url_decode.gsub(/.*\?v=([\w*-?\w*]*)\&?.*/,'\1')
           answer[:service] = :youtube
         end
       when "picture"
