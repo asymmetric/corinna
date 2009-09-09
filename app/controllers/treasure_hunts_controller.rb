@@ -91,7 +91,6 @@ class TreasureHuntsController < ApplicationController
     respond_to do |format|
       if request.get?
         @hunt = TreasureHunt.find params[:id]
-
         begin
           resp = @hunt.status @current_user.id, @current_user.password
           xml = Nokogiri::XML resp
@@ -99,10 +98,10 @@ class TreasureHuntsController < ApplicationController
           @turns = xml.root.xpath('thunt:status/@turnNumber').to_a.uniq
           @turn_names = xml.root.xpath('thunt:status/@turnName').to_a.uniq
         rescue Exception => e
-          @status = e
+          flash[:error] = e.message
+          format.fbml { redirect_to [@server, @hunt] }
         end
-
-        format.fbml
+	format.fbml
       elsif request.post?
         begin
           @hunt = TreasureHunt.find params[:id]
@@ -116,10 +115,10 @@ class TreasureHuntsController < ApplicationController
 
           @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
           flash[:notice] = "Fake hint successfully sent!"
-          format.fbml { redirect_to [@server, @hunt] }
+          format.fbml { redirect_to :action => :hint }
         rescue Exception  => e
           flash[:error] = e.message
-          format.fbml { redirect_to :action => "hint" }
+          format.fbml
         end
       end
     end
