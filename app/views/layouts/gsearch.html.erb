@@ -10,8 +10,8 @@
 function handler(result){
     var field = document.getElementById("answer");
     field.value = decodeURI(result.url);
-    var choose = document.getElementById('choose');
-    choose.style.visibility = 'visible';
+    var chose = document.getElementById('chose');
+    chose.style.visibility = 'visible';
     // clone the result html node
     var node = result.html.cloneNode(true);
 
@@ -27,7 +27,7 @@ function handler(result){
     }
     var curhref = location.href;
     location.href = curhref.substr(0, curhref.lastIndexOf("#")) + '#';
-    location.href = location.href + "choose";
+    location.href = location.href + "chose";
 }
 function hidegscmore() {
     var gscmore = document.getElementsByClassName('gsc-trailing-more-results');
@@ -41,15 +41,14 @@ function OnLoad() {
     var options = new google.search.SearcherOptions();
     options.setExpandMode(google.search.SearchControl.EXPAND_MODE_OPEN);
 
-    video_search = new google.search.VideoSearch();
-    searchControl.addSearcher(video_search,options);
+    <%= yield :layout %>
 
-    searchControl.setOnKeepCallback(this,handler,"Choose this video!");
+    searchControl.setOnKeepCallback(this,handler,"Chose");
     searchControl.setSearchCompleteCallback(this,hidegscmore);
     // tell the searcher to draw itself and tell it where to attach
     searchControl.draw(document.getElementById("content"));
-    var choose = document.getElementById('choose');
-    choose.style.visibility = 'hidden';
+    var chose = document.getElementById('chose');
+    chose.style.visibility = 'hidden';
 }
 
 google.setOnLoadCallback(OnLoad);
@@ -57,8 +56,8 @@ google.setOnLoadCallback(OnLoad);
     </script>
   </head>
   <body style="font-family:Arial;border:0;">
-    <div name="choose" id="choose" style="border-bottom:1px solid #EEEEEE;"><span style="color:#676767">You chosed this video:</span>
-    <form id="myform" name="myform" action="<%= "http://apps.facebook.com#{Facebooker.facebook_path_prefix}/servers/#{@server_id}/treasure_hunts/#{@hunt_id}/answer?type=video" %>" method="post" target="_top" style="display:inline">
+    <div name="chose" id="chose" style="border-bottom:1px solid #EEEEEE;"><span style="color:#676767">You chosed:</span>
+    <form id="myform" name="myform" action="<%= "http://apps.facebook.com#{Facebooker.facebook_path_prefix}/servers/#{@server_id}/treasure_hunts/#{@hunt_id}/answer?type=#{@type}" %>" method="post" target="_top" style="display:inline">
     <input type="hidden" id="answer" name="answer"/>
     <input id="submit" type="submit" value="Submit!" />
   </form>

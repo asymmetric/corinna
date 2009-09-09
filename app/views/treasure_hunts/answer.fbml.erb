@@ -81,7 +81,7 @@ function show(div, from){
             </div>
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
-                <fb:iframe src="<%= Facebooker.facebooker_config['callback_url'] + url_for(:controller => :videos, :action => :index, :canvas => false, :server_id => @server.id, :hunt_id => @hunt.id) %>" width="430" height="400" scrolling="yes" frameborder="no" />
+                <fb:iframe src="<%= Facebooker.facebooker_config['callback_url'] + url_for(:controller => :gsearch, :action => :videos, :canvas => false, :server_id => @server.id, :hunt_id => @hunt.id) %>" width="430" height="400" scrolling="yes" frameborder="no" />
               </div>
             </div>
             <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %></div>
@@ -117,11 +117,7 @@ function show(div, from){
             </div>
             <div class="dev_application_data">
               <div class="dev_app_insights clearfix">
-                <% form_tag :action => :answer, :type => "URI" do %>
-                <%= label_tag :answer, 'Link url:' %>
-                <%= text_field_tag :answer , nil, { :class => "inputtext" } %>
-                <%= submit_tag 'Submit', :class => "inputsubmit" %>
-                <% end %>
+                <fb:iframe src="<%= Facebooker.facebooker_config['callback_url'] + url_for(:controller => :gsearch, :action => :web, :canvas => false, :server_id => @server.id, :hunt_id => @hunt.id) %>" width="430" height="400" scrolling="yes" frameborder="no" />
               </div>
             </div>
             <div class="dev_app_footer"><%= link_to 'Back', :action => :hint %></div>
