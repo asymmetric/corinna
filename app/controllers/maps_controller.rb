@@ -19,6 +19,11 @@ class MapsController < ApplicationController
   end
 
   def search
+    @map = GMap.new("map_div")
+    @map.control_init(:large_map => true,:map_type => true, :local_search => true, :local_search_options => "{suppressZoomToBounds : true, resultList: google.maps.LocalSearch.RESULT_LIST_INLINE, suppressInitialResultSelection : true, searchFormHint : 'Local Search powered by Google', linkTarget : GSearch.LINK_TARGET_BLANK}")
+    @map.set_map_type_init(GMapType::G_HYBRID_MAP)
+    @map.center_zoom_init([75.5,-42.56],4)
+    
     @server_id = params[:server]
     @hunt_id = params[:hunt]
     respond_to do |format|
