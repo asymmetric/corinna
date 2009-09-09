@@ -1,13 +1,40 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<html>
   <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <title>Google Maps JavaScript API Example: Tile Detector</title>
-    
-  <%= GMap.header(:local_search => true) %>
-  <%= @map.to_html %>
+    <title>Google Maps for Corinna's Treasure Hunts</title>
+    <style type="text/css">
+      body { font-family: Sans-serif; }
+      #wrapper {
+      width: 430px;
+      border : 1px solid #979797;
+      }
+      #results {
+      margin-top : 30px;
+      margin-bottom : 1px;
+      margin-left : 2px;
+      margin-right : 2px;
+      }
+      #results .gmls-ads-box-234x60_as .gmls_inline_ads {
+      left : 83px;
+      }
+      #results .gmls-app,
+      #map .gmls-app {
+      border : none;
+      }
+      #map .gmls {
+      width : 100%;
+      }
+      #map {
+      height : 300px;
+      border-bottom : 1px solid #979797;
+      }
+    </style>
+    <%= GMap.header(:local_search => true) %>
+    <%= @map.to_html %>
   </head>
   <body style="margin:0px; padding:0px;">
-    <%= @map.div(:width => "100%", :height => "100%") %>
+    <div id="wrapper">
+      <%= @map.div %>
+      <div id="results"></div>
+    </div>
   </body>
+</html>

@@ -1,3 +1,6 @@
 [submodule "vendor/plugins/facebooker"]
 	path = vendor/plugins/facebooker
 	url = git://github.com/mmangino/facebooker.git
+[submodule "vendor/plugins/ym4r_gm"]
+	path = vendor/plugins/ym4r_gm
+	url = git://github.com/earcar/ym4r_gm.git
