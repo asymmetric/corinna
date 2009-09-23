@@ -88,38 +88,36 @@ class TreasureHuntsController < ApplicationController
   end
 
   def fakehint
-    respond_to do |format|
+    begin
+      @hunt = TreasureHunt.find params[:id]
       if request.get?
-        @hunt = TreasureHunt.find params[:id]
-        begin
-          resp = @hunt.status @current_user.id, @current_user.password
-          xml = Nokogiri::XML resp
-          @status = xml.root.xpath 'thunt:status'
-          @turns = xml.root.xpath('thunt:status/@turnNumber').to_a.uniq
-          @turn_names = xml.root.xpath('thunt:status/@turnName').to_a.uniq
-        rescue Exception => e
-          flash[:error] = e.message
-          format.fbml { redirect_to [@server, @hunt] }
-        end
-	format.fbml
-      elsif request.post?
-        begin
-          @hunt = TreasureHunt.find params[:id]
-          @turn = case params[:turn_radio]
-                  when "dropdown"
-                    params[:turn_list]
-                  when "inputtext"
-                    params[:turn_custom]
-                  end
-          @fake_hint = params[:fakehint]
-
-          @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
-          flash[:notice] = "Fake hint successfully sent!"
-          format.fbml { redirect_to :action => :hint }
-        rescue Exception  => e
-          flash[:error] = e.message
+        resp = @hunt.status @current_user.id, @current_user.password
+        xml = Nokogiri::XML resp
+        @status = xml.root.xpath 'thunt:status'
+        @turns = xml.root.xpath('thunt:status/@turnNumber').to_a.uniq
+        @turn_names = xml.root.xpath('thunt:status/@turnName').to_a.uniq
+        respond_to do |format|
           format.fbml
         end
+      elsif request.post?
+        @turn = case params[:turn_radio]
+                when "dropdown"
+                  params[:turn_list]
+                when "inputtext"
+                  params[:turn_custom]
+                end
+        @fake_hint = params[:fakehint]
+
+        @hunt.fakehint @fake_hint, @turn, @current_user.id, @current_user.password
+        flash[:notice] = "Fake hint successfully sent!"
+        respond_to do |format|
+          format.fbml { redirect_to :action => :hint }
+        end
+      end
+    rescue Exception  => e
+      flash[:error] = e.message
+      respond_to do |format|
+        format.fbml { redirect_to :action => :hint }
       end
     end
   end

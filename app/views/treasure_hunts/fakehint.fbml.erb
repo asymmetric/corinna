@@ -1,68 +1,63 @@
 <h2>Submit a fake hint</h2>
 
 <script type="text/javascript">
-<!--
-function load(what, effect) {
-    var ajax = new Ajax();
-    var element = document.getElementById(what);
-    var element_wait = document.getElementById(what + '_wait');
-    Animation(element_wait).to('height', 'auto').to('opacity', 1).show().go();
-    ajax.responseType = Ajax.FBML;
-    ajax.ondone = function(data) {
-        element.setInnerFBML(data);
-        switch (effect) {
-        case 'highlight' : Animation(element).to('background', '#ffffff').from('background', '#fff9d7').go(); break;
-        case 'reveal' : Animation(element).duration(1000).checkpoint().to('height', 'auto').from('0px').to('width', 'auto').from('0px').to('opacity', 1).from(0).blind().show().go(); break;
+    <!--
+    function load(what, effect) {
+        var ajax = new Ajax();
+        var element = document.getElementById(what);
+        var element_wait = document.getElementById(what + '_wait');
+        Animation(element_wait).to('height', 'auto').to('opacity', 1).show().go();
+        ajax.responseType = Ajax.FBML;
+        ajax.ondone = function(data) {
+            element.setInnerFBML(data);
+            switch (effect) {
+            case 'highlight' : Animation(element).to('background', '#ffffff').from('background', '#fff9d7').go(); break;
+            case 'reveal' : Animation(element).duration(1000).checkpoint().to('height', 'auto').from('0px').to('width', 'auto').from('0px').to('opacity', 1).from(0).blind().show().go(); break;
+            }
+            Animation(element_wait).to('height', '0px').to('opacity', 0).hide().go();
         }
-        Animation(element_wait).to('height', '0px').to('opacity', 0).hide().go();
+        ajax.onerror = function(data) {
+            document.getElementById(what).setInnerFBML('An error occured');
+        }
+        var queryParams = { 'server_id' : "<%= @server.id %>", 'id' : "<%= @hunt.id %>" };
+        ajax.post("<%= Facebooker.facebooker_config['callback_url'] %>/frames/" + what, queryParams);
     }
-    ajax.onerror = function(data) {
-        document.getElementById(what).setInnerFBML('An error occured');
+    var timeout = 30000;
+    function reload(what, effect) {
+        load(what, effect);
+        setTimeout(function() {reload(what, effect)}, timeout);
     }
-    var queryParams = { 'server_id' : "<%= @server.id %>", 'id' : "<%= @hunt.id %>" };
-    ajax.post("<%= Facebooker.facebooker_config['callback_url'] %>/frames/" + what, queryParams);
-}
-var timeout = 30000;
-function reload(what, effect) {
-    load(what, effect);
-    setTimeout(function() {reload(what, effect)}, timeout);
-}
-<% unless @status.is_a? Exception %>
-  load('status', 'reveal');
-  setTimeout(function() {reload('status', 'none')}, timeout);
-<% end %>
-// -->
+load('status', 'reveal');
+setTimeout(function() {reload('status', 'none')}, 30000);
+    // -->
 </script>
 <div id="hint">
   <% form_tag :action => :fakehint, :id => @hunt.id do %>
-    <%= text_area_tag :fakehint, nil, :size => "55x20" %>
-    <p />
-    <%= radio_button_tag 'turn_radio', 'dropdown', true %>
-    <%= label_tag 'turn_radio_dropdown', 'Select a Turn &nbsp;&nbsp;' %>
-    <%= select_tag :turn_list, options_for_select( @turn_names ) %>
-    <br />
-    <%= radio_button_tag 'turn_radio', 'inputtext' %>
-    <%= label_tag 'turn_radio_inputtext', 'Enter a Turn ID' %>
-    <%= text_field_tag :turn_custom, nil, :size => 6, :maxlength => 4, :class => :inputtext %>
-    <%= submit_tag 'Submit', :class => :inputsubmit %>
+  <%= text_area_tag :fakehint, nil, :size => "55x20" %>
+  <p />
+  <%= radio_button_tag 'turn_radio', 'dropdown', true %>
+  <%= label_tag 'turn_radio_dropdown', 'Select a Turn &nbsp;&nbsp;' %>
+  <%= select_tag :turn_list, options_for_select( @turn_names ) %>
+  <br />
+  <%= radio_button_tag 'turn_radio', 'inputtext' %>
+  <%= label_tag 'turn_radio_inputtext', 'Enter a Turn ID' %>
+  <%= text_field_tag :turn_custom, nil, :size => 6, :maxlength => 4, :class => :inputtext %>
+  <br />
+  <%= submit_tag 'Submit', :class => :inputsubmit %>
   <% end %>
 </div>
 
 <div id="status_div">
   <b>Player status:</b>
   <br />
-  <% if @status.is_a? Exception %>
-    <%= @status.message %>
-  <% else %>
-    <img id="status_wait" src="http://static.ak.fbcdn.net/rsrc.php/z57QP/hash/6nr0un50.gif" />
-    <div class="ubersearch">
-      <div class="clearfix">
-        <div class="result clearfix" id="status" style="display:none"></div>
-      </div>
+  <img id="status_wait" src="http://static.ak.fbcdn.net/rsrc.php/z57QP/hash/6nr0un50.gif" />
+  <div class="ubersearch">
+    <div class="clearfix">
+      <div class="result clearfix" id="status" style="display:none"></div>
     </div>
-  <% end %>
+  </div>
 </div>
 
 <div id="back">
-<%= link_to 'Back', :action => :hint %>
+  <%= link_to 'Back', :action => :hint %>
 </div>
