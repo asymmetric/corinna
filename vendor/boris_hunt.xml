@@ -19,7 +19,7 @@
         <numOfWinners>unbounded</numOfWinners>
     </global>
     <turns>
-        <turn timeout="PT14M" maxAnswers="6" forced="first">
+        <turn timeout="PT5M" maxAnswers="6" forced="first">
             <title>Non c'è bisogno di averlo visto, fidati</title>
             <hint at="PT2M">
                 <hintContent>

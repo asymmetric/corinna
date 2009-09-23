@@ -94,8 +94,8 @@ class TreasureHuntsController < ApplicationController
         resp = @hunt.status @current_user.id, @current_user.password
         xml = Nokogiri::XML resp
         @status = xml.root.xpath 'thunt:status'
-        @turn_numbers = xml.root.xpath('thunt:status/@turnNumber').to_a.uniq
-        @turn_names = xml.root.xpath('thunt:status/@turnName').to_a.uniq
+        @turn_numbers = xml.root.xpath('thunt:status/@turnNumber').to_a.collect! { |i| i.to_s.to_i }.uniq
+        @turn_names = xml.root.xpath('thunt:status/@turnName').to_a.collect! { |i| i.to_s }.uniq
         @turns = {}
         @turn_numbers.size.times do |i|
           @turns[@turn_names[i]] = @turn_numbers[i]
