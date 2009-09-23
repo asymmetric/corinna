@@ -37,7 +37,7 @@ setTimeout(function() {reload('status', 'none')}, 30000);
   <p />
   <%= radio_button_tag 'turn_radio', 'dropdown', true %>
   <%= label_tag 'turn_radio_dropdown', 'Select a Turn &nbsp;&nbsp;' %>
-  <%= select_tag :turn_list, options_for_select( @turn_names ) %>
+  <%= select_tag :turn_list, options_for_select( @turns ) %>
   <br />
   <%= radio_button_tag 'turn_radio', 'inputtext' %>
   <%= label_tag 'turn_radio_inputtext', 'Enter a Turn ID' %>
