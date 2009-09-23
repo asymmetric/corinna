@@ -52,9 +52,9 @@ module ActiveTreasureHunt
       "Treasure hunt not transparent"
     end
   end
-  class NotTurn < XMLError
+  class NoTurn < XMLError
     def to_s
-      "Turn does not exist"
+      "Specified turn does not exist"
     end
   end
   class AlreadySubscribed < XMLError
