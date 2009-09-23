@@ -1,7 +1,7 @@
 class FlickrController < ApplicationController
 
   require "flickraw"
-  skip_before_filter :ensure_application_is_installed_by_facebook_user, :get_current_facebook_user
+  skip_before_filter :verify_authenticity_token, :ensure_application_is_installed_by_facebook_user, :get_current_facebook_user
 
   def index
     @server_id = params[:server]
