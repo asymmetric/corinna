@@ -212,8 +212,8 @@ class TreasureHuntsController < ApplicationController
         end
       when "picture"
         answer[:service] = "flickr"
-        answer[:usr] = params[:answer].gsub(/.*?(\w*?)\/(\w*?)\/?$/,'\1')
-        answer[:id] = params[:answer].gsub(/.*?(\w*?)\/(\w*?)\/?$/,'\2')
+        answer[:usr] = params[:answer].gsub(/.*?([\w*@?\w*]*)\/([\w*@?\w*]*)\/?$/,'\1')
+        answer[:id] = params[:answer].gsub(/.*?([\w*@?\w*]*)\/([\w*@?\w*]*)\/?$/,'\2')
       else
         answer = params[:answer]
       end

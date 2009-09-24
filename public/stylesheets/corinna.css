@@ -32,7 +32,8 @@
   width: 610px;
 }
 .ubersearch .result .info dd {
-  width: auto;
+  width: 530px;
+  display: block;
 }
 #show-desc{
   padding-left: 10px;
